@@ -1,0 +1,4 @@
+$password = "test123";
+$hashedpass =  password_hash($password, PASSWORD_DEFAULT)
+
+password_verify($password, $hashedpass); 
