@@ -37,15 +37,15 @@ if (isset($_POST['login_user'])) {
                     $userid=$_SESSION['user']['teacher_id'];
                     echo $_SESSION['acc_name'] = $username; 
                     echo $_SESSION['success'] = "You are now logged in";
-                    header('location: ../prof/dashboard.php');
+                    header('location: ../cash/dash.php');
                 } 
                 if($row["acc_type"]=="admin") {
                     echo $_SESSION['acc_name'] = $username; 
                     echo $_SESSION['success'] = "You are now logged in";
-                    header('location: ../admin/dashboard.php');
+                    header('location: ../admin/dash.php');
                 }
-                mysqli_query($db,"delete from loginlogs where IpAddress='$ip_address'");
-                echo "<script>window.location.href='dashboard.php';</script>";
+                mysqli_query($db,"delete from loginlogs where IpAddress='$ip_address' AND datelog=current_date()");
+                echo "<script>window.location.href='dash.php';</script>";
             } else {
                 $total_count++;
                 $rem_attm=3-$total_count;
