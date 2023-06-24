@@ -41,7 +41,7 @@ if (isset($_POST['login_user'])) {
                 } 
                 if($row["acc_type"]=="admin") {
                     echo $_SESSION['acc_name'] = $username; 
-                    echo $_SESSION['success'] = "You are now logged in";
+                    echo $_SESSION['success'] = "You are now logged in as an admin";
                     header('location: ../admin/dash.php');
                 }
                 mysqli_query($db,"delete from loginlogs where IpAddress='$ip_address' AND datelog=current_date()");

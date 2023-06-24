@@ -2,14 +2,14 @@
     sleep(1);
     session_start();
 
-    if (!isset($_SESSION['username'])) {
+    if (!isset($_SESSION['acc_name'])) {
         $_SESSION['msg'] = "You must log in first";
-        header('location: ../login/index.php');
+        header('location: ../login/log.php');
     }
     if (isset($_GET['logout'])) {
         session_destroy();
-        unset($_SESSION['username']);
-        header('location: ../login/index.php');
+        unset($_SESSION['acc_name']);
+        header('location: ../login/log.php');
     }
 
     require('server.php');

@@ -1,0 +1,14 @@
+mysql-script
+
+CREATE table accinfo (
+    acc_id INT(11) NOT NULL PRIMARY KEY, 
+    fname VARCHAR(100) NOT NULL, 
+    mname VARCHAR(100) NOT NULL, 
+    lname VARCHAR(100) NOT NULL, 
+    email VARCHAR(100) NOT NULL,
+    contact INT(20) NOT NULL, 
+    DOB DATE NOT NULL, 
+    date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    date_modified DATETIME NOT NULL, 
+    FOREIGN KEY (acc_id) REFERENCES account(acc_id)
+)

@@ -23,7 +23,7 @@ nav{
     width: 120px;
     overflow: hidden;
     transition: 1s;
-
+    
 }
 
 .logo{
@@ -50,16 +50,6 @@ nav{
 }
 
 
-a{
-    position: relative;
-    color: #700202;
-    font-size: 14px;
-    display: table;
-    width: 320px;
-    padding: 10px;
-}
-
-
 nav .fas{
     position:relative;
     fill: #700202;
@@ -79,14 +69,11 @@ nav .fas{
     color: black; 
 }
 
-a:hover{
-    background: yellow;
-}
 nav:hover{
     width: 320px;
     transition: all 0.5s ease;
 }
-
+  
 .logout{
     position:absolute;
     bottom: 0;
@@ -98,7 +85,6 @@ nav:hover{
 }
 
 /*--------------------------------------------------*/
-/*dash.php*/
 
 .main{
     position:relative;
@@ -143,44 +129,23 @@ input[type=text], select {
 }
 
 /*--------------------------------------------------*/
-/*user.php*/
-
-.view{
-    position: relative;
-    margin-top: 20px;
-    padding:50px;
+/*USER.php*/
+.view {
+    padding-left: 3px;
     width: 100%;
+    padding: 50px;
+    margin-top: 20px;
 }
+
+
 .view-list{
     width: 100%;
-    padding: 30px;
+    padding: 10px;
     margin-top: 10px;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
 }
-
-
-.addrec{
-    color: #700202;
-    font-weight: bold;
-    float: right;   
-    width: 200px;
-    padding: 5px 20px;
-    cursor: pointer;
-    display: block;
-    margin-bottom: 15px;
-    background-color: #e4e4e4;
-    border-radius: 10px;
-    font-size: 15px;
-    line-height: 40px;
-}
-
-.addrec:hover {
-    color: black; 
-    background-color: yellow;
-}
-
 
 .table{
     border-collapse: collapse;
@@ -199,36 +164,38 @@ table thead tr{
 }
 
 .table th, .table td{
-    padding: 12px 15px;
+    padding: 12px 15px; 
 }
 
-.table tbody tr{
+.table tbody tr{    
     border-bottom: 1px solid #ddd;
 }
 
+h1 {
+    text-align: center;
+}
+
 .button {
-    float: left;
     position: relative;
     border: none;
     color: white;
-    width: 30px;
+    padding: 5px 15px;
+    width: 100px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 5px;
 }
 
-.button img{
-    float: left;
-    position: relative;
-    width: 35px;
-    height: 35px;
-    border-radius: 5px; 
-}
+
+
+
 
 
 /*--------------------------------------------------*/
-/*alert*/
-
 
 
 .error {
