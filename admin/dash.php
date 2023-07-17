@@ -21,10 +21,6 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://kit.fontawesome.com/0db0d33132.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.36.3/apexcharts.min.js"></script>
-        <script src="calendar.js" defer></script>
-        <script src="bargraph.js" defer></script>
         <title>Dashboard</title>
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>

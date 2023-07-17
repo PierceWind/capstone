@@ -1,5 +1,5 @@
 <?php 
-    sleep(1);
+    sleep(0);
     session_start();
 
     if (!isset($_SESSION['acc_name'])) {
@@ -11,18 +11,18 @@
         unset($_SESSION['acc_name']);
         header('location: ../login/log.php');
     }
-
     require('server.php');
-    include ('includes/header.php');
-
+    include('includes/delete.php');
+    include('includes/errors.php');
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Manage Users</title>
+        <title>Dashboard</title>
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
@@ -77,13 +77,12 @@
 
             <section class="view" id="view">
                 <div class="view-list"> <br>
-                    <h1 style="text-align: center;">Manage User Record</h1>         
+                    <h1 style="text-align: center;">Manage User Record</h1>  <br>       
                         <table class="table">
                             <thead>
                                 <tr class="head">
-                                    <button type="submit" class="addrec"  name="add"><img class="button" src = "../files/icons/add4.png">ADD RECORD</button>
+                                    <button id="addBtn" class="addrec"><img class="button" src = "../files/icons/add4.png">ADD RECORD</button>
                                 </tr>
-
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
@@ -115,7 +114,7 @@
                                         <td> 
                                             <a href="edit.php?stud_id=<?= $row['stud_id']; ?>" style="background-color: blue;" class="button"><img src="../files/icons/edit.png" alt="edit"> </button></a>   
                                             <form action="" method="POST" class="d-inline">
-                                                <button type="submit" style="background-color: red;" value="<?=$row['stud_id'];?>" class="button" name="delete_student"><img src="../files/icons/delete.png" alt="delete"></a>   
+                                                <button type="submit" value="<?=$row['acc_id'];?>" class="button" name="delete_rec"><img src="../files/icons/delete.png" alt="delete"></a>   
                                         </form>                                     
                                     </tr>
                                     <?php
@@ -131,5 +130,22 @@
                 </div>
             </section>
         </div>
+        <?php include ('includes/addUser.php');?>
+        <script> 
+            var modal = document.getElementById("addUserModal");
+            var btn = document.getElementById("addBtn");
+            var span = document.getElementsByClassName("close")[0];
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
     </body>
 </html>
