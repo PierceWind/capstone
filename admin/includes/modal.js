@@ -1,4 +1,5 @@
- // Get the modal
+ //  DID NOT USE THIS CODE 
+ //Get the modal
  var modal = document.getElementById("addUserModal");
 
  // Get the button that opens the modal

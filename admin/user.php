@@ -11,9 +11,32 @@
         unset($_SESSION['acc_name']);
         header('location: ../login/log.php');
     }
-    require('server.php');
-    include('includes/delete.php');
-    include('includes/errors.php');
+    include('server.php');
+?> 
+<?php
+//DELETE RECORD
+    if (isset($_POST['delete_rec'])) {
+        $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
+
+        $query = "DELETE FROM account WHERE acc_id='$id'";
+        $query_run = mysqli_query($conn, $query);
+
+        if ($query_run) {
+            $query1 = "DELETE FROM acc_info WHERE acc_id='$id'";
+            $query_run1 = mysqli_query($conn, $query1);
+
+            if ($query_run1) {
+                mysqli_rollback($conn);
+                echo '<script>alert("You successfully deleted a Record ' . $id . '");</script>';
+            } else {
+                echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
+            }
+        } else {
+            mysqli_rollback($conn);
+            echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +97,7 @@
                     </a></li>
                 </ul>
             </nav>
-
+        
             <section class="view" id="view">
                 <div class="view-list"> <br>
                     <h1 style="text-align: center;">Manage User Record</h1>  <br>       
@@ -84,7 +107,7 @@
                                     <button id="addBtn" class="addrec"><img class="button" src = "../files/icons/add4.png">ADD RECORD</button>
                                 </tr>
                                 <tr>
-                                    <th>ID</th>
+                                    <th style="text-align:center;">ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Birthday</th>
@@ -94,9 +117,12 @@
                             </thead>
                             <tbody> <br>
                                 <?php 
-                                    $query = "SELECT DISTINCT * 
-                                    FROM accinfo
-                                    ORDER BY acc_id DESC";
+                                    $query = "SELECT DISTINCT account.acc_id, account.acc_name, account.acc_pass, account.acc_type, accinfo.fname, accinfo.mname, accinfo.lname, accinfo.email, accinfo.DOB, accinfo.date_modified, accinfo.date_created
+                                    FROM account
+                                    INNER JOIN accinfo
+                                    ON account.acc_id = accinfo.acc_id
+                                    WHERE account.acc_type NOT IN ('admin')
+                                    ORDER BY account.acc_id ASC";
                                     $query_run = mysqli_query($conn, $query);
                                     $space = " ";
 
@@ -112,10 +138,11 @@
                                         echo "<td>".$row['date_modified']."</td>";
                                         ?>
                                         <td> 
-                                            <a href="edit.php?stud_id=<?= $row['stud_id']; ?>" style="background-color: blue;" class="button"><img src="../files/icons/edit.png" alt="edit"> </button></a>   
+                                            <button onclick="editModal('<?php echo $row['acc_id']?>', '<?php echo $row['acc_name']?>', '<?php echo $row['acc_type']?>', '<?php echo $row['acc_pass']?>', '<?php echo $row['fname']?>', '<?php echo $row['mname']?>', '<?php echo $row['lname']?>','<?php echo $row['email']?>', '<?php echo $row['DOB']?>', '<?php echo $row['date_modified']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../files/icons/edit.png" alt="edit"></button>
                                             <form action="" method="POST" class="d-inline">
                                                 <button type="submit" value="<?=$row['acc_id'];?>" class="button" name="delete_rec"><img src="../files/icons/delete.png" alt="delete"></a>   
-                                        </form>                                     
+                                            </form>
+                                        </td>
                                     </tr>
                                     <?php
                                         }
@@ -130,8 +157,12 @@
                 </div>
             </section>
         </div>
-        <?php include ('includes/addUser.php');?>
-        <script> 
+        
+        <?php include ('includes/addUser.php');
+              include ('includes/editUser.php');?>
+        
+        <script type="text/javascript"> 
+            //add re
             var modal = document.getElementById("addUserModal");
             var btn = document.getElementById("addBtn");
             var span = document.getElementsByClassName("close")[0];
@@ -146,6 +177,55 @@
                     modal.style.display = "none";
                 }
             }
+
+            //edit 
+            function editModal(acc_id, acc_name, acc_type, acc_pass, fname, mname, lname, email, DOB, date_modified) {
+                var modal1 = document.getElementById("editUserModal");
+                var span1 = document.getElementsByClassName("close")[1];
+                modal1.style.display = "block";
+                span1.onclick = function() {
+                    modal1.style.display = "none";
+                }
+                document.getElementById('editEmp_id').value = acc_id;
+                document.getElementById('editEmp_fname').value = fname;
+                document.getElementById('editEmp_mname').value = mname;
+                document.getElementById('editEmp_lname').value = lname;
+                document.getElementById('editEmail').value = email;
+                document.getElementById('editEmp_DOB').value = DOB;
+
+                // Set the value of the password fields
+                document.getElementById('editUsername').value = acc_name;
+                document.getElementById('editEmp_type').value = acc_type;
+
+                // Password matching validation
+                var password1 ;
+                var password2 ;
+
+                password1.addEventListener('input', function () {
+                    if (password1.value !== password2.value) {
+                        password2.setCustomValidity("Passwords do not match.");
+                    } else {
+                        password2.setCustomValidity('');
+                    }
+                });
+
+                password2.addEventListener('input', function () {
+                    if (password1.value !== password2.value) {
+                        password2.setCustomValidity("Passwords do not match.");
+                    } else {
+                        password2.setCustomValidity('');
+                    }
+                });
+
+                window.onclick = function() {
+                    if (event.target == modal1) {
+                        modal1.style.display = "none";
+                    }
+                }
+            }
+            
         </script>
+
+        
     </body>
 </html>

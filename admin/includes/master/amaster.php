@@ -2,7 +2,7 @@
 
 //VIEW 
 //fetch-data in program table 
-$query ="SELECT DISTINCT acc_type FROM account";
+$query ="SELECT DISTINCT acc_type FROM account WHERE acc_type NOT IN ('admin')";
 $result = $conn->query($query);
 if($result->num_rows> 0){
     $options= mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -25,7 +25,7 @@ $password_2 = "";
 $errors = array();
 
 //process
-//ADD STUDENT 
+//ADD RECORD 
 if ((isset($_POST['add_emp']))) {
     //receive all input values from the form
     $emp_id = mysqli_real_escape_string($conn, $_POST['emp_id']);
@@ -75,11 +75,12 @@ if ((isset($_POST['add_emp']))) {
         }
         
     } else {
+        mysqli_rollback($conn);
         ?> <script>
                 alert("Failed to add record");
         </script><?php
     }
 }
-
+mysqli_close($conn);
 
 ?>
