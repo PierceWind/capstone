@@ -28,12 +28,15 @@ $errors = array();
         $emp_type = mysqli_real_escape_string($conn, $_POST['acc_type']);
         $email = mysqli_real_escape_string($conn, $_POST['email']);
         $username = mysqli_real_escape_string($conn, $_POST['acc_name']);
-        $password_1 = mysqli_real_escape_string($conn, $_POST['password_1']);
-        $password_2 = mysqli_real_escape_string($conn, $_POST['password_2']);
+        $password_1 = mysqli_real_escape_string($conn, $_POST['Password_1']);
+        $password_2 = mysqli_real_escape_string($conn, $_POST['Password_2']);
         
         //validate if both entered password match
         if ($password_1 != $password_2) {
-            array_push($errors, "Password does not match");
+            ?> <script>
+                    alert("Password does not match"); 
+                </script> <?php
+            //array_push($errors, "Password does not match");
         }
 
         //check if record exists 
