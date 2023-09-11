@@ -18,11 +18,11 @@
     if (isset($_POST['delete_rec'])) {
         $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
 
-        $query = "DELETE FROM account WHERE acc_id='$id'";
+        $query = "DELETE FROM accinfo WHERE acc_id='$id'";
         $query_run = mysqli_query($conn, $query);
 
         if ($query_run) {
-            $query1 = "DELETE FROM acc_info WHERE acc_id='$id'";
+            $query1 = "DELETE FROM account WHERE acc_id='$id'";
             $query_run1 = mysqli_query($conn, $query1);
 
             if ($query_run1) {

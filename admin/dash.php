@@ -69,7 +69,7 @@
                 </ul>
             </nav>
 
-            <section class="main">
+            <!--<section class="main">
                <div class="main-top">
                     <h2> Admin Dashboard</h2>
                </div>
@@ -204,7 +204,7 @@
                             ?> 
                     </div>
                 </div>   
-            </section>
+            </section>-->
         </div>
     </body>
 </html>
