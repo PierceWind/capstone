@@ -41,12 +41,12 @@
                     </a></li> <br>
                     <hr style="border: 1px solid #700202;">
                     <br>
-                    <li><a href="dash.php">
+                    <li><a href="">
                         <img src="../files/icons/dashboard.png" alt="" class="fas">
                         <span class="nav-item">Dashboard</span>
                     </a></li>
                     <li>
-                        <a href="user.php">
+                        <a href="users/user.php">
                         <img src="../files/icons/user.png" alt="" class="fas">
                         <span class="nav-item">Manage Users</span>
                         </a>

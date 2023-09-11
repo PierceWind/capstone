@@ -56,7 +56,7 @@
                         <label for="empname">Employee Name</label><br>
                         <div class = "group">
                             <input type="text" id="editEmp_fname" name="fname" placeholder="First Name" value="<?php echo $emp_fname;?>" required>
-                            <input type="text" id="editEmp_mname" name="mname" placeholder="Middle Name (Leave it blank if NONE)" value="<?php echo $emp_mname;?>" required>
+                            <input type="text" id="editEmp_mname" name="mname" placeholder="Middle Name (Leave it blank if NONE)" value="<?php echo $emp_mname;?>" >
                             <input type="text" id="editEmp_lname" name="lname" placeholder="Last Name" value="<?php echo $emp_lname;?>" required><br><br>
                         </div>  
                         <div class = "group">

@@ -55,44 +55,44 @@
                     <br>
                     <li>
                         <a href="../index.php" class="logo">
-                            <img src="../files/icons/tdf.png" alt=""> 
+                            <img src="../../files/icons/tdf.png" alt=""> 
                             <span class="nav-title">To Die For<br>FOODS</span>
                         </a>
                     </li> <br>
                     <li>
                         <a href="">
-                            <img src="../files/icons/admin.png" alt="" class="fas"> 
+                            <img src="../../files/icons/admin.png" alt="" class="fas"> 
                             <span class="nav-item">Administrator</span>
                         </a>
                     </li> <br>
                     <hr style="border: 1px solid #700202;">
                     <br>
                     <li>   
-                        <a href="dash.php">
-                            <img src="../files/icons/dashboard.png" alt="" class="fas">
+                        <a href="../dash.php">
+                            <img src="../../files/icons/dashboard.png" alt="" class="fas">
                             <span class="nav-item">Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a href="user.php">
-                            <img src="../files/icons/user.png" alt="" class="fas">
+                            <img src="../../files/icons/user.png" alt="" class="fas">
                             <span class="nav-item">Manage Users</span>
                         </a>
                     </li>
                     <li>
                         <a href="menu.php">
-                            <img src="../files/icons/menu.png" alt="" class="fas">
+                            <img src="../../files/icons/menu.png" alt="" class="fas">
                             <span class="nav-item">Manage Menu</span>
                         </a>
                     </li>
                     <li>
                         <a href="stock.php">
-                            <img src="../files/icons/inventory.png" alt="" class="fas">
+                            <img src="../../files/icons/inventory.png" alt="" class="fas">
                             <span class="nav-item">Manage Inventory</span>
                         </a>
                     </li>
                     <li><a href="dash.php?logout='1'" class="logout">
-                        <img src="../files/icons/logout.png" alt="" class="fas">
+                        <img src="../../files/icons/logout.png" alt="" class="fas">
                         <span class="nav-item">Sign Out</span>
                     </a></li>
                 </ul>
@@ -104,7 +104,7 @@
                         <table class="table">
                             <thead>
                                 <tr class="head">
-                                    <button id="addBtn" class="addrec"><img class="button" src = "../files/icons/add4.png">ADD RECORD</button>
+                                    <button id="addBtn" class="addrec"><img class="button" src = "../../files/icons/add4.png">ADD RECORD</button>
                                 </tr>
                                 <tr>
                                     <th style="text-align:center;">ID</th>
@@ -138,9 +138,9 @@
                                         echo "<td>".$row['date_modified']."</td>";
                                         ?>
                                         <td> 
-                                            <button onclick="editModal('<?php echo $row['acc_id']?>', '<?php echo $row['acc_name']?>', '<?php echo $row['acc_type']?>', '<?php echo $row['acc_pass']?>', '<?php echo $row['fname']?>', '<?php echo $row['mname']?>', '<?php echo $row['lname']?>','<?php echo $row['email']?>', '<?php echo $row['DOB']?>', '<?php echo $row['date_modified']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../files/icons/edit.png" alt="edit"></button>
+                                            <button onclick="editModal('<?php echo $row['acc_id']?>', '<?php echo $row['acc_name']?>', '<?php echo $row['acc_type']?>', '<?php echo $row['acc_pass']?>', '<?php echo $row['fname']?>', '<?php echo $row['mname']?>', '<?php echo $row['lname']?>','<?php echo $row['email']?>', '<?php echo $row['DOB']?>', '<?php echo $row['date_modified']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
                                             <form action="" method="POST" class="d-inline">
-                                                <button type="submit" value="<?=$row['acc_id'];?>" class="button" name="delete_rec"><img src="../files/icons/delete.png" alt="delete"></a>   
+                                                <button type="submit" value="<?=$row['acc_id'];?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
                                             </form>
                                         </td>
                                     </tr>
