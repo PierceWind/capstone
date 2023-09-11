@@ -22,6 +22,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard</title>
+        <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
@@ -52,7 +53,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="menu.php">
+                        <a href="menu/menu.php">
                         <img src="../files/icons/menu.png" alt="" class="fas">
                         <span class="nav-item">Manage Menu</span>
                         </a>

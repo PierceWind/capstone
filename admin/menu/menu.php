@@ -11,7 +11,7 @@
         unset($_SESSION['acc_name']);
         header('location:../../login/log.php');
     }
-    include('server.php');
+    include('../users/server.php');
 ?> 
 <?php
 //DELETE RECORD
@@ -69,19 +69,19 @@
                     <hr style="border: 1px solid #700202;">
                     <br>
                     <li>   
-                        <a href="../dash.php">
+                        <a href="../../dash.php">
                             <img src="../../files/icons/dashboard.png" alt="" class="fas">
                             <span class="nav-item">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="user.php">
+                        <a href="../users/user.php">
                             <img src="../../files/icons/user.png" alt="" class="fas">
                             <span class="nav-item">Manage Users</span>
                         </a>
                     </li>
                     <li>
-                        <a href="../menu/menu.php">
+                        <a href="">
                             <img src="../../files/icons/menu.png" alt="" class="fas">
                             <span class="nav-item">Manage Menu</span>
                         </a>
@@ -101,7 +101,7 @@
         
             <section class="view" id="view">
                 <div class="view-list"> <br>
-                    <h1 style="text-align: center;">Manage User Record</h1>  <br>       
+                    <h1 style="text-align: center;">Manage Menu Record</h1>  <br>       
                         <table class="table">
                             <thead>
                                 <tr class="head">
@@ -109,21 +109,19 @@
                                 </tr>
                                 <tr>
                                     <th style="text-align:center;">ID</th>
+                                    <th>Image</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Birthday</th>
-                                    <th>Date Modified</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
                                     <th style="text-align:center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody> <br>
                                 <?php 
-                                    $query = "SELECT DISTINCT account.acc_id, account.acc_name, account.acc_pass, account.acc_type, accinfo.fname, accinfo.mname, accinfo.lname, accinfo.email, accinfo.DOB, accinfo.date_modified, accinfo.date_created
-                                    FROM account
-                                    INNER JOIN accinfo
-                                    ON account.acc_id = accinfo.acc_id
-                                    WHERE account.acc_type NOT IN ('admin')
-                                    ORDER BY account.acc_id ASC";
+                                    $query = "SELECT DISTINCT * 
+                                    FROM product
+                                    ORDER BY prodId ASC";
                                     $query_run = mysqli_query($conn, $query);
                                     $space = " ";
 
@@ -132,16 +130,19 @@
                                 ?>
                                     <tr>
                                         <?php 
-                                        echo "<td>".$row['acc_id']."</td>";
-                                        echo "<td>".$row['fname'], $space, $row['mname'], $space, $row['lname']."</td>";
-                                        echo "<td>".$row['email']."</td>";
-                                        echo "<td>".$row['DOB']."</td>";
-                                        echo "<td>".$row['date_modified']."</td>";
+                                        echo "<td>".$row['prodID']."</td>";
+                                        echo "<td>".$row['prodImg']."</td>";
+                                        echo "<td>".$row['prodName']."</td>";
+                                        echo "<td>".$row['prodDescription']."</td>";
+                                        echo "<td>".$row['prodPrice']."</td>";
+                                        echo "<td>".$row['prodCategory']."</td>";
+                                        echo "<td>".$row['dateModified']."</td>";
+                                        echo "<td>".$row['dateCreated']."</td>";
                                         ?>
                                         <td> 
-                                            <button onclick="editModal('<?php echo $row['acc_id']?>', '<?php echo $row['acc_name']?>', '<?php echo $row['acc_type']?>', '<?php echo $row['acc_pass']?>', '<?php echo $row['fname']?>', '<?php echo $row['mname']?>', '<?php echo $row['lname']?>','<?php echo $row['email']?>', '<?php echo $row['DOB']?>', '<?php echo $row['date_modified']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
+                                            <button onclick="editModal('<?php echo $row['prodId']?>', '<?php echo $row['prodImg']?>', '<?php echo $row['prodName']?>', '<?php echo $row['prodDescription']?>', '<?php echo $row['prodPrice']?>', '<?php echo $row['prodCategory']?>', '<?php echo $row['dateModified']?>','<?php echo $row['dateCreated']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
                                             <form action="" method="POST" class="d-inline">
-                                                <button type="submit" value="<?=$row['acc_id'];?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
+                                                <button type="submit" value="<?=$row['prodId'];?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
                                             </form>
                                         </td>
                                     </tr>
@@ -159,12 +160,12 @@
             </section>
         </div>
         
-        <?php include ('includes/addUser.php');
-              include ('includes/editUser.php');?>
+        <?php include ('includes/addmenu.php');
+              include ('includes/editmenu.php');?>
         
         <script type="text/javascript"> 
             //add re
-            var modal = document.getElementById("addUserModal");
+            var modal = document.getElementById("addModal");
             var btn = document.getElementById("addBtn");
             var span = document.getElementsByClassName("close")[0];
             btn.onclick = function() {
@@ -227,6 +228,5 @@
             
         </script>
 
-        
     </body>
 </html>

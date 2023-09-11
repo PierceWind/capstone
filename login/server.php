@@ -45,7 +45,7 @@ if (isset($_POST['login_user'])) {
                     header('location: ../admin/dash.php');
                 }
                 mysqli_query($db,"delete from loginlogs where IpAddress='$ip_address' AND datelog=current_date()");
-                echo "<script>window.location.href='dash.php';</script>";
+                echo "<script>window.location.href='../admin/dash.php';</script>";
             } else {
                 $total_count++;
                 $rem_attm=3-$total_count;
