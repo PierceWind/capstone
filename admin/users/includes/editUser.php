@@ -10,7 +10,7 @@
         unset($_SESSION['acc_name']);
         header('location: ../login/log.php');
     }
-    require('server.php');
+    require('../server.php');
     include ('master/emaster.php');
     include('includes/errors.php');
 ?>
@@ -22,7 +22,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Edit User</title>
-        <link rel="stylesheet" type="text/css" href="../style.css">
+        <link rel="stylesheet" type="text/css" href="../../style.css">
     </head>
     <body>
     <div id="editUserModal" class="modal">

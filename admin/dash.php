@@ -30,7 +30,7 @@
                 <ul>
                     <br>
                     <li>
-                        <a href="../index.php" class="logo">
+                        <a href="dash.php" class="logo">
                             <img src="../files/icons/tdf.png" alt=""> 
                             <span class="nav-title">To Die For<br>FOODS</span>
                         </a>
@@ -41,7 +41,7 @@
                     </a></li> <br>
                     <hr style="border: 1px solid #700202;">
                     <br>
-                    <li><a href="">
+                    <li><a href="dash.php">
                         <img src="../files/icons/dashboard.png" alt="" class="fas">
                         <span class="nav-item">Dashboard</span>
                     </a></li>
