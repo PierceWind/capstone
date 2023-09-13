@@ -4,7 +4,7 @@
 
     if (!isset($_SESSION['acc_name'])) {
         $_SESSION['msg'] = "You must log in first";
-        header('location: ../login/log.php');
+        header('location:../../login/log.php');
     }
     if (isset($_GET['logout'])) {
         session_destroy();
@@ -18,23 +18,16 @@
     if (isset($_POST['delete_rec'])) {
         $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
 
-        $query = "DELETE FROM accinfo WHERE acc_id='$id'";
+        $query = "DELETE FROM product WHERE prodId='$id'";
         $query_run = mysqli_query($conn, $query);
 
         if ($query_run) {
-            $query1 = "DELETE FROM account WHERE acc_id='$id'";
-            $query_run1 = mysqli_query($conn, $query1);
-
-            if ($query_run1) {
-                mysqli_rollback($conn);
-                echo '<script>alert("You successfully deleted a Record ' . $id . '");</script>';
-            } else {
-                echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
-            }
-        } else {
             mysqli_rollback($conn);
+            echo '<script>alert("You successfully deleted a Record ' . $id . '");</script>';
+        } else {
             echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
         }
+        
     }
 
 ?>
@@ -69,7 +62,7 @@
                     <hr style="border: 1px solid #700202;">
                     <br>
                     <li>   
-                        <a href="../../dash.php">
+                        <a href="../dash.php">
                             <img src="../../files/icons/dashboard.png" alt="" class="fas">
                             <span class="nav-item">Dashboard</span>
                         </a>
@@ -130,14 +123,12 @@
                                 ?>
                                     <tr>
                                         <?php 
-                                        echo "<td>".$row['prodID']."</td>";
+                                        echo "<td>".$row['prodId']."</td>";
                                         echo "<td>".$row['prodImg']."</td>";
                                         echo "<td>".$row['prodName']."</td>";
                                         echo "<td>".$row['prodDescription']."</td>";
                                         echo "<td>".$row['prodPrice']."</td>";
                                         echo "<td>".$row['prodCategory']."</td>";
-                                        echo "<td>".$row['dateModified']."</td>";
-                                        echo "<td>".$row['dateCreated']."</td>";
                                         ?>
                                         <td> 
                                             <button onclick="editModal('<?php echo $row['prodId']?>', '<?php echo $row['prodImg']?>', '<?php echo $row['prodName']?>', '<?php echo $row['prodDescription']?>', '<?php echo $row['prodPrice']?>', '<?php echo $row['prodCategory']?>', '<?php echo $row['dateModified']?>','<?php echo $row['dateCreated']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>

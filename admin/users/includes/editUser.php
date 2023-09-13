@@ -12,7 +12,7 @@
     }
     require('../server.php');
     include ('master/emaster.php');
-    include('includes/errors.php');
+    include('master/errors.php');
 ?>
 
 <!DOCTYPE html>
