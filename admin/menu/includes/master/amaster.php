@@ -1,6 +1,4 @@
 <?php
-
-
 // Initialize variables to store form data
 $prodId = "";
 $prodName = "";
@@ -12,27 +10,20 @@ $prodImgName = "";
 $prodImgSize = "";
 $prodImgPath = "";
 $prodImgExtension = "";
-$errors=array();
-
-
-function resizeImage($resourceType, $image_width, $image_height) {
-    $resizeWidth = 500;
-    $resizeHeight = 500;
-    $imageLayer = imagecreatetruecolor($resizeWidth, $resizeHeight);
-    imagecopyresampled($imageLayer, $resourceType, 0,0,0,0, $resizeWidth, $resizeHeight, $image_width, $image_height);
-    return $imageLayer;
-}
-            
+$errors = array();
 
 // Function to handle image upload
 function uploadImage()
 {
+    global $conn; // Access the database connection object within the function
+    global $prodId; // Access the product ID within the function
+
     $imageProcess = 0;
     if (is_array($_FILES)) {
         $fileName = $_FILES['prod_img']['tmp_name'];
         $sourceProperties = getimagesize($fileName);
         $resizeFileName = time();
-        $uploadPath = '../uploads/';
+        $uploadPath = 'C:/xampp/htdocs/capstone/admin/menu/includes/uploads/';
         $fileExt = pathinfo($_FILES['prod_img']['name'], PATHINFO_EXTENSION);
         $uploadImageType = $sourceProperties[2];
         $sourceImageWidth = $sourceProperties[0];
@@ -41,35 +32,34 @@ function uploadImage()
             case IMAGETYPE_JPEG:
                 $resourceType = imagecreatefromjpeg($fileName);
                 $imageLayer = resizeImage($resourceType, $sourceImageWidth, $sourceImageHeight);
-                imagejpeg($imageLayer, $uploadPath.$resizeFileName.'.'.$fileExt);
+                imagejpeg($imageLayer, $uploadPath . $resizeFileName . '.' . $fileExt);
                 break;
 
             case IMAGETYPE_PNG:
                 $resourceType = imagecreatefrompng($fileName);
                 $imageLayer = resizeImage($resourceType, $sourceImageWidth, $sourceImageHeight);
-                imagepng($imageLayer, $uploadPath.$resizeFileName.'.'.$fileExt);
+                imagepng($imageLayer, $uploadPath . $resizeFileName . '.' . $fileExt);
                 break;
-            
+
             default:
-                $imageProcess = 0; 
-                break; 
+                $imageProcess = 0;
+                break;
         }
         $imageProcess = 1;
-        $file_name = ($uploadPath. $resizeFileName.".".$fileExt);
+        $file_name = ($uploadPath . $resizeFileName . "." . $fileExt);
     }
     if ($imageProcess == 1) {
-        $insert = $conn->query("INSERT into prodimage (productId, productImage, dateCreated) VALUES ('$stud_id', '$file_name', NOW())");
+        $insert = $conn->query("INSERT into prodimage (productId, productImage, dateCreated) VALUES ('$prodId', '$file_name', NOW())");
         if ($insert) {
-            $done = move_uploaded_file($fileName, $uploadPath. $resizeFileName.".".$fileExt);
+            $done = move_uploaded_file($fileName, $uploadPath . $resizeFileName . "." . $fileExt);
             if ($done) {
                 ?>
                 <script>
-                    alert("Image has been successfully resize and uploaded");
+                    alert("Image has been successfully resized and uploaded");
                 </script>
                 <?php
             }
         }
-        
     } else {
         ?>
         <script>
@@ -81,6 +71,9 @@ function uploadImage()
 }
 
 if (isset($_POST['add_prod'])) {
+    // Include the server.php file for database connection
+    include('../server.php');
+
     // Get form data
     $prodId = mysqli_real_escape_string($conn, $_POST['prod_id']);
     $prodName = mysqli_real_escape_string($conn, $_POST['prod_name']);
