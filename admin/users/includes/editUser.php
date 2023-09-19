@@ -72,11 +72,11 @@
                         <div class = "group">
                             <div class = "card"> 
                                 <label for="password1">Enter New Password</label><br> 
-                                <input type="password" id="editPassword_1" name="Password_1" placeholder="" value="<?php echo $password_1;?>" ><br>
+                                <input type="password" id="editPassword_1" name="Password_1" placeholder="" value="<?php echo $password_1;?>" required><br>
                             </div>
                             <div class = "card"> 
                                 <label for="password2">Confirm New Password</label><br> 
-                                <input type="password" id="editPassword_2" name="Password_2" placeholder="" value="<?php echo $password_2;?>" ><br>
+                                <input type="password" id="editPassword_2" name="Password_2" placeholder="" value="<?php echo $password_2;?>" required><br>
                             </div>
                         </div>
                         <br><br>
@@ -85,5 +85,12 @@
                 </div>
             </div>
         </div>
+        <script>
+            // JavaScript function to reload the user.php page
+            function reloadUserPage() {
+                // Reload the "user.php" page
+                window.location.href = "C:/xampp/htdocs/capstone/admin/users/user.php";
+            }
+        </script>
     </body>
 </html>

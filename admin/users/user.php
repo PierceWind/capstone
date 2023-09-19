@@ -14,29 +14,27 @@
     include('server.php');
 ?> 
 <?php
-//DELETE RECORD
-    if (isset($_POST['delete_rec'])) {
-        $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
+// DELETE RECORD
+if (isset($_POST['delete_rec'])) {
+    $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
 
-        $query = "DELETE FROM accinfo WHERE acc_id='$id'";
-        $query_run = mysqli_query($conn, $query);
+    $query = "DELETE FROM accinfo WHERE acc_id='$id'";
+    $query_run = mysqli_query($conn, $query);
 
-        if ($query_run) {
-            $query1 = "DELETE FROM account WHERE acc_id='$id'";
-            $query_run1 = mysqli_query($conn, $query1);
+    if ($query_run) {
+        $query1 = "DELETE FROM account WHERE acc_id='$id'";
+        $query_run1 = mysqli_query($conn, $query1);
 
-            if ($query_run1) {
-                mysqli_rollback($conn);
-                echo '<script>alert("You successfully deleted a Record ' . $id . '");</script>';
-            } else {
-                echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
-            }
+        if ($query_run1) {
+            echo '<script>alert("You successfully deleted a Record ' . $id . '");</script>';
+            echo '<script>reloadUserPage();</script>'; // Reload the user.php page
         } else {
-            mysqli_rollback($conn);
             echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
         }
+    } else {
+        echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
     }
-
+}
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +43,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
+        <title>Admin Dashboard</title>
         <link rel="icon" type="image/x-icon" href="../../files/icons/tdf.png">
         <link rel="stylesheet" type="text/css" href="../style.css">
     </head>
@@ -87,7 +85,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="stock.php">
+                        <a href="../inventory/stock.php">
                             <img src="../../files/icons/inventory.png" alt="" class="fas">
                             <span class="nav-item">Manage Inventory</span>
                         </a>
@@ -197,6 +195,8 @@
                 // Set the value of the password fields
                 document.getElementById('editUsername').value = acc_name;
                 document.getElementById('editEmp_type').value = acc_type;
+                document.getElementById('editPassword_1').value = acc_pass;
+                document.getElementById('editPassword_2').value = acc_pass;
 
                 // Password matching validation
                 var password1 ;

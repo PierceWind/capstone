@@ -80,7 +80,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="stock.php">
+                        <a href="../inventory/stock.php">
                             <img src="../../files/icons/inventory.png" alt="" class="fas">
                             <span class="nav-item">Manage Inventory</span>
                         </a>

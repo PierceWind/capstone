@@ -1,20 +1,37 @@
 <?php 
-    sleep(1);
+    sleep(0);
     session_start();
 
     if (!isset($_SESSION['acc_name'])) {
         $_SESSION['msg'] = "You must log in first";
-        header('location: ../login/log.php');
+        header('location:../login/log.php');
     }
     if (isset($_GET['logout'])) {
         session_destroy();
         unset($_SESSION['acc_name']);
-        header('location: ../login/log.php');
+        header('location:../login/log.php');
+    }
+    include('server.php');
+?> 
+<?php
+//DELETE RECORD
+    if (isset($_POST['delete_rec'])) {
+        $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
+
+        $query = "DELETE FROM product WHERE prodId='$id'";
+        $query_run = mysqli_query($conn, $query);
+
+        if ($query_run) {
+            mysqli_rollback($conn);
+            echo '<script>alert("You successfully deleted a Record ' . $id . '");</script>';
+        } else {
+            echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
+        }
+        
     }
 
-    require('server.php');
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -31,181 +48,176 @@
                 <ul>
                     <br>
                     <li>
-                        <a href="dash.php" class="logo">
+                        <a href="../loadAndLand/LaunchingPage.html" class="logo">
                             <img src="../files/icons/tdf.png" alt=""> 
                             <span class="nav-title">To Die For<br>FOODS</span>
                         </a>
                     </li> <br>
-                    <li><a href="">
-                        <img src="../files/icons/admin.png" alt="" class="fas"> 
-                        <span class="nav-item">Administrator</span>
-                    </a></li> <br>
+                    <li>
+                        <a href="">
+                            <img src="../files/icons/admin.png" alt="" class="fas"> 
+                            <span class="nav-item">Administrator</span>
+                        </a>
+                    </li> <br>
                     <hr style="border: 1px solid #700202;">
                     <br>
-                    <li><a href="dash.php">
-                        <img src="../files/icons/dashboard.png" alt="" class="fas">
-                        <span class="nav-item">Dashboard</span>
-                    </a></li>
+                    <li>   
+                        <a href="">
+                            <img src="../files/icons/dashboard.png" alt="" class="fas">
+                            <span class="nav-item">Dashboard</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="users/user.php">
-                        <img src="../files/icons/user.png" alt="" class="fas">
-                        <span class="nav-item">Manage Users</span>
+                            <img src="../files/icons/user.png" alt="" class="fas">
+                            <span class="nav-item">Manage Users</span>
                         </a>
                     </li>
                     <li>
                         <a href="menu/menu.php">
-                        <img src="../files/icons/menu.png" alt="" class="fas">
-                        <span class="nav-item">Manage Menu</span>
+                            <img src="../files/icons/menu.png" alt="" class="fas">
+                            <span class="nav-item">Manage Menu</span>
                         </a>
                     </li>
                     <li>
-                        <a href="stock.php">
-                        <img src="../files/icons/inventory.png" alt="" class="fas">
-                        <span class="nav-item">Manage Inventory</span>
-                    </a></li>
+                        <a href="inventory/stock.php">
+                            <img src="../files/icons/inventory.png" alt="" class="fas">
+                            <span class="nav-item">Manage Inventory</span>
+                        </a>
+                    </li>
                     <li><a href="dash.php?logout='1'" class="logout">
                         <img src="../files/icons/logout.png" alt="" class="fas">
                         <span class="nav-item">Sign Out</span>
                     </a></li>
                 </ul>
             </nav>
+        
+            <section class="view" id="view">
+                <div class="view-list"> <br>
+                    <h1 style="text-align: center;">ADMIN DASHBOARD</h1>  <br>       
+                        <table class="table">
+                            <thead>
+                                <tr class="head">
+                                    <button id="addBtn" class="addrec"><img class="button" src = "../../files/icons/add4.png">ADD RECORD</button>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:center;">ID</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th style="text-align:center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody> <br>
+                                <?php 
+                                    $query = "SELECT DISTINCT * 
+                                    FROM product
+                                    ORDER BY prodId ASC";
+                                    $query_run = mysqli_query($conn, $query);
+                                    $space = " ";
 
-            <!--<section class="main">
-               <div class="main-top">
-                    <h2> Admin Dashboard</h2>
-               </div>
-               <div class="top-box">
-                <?php 
-                    $query3 = "SELECT DISTINCT (teacher_id) FROM teachers WHERE teacher_id <> 0";
-                    $result3 = mysqli_query($conn, $query3);
-                    $row3 = mysqli_num_rows($result3);
-
-                    $query2 = "SELECT DISTINCT(course_code) FROM course";
-                    $result2 = mysqli_query($conn, $query2);
-                    $row2 = mysqli_num_rows($result2);
-
-                    $query1 = "SELECT DISTINCT(stud_id) FROM students";
-                    $result1 = mysqli_query($conn, $query1);
-                    $row1 = mysqli_num_rows($result1);
-                ?>
-                    <div class="boxes">
-                        <span>Number of Students</span>  <br> <br>
-                        <b> <?php echo $row1; ?> Students</b> 
-                    </div>
-                    <div class="boxes">
-                        <span>Number of Classes</span>  <br> <br>
-                        <b> <?php echo $row2; ?> Classes</b> 
-                    </div>
-                    <div class="boxes">
-                        <span>Number of Teachers</span>  <br> <br>
-                        <b> <?php echo $row3; ?> Teachers</b>
-                    </div>
-                </div>   
-
-                <div class="graphcal">
-                    <div class="cal">
-                        <h3> Calendar</h3>
-                        <header>
-                        <p class="current-date"></p>
-                        <div class="icons">
-                            <i id="prev"class="fas fa-chevron-left"></i>
-                            <i id="next" class="fas fa-chevron-right"></i>
-                        </div>
-                        </header>
-                        <div class="calendar">
-                            <ul class="weeks">
-                                <li>Sun</li>
-                                <li>Mon</li>
-                                <li>Tue</li>
-                                <li>Wed</li>
-                                <li>Thur</li>
-                                <li>Fri</li>
-                                <li>Sat</li>
-                            </ul>
-                            <ul class="days"></ul>
-                        </div>
-                    </div>
-                    <div class="bar" id="bar-chart">
-                        <h3 style="margin-left: 35%;"> Student Status Report</h3>
-                         
-                            <?php
-                                //attempt select query execution
-                                try{
-                                    $sql="SELECT * FROM timein";//need palitan dbname
-                                    $result= $conn->query($sql);
-                                    if( mysqli_num_rows($result)> 0) {
-                                        $colname = array();
-                                        
-                                        while($row = mysqli_fetch_array($result)){ 
-                                            $colname[] = $row["status"];
+                                    if (mysqli_num_rows($query_run) > 0) {
+                                        foreach($query_run as $row) {
+                                ?>
+                                    <tr>
+                                        <?php 
+                                        echo "<td>".$row['prodId']."</td>";
+                                        echo "<td>".$row['prodImg']."</td>";
+                                        echo "<td>".$row['prodName']."</td>";
+                                        echo "<td>".$row['prodDescription']."</td>";
+                                        echo "<td>".$row['prodPrice']."</td>";
+                                        echo "<td>".$row['prodCategory']."</td>";
+                                        ?>
+                                        <td> 
+                                            <button onclick="editModal('<?php echo $row['prodId']?>', '<?php echo $row['prodImg']?>', '<?php echo $row['prodName']?>', '<?php echo $row['prodDescription']?>', '<?php echo $row['prodPrice']?>', '<?php echo $row['prodCategory']?>', '<?php echo $row['dateModified']?>','<?php echo $row['dateCreated']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
+                                            <form action="" method="POST" class="d-inline">
+                                                <button type="submit" value="<?=$row['prodId'];?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <?php
                                         }
-                                    unset($result);
-                                    }else{
-                                        echo"no record match";
                                     }
-                                }catch(PDOException $e){
-                                    die("error: cant execute". $e->getMessage());
-                                }
-                                //close connection
-                                unset($pdo);
-                            ?>
-                    </div>
+                                    else {
+                                        echo "<h5> No Record Found </h5>";
+                                    }
+                                ?>
+                                                        
+                            </tbody>
+                    </table>
                 </div>
-                <br>
-
-                
-                <div class="bottom-box">
-                    <?php   
-                        //$query = ("SELECT *
-                        //FROM ( SELECT status from timein )
-                        //PIVOT ( count(*) for status in ('Present', 'Absent', 'Tardy', 'Cutting'))");
-                    ?>
-
-                    <?php 
-                        $query3 = "SELECT DISTINCT (stud_id) FROM students WHERE  stud_id  NOT IN (SELECT stud_id FROM timein) LIMIT 5";
-                        $result3 = mysqli_query($conn, $query3);
-                        $row3 = mysqli_num_rows($result3);
-
-                        $query2 = "SELECT DISTINCT (stud_id) FROM timein WHERE status='Tardy' LIMIT 5";
-                        $result2 = mysqli_query($conn, $query2);
-                        $row2 = mysqli_num_rows($result2);
-
-                        $query1 = "SELECT DISTINCT (stud_id) FROM timein WHERE status='Cutting' LIMIT 5";
-                        $result1 = mysqli_query($conn, $query1);
-                        $row1 = mysqli_num_rows($result1);
-                    ?>
-                    <div class="boxes">
-                        <h3>TOP 5 Absentee</h3> <br>
-                            <?php if($row3 > 0) {
-                                while ($res = mysqli_fetch_array($result3)) {
-                                    echo "<li>".$res['stud_id']."</li>";
-                                    echo "<br>";
-                                }
-                            }
-                            ?>
-                    </div>
-                    <div class="boxes">
-                        <h3>TOP 5 Tardy Students </h3> <br>
-                            <?php if($row2 > 0) {
-                                while ($res = mysqli_fetch_array($result2)) {
-                                    echo "<li>".$res['stud_id']."</li>";
-                                    echo "<br>";
-                                }
-                            }
-                            ?>
-                    </div>
-                    <div class="boxes">
-                        <h3>TOP 5 Cutting Students</h3> <br>
-                            <?php if($row1 > 0) {
-                                while ($res = mysqli_fetch_array($result1)) {
-                                    echo "<li>".$res['stud_id']."</li>";
-                                    echo "<br>";
-                                }
-                            }
-                            ?> 
-                    </div>
-                </div>   
-            </section>-->
+            </section>
         </div>
+        
+        <?php include ('includes/addmenu.php');
+              include ('includes/editmenu.php');?>
+        
+        <script type="text/javascript"> 
+            //add re
+            var modal = document.getElementById("addModal");
+            var btn = document.getElementById("addBtn");
+            var span = document.getElementsByClassName("close")[0];
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            //edit 
+            function editModal(acc_id, acc_name, acc_type, acc_pass, fname, mname, lname, email, DOB, date_modified) {
+                var modal1 = document.getElementById("editUserModal");
+                var span1 = document.getElementsByClassName("close")[1];
+                modal1.style.display = "block";
+                span1.onclick = function() {
+                    modal1.style.display = "none";
+                }
+                document.getElementById('editEmp_id').value = acc_id;
+                document.getElementById('editEmp_fname').value = fname;
+                document.getElementById('editEmp_mname').value = mname;
+                document.getElementById('editEmp_lname').value = lname;
+                document.getElementById('editEmail').value = email;
+                document.getElementById('editEmp_DOB').value = DOB;
+
+                // Set the value of the password fields
+                document.getElementById('editUsername').value = acc_name;
+                document.getElementById('editEmp_type').value = acc_type;
+
+                // Password matching validation
+                var password1 ;
+                var password2 ;
+
+                password1.addEventListener('input', function () {
+                    if (password1.value !== password2.value) {
+                        password2.setCustomValidity("Passwords do not match.");
+                    } else {
+                        password2.setCustomValidity('');
+                    }
+                });
+
+                password2.addEventListener('input', function () {
+                    if (password1.value !== password2.value) {
+                        password2.setCustomValidity("Passwords do not match.");
+                    } else {
+                        password2.setCustomValidity('');
+                    }
+                });
+
+                window.onclick = function() {
+                    if (event.target == modal1) {
+                        modal1.style.display = "none";
+                    }
+                }
+            }
+            
+        </script>
+
     </body>
 </html>
