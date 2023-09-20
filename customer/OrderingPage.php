@@ -56,7 +56,7 @@
             <div class="main-header">
                 <h2 class="main-title">Best Seller</h2>
                 <div class="main-arrow">
-                    <ion-icon class="back" name="chevron-back-circle-outline"></ion-icon>
+                    <ion-icon class="back" src="></ion-icon>
                     <ion-icon class="next" name="chevron-forward-circle-outline"></ion-icon>
                 </div>
             </div>

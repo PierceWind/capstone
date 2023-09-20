@@ -305,7 +305,7 @@ body{
 }
 
 /*PESO SIGN SYMBOL ON PRICE*/
-.price span {
+.price .quantity {
   content: "\20B1";
 }
   
