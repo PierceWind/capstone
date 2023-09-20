@@ -29,11 +29,16 @@
             <div class="shopping">
                 <a href="#" class="cart"><ion-icon name="cart-outline"></ion-icon></a>
                 <span class="quantity">0</span>
+
+            <!--not sure if ilalagay or papalitan pa
+            < h5 class="text-info">Quantity: <input type="number" min="1" max="25" name="quantity" 
+            class="form-control" value="1" style="width: 60px;"> </h5>-->
             </div>
             <div class="list">
-                <!--added to cart order -->
+                <!--added to cart orders -->
             </div>
-        
+            
+            <!--CARD FOR PRODUCT ADDED TO CART-->
             <div class="card">
                 <h1>List of Orders</h1>
                 <ul class="listCard">
@@ -143,8 +148,31 @@
                 <!--PHP CODE HERE-->
                 <!--list of food section-->
                 <div class="main-detail">
+                    <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
+                    <?php 
+                        $result = $food->itemsList();
+                        $count=0;
+                        while ($item = $result->fetch_assoc()) { 
+                            if ($count == 0) {
+                                echo "<div class='main-detail'>";
+                        }
+                    }
+                    ?>
                     <h2 class="main-title">Choose Order</h2>
                     <div class="detail-wrapper">
+                        <div class="detail-card">
+                            <form method="post" action="cart.php?action=add&id=<?php echo $item["id"]; ?>">
+                                    <img class="detail-img" src="images/<?php echo $item["images"]; ?>">
+                                    <div class="detail-desc">
+                                        <div class="detail-name">
+                                        <h4><?php echo $item["name"]; ?></h4>
+                                        <p><?php echo $item["description"]; ?></p>
+                                        <p class="price"><span></span><?php echo $item["price"]; ?>/-</p>
+                                        </div>
+                                    </div>
+                                    <input type="submit" name="add" style="margin-top:5px;" class="btn btn-success" value="Add to Cart">
+                            </form>
+			            </div>
                         <div class="detail-card">
                             <img class="detail-img" src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
                             <div class="detail-desc">
@@ -154,50 +182,12 @@
                                 </div>
                             </div>
                         </div> 
-                        <div class="detail-card">
-                            <img class="detail-img" src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="detail-card">
-                            <img class="detail-img" src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                            </div>
-                        </div>  
-                        <div class="detail-card">
-                            <img class="detail-img" src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                            </div>
-                        </div>  
-                        <div class="detail-card">
-                            <img class="detail-img" src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                            </div>
-                        </div>  
+                        
                     </div>
                 </div>
-            </div> 
-         
-                   
+            </div>               
         </div>
     </div>   
- 
     
 </body>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
