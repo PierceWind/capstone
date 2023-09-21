@@ -15,11 +15,13 @@
     <div class="main">
         <!--Main navigation-->
         <div class="main-navbar">
-            <a href="dashboard.html" class="go-back-button">
-                <ion-icon name="arrow-back-outline"></ion-icon>
+            <a href="dashboard.html" >
+            <img class="go-back-button" src="files\icons\arrow.png" alt="">
+            
+
             </a>
 
-            <!--search bar-->
+            <!--search bar--> 
             <div class="search">
                 <input type="text" placeholder="What are you looking for?">
                 <button class="search-btn">Search</button>
@@ -32,7 +34,7 @@
 
             <!--not sure if ilalagay or papalitan pa
             < h5 class="text-info">Quantity: <input type="number" min="1" max="25" name="quantity" 
-            class="form-control" value="1" style="width: 60px;"> </h5>-->
+            class="form-control" value="1" > </h5>-->
             </div>
             <div class="list">
                 <!--added to cart orders -->
@@ -56,8 +58,8 @@
             <div class="main-header">
                 <h2 class="main-title">Best Seller</h2>
                 <div class="main-arrow">
-                    <ion-icon class="back" src="></ion-icon>
-                    <ion-icon class="next" name="chevron-forward-circle-outline"></ion-icon>
+                <i class='fas fa-chevron-left'></i>
+                <i class='fas fa-chevron-right'> </i>
                 </div>
             </div>
             <div class="highlight-wrapper">
@@ -190,8 +192,6 @@
     </div>   
     
 </body>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="app.js"></script>
 </html>

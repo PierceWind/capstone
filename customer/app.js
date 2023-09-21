@@ -104,8 +104,8 @@ function changeQuantity(key, quantity){
         delete listCards[key];
     }else{
         listCards[key].quantity = quantity;
-        listCards[key].price = quantity * products[key].price;
+        listCards[key].price = products[key].price;
     }
     reloadCard();
 }
- 
+
