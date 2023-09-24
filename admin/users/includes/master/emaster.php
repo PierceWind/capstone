@@ -39,14 +39,17 @@ if (isset($_POST['edit_emp'])) {
         $employee_check_query = "SELECT acc_pass FROM account WHERE acc_id = '$emp_id' LIMIT 1";
         $result = mysqli_query($conn, $employee_check_query);
         $account = mysqli_fetch_assoc($result);
-        $hashedpass = $account["acc_pass"];
+        $db_hashedpass = $account["acc_pass"];
 
-        if ($hashedpass == md5($password_1)) {
+        // Hash the inputted password with md5 for comparison
+        $inputted_pass_hash = md5($password_1);
+
+        if ($inputted_pass_hash == $db_hashedpass) {
             // If similar, update all fields except acc_pass
-            $password = md5($password_1); // password encryption before saving in the database
             $query = "UPDATE account SET 
                         acc_name = '$username',
-                        acc_type = '$emp_type'
+                        acc_type = '$emp_type', 
+                        date_modified = NOW()
                         WHERE acc_id = '$emp_id'";
             $done = mysqli_query($conn, $query);
 
@@ -56,7 +59,8 @@ if (isset($_POST['edit_emp'])) {
                             mname = '$emp_mname',
                             lname = '$emp_lname',
                             email = '$email',
-                            DOB = '$emp_DOB'
+                            DOB = '$emp_DOB', 
+                            date_modified = NOW()
                             WHERE acc_id = '$emp_id'";
                 mysqli_query($conn, $query1);
 
@@ -66,13 +70,14 @@ if (isset($_POST['edit_emp'])) {
                 </script>
                 <?php
             }
-        } else {
+        } else if ($inputted_pass_hash != $db_hashedpass) {
             // If not similar, update all fields
             $password = md5($password_1); // password encryption before saving in the database
             $query = "UPDATE account SET 
                         acc_name = '$username',
                         acc_pass = '$password',
-                        acc_type = '$emp_type'
+                        acc_type = '$emp_type', 
+                        date_modified = NOW()
                         WHERE acc_id = '$emp_id'";
             $done = mysqli_query($conn, $query);
 
@@ -82,16 +87,23 @@ if (isset($_POST['edit_emp'])) {
                             mname = '$emp_mname',
                             lname = '$emp_lname',
                             email = '$email',
-                            DOB = '$emp_DOB'
+                            DOB = '$emp_DOB', 
+                            date_modified = NOW()
                             WHERE acc_id = '$emp_id'";
                 mysqli_query($conn, $query1);
 
                 ?>
                 <script>
-                    alert("Record has been successfully updated");
+                    alert("Password and other information has been successfully updated");
                 </script>
                 <?php
             }
+        } else {
+            ?>
+                <script>
+                    alert("Record has not heen successfully updated. Try again later.");
+                </script>
+                <?php
         }
     }
 }

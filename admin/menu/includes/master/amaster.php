@@ -12,6 +12,7 @@ $prodImgPath = "";
 $prodImgExtension = "";
 $errors = array();
 
+include('../server.php');
 // Function to handle image upload
 function uploadImage()
 {
@@ -48,8 +49,9 @@ function uploadImage()
         $imageProcess = 1;
         $file_name = ($uploadPath . $resizeFileName . "." . $fileExt);
     }
+    
     if ($imageProcess == 1) {
-        $insert = $conn->query("INSERT into prodimage (productId, productImage, dateCreated) VALUES ('$prodId', '$file_name', NOW())");
+        $insert = $conn->query("INSERT into prodimage (productId, productImg, dateCreated) VALUES ('$prodId', '$file_name', NOW())");
         if ($insert) {
             $done = move_uploaded_file($fileName, $uploadPath . $resizeFileName . "." . $fileExt);
             if ($done) {
@@ -72,7 +74,6 @@ function uploadImage()
 
 if (isset($_POST['add_prod'])) {
     // Include the server.php file for database connection
-    include('../server.php');
 
     // Get form data
     $prodId = mysqli_real_escape_string($conn, $_POST['prod_id']);

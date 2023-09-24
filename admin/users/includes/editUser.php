@@ -50,7 +50,8 @@
                             </div>
                             <div class = "card"> 
                                 <label for="email">Email</label><br> 
-                                <input type="text" id="editEmail" name="email" placeholder="example@gmail.com" value="<?php echo $email;?>" required><br>
+                                <input type="text" id="
+                                Email" name="email" placeholder="example@gmail.com" value="<?php echo $email;?>" required><br>
                             </div>
                         </div>
                         <label for="empname">Employee Name</label><br>

@@ -22,13 +22,16 @@
         $query_run = mysqli_query($conn, $query);
 
         if ($query_run) {
-            mysqli_rollback($conn);
+            $query1 = "DELETE FROM prodimage WHERE productId='$id'";
+            $query_run1 = mysqli_query($conn, $query1);
             echo '<script>alert("You successfully deleted a Record ' . $id . '");</script>';
+            mysqli_rollback($conn);
         } else {
             echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
         }
         
     }
+    
 
 ?>
 
@@ -105,46 +108,52 @@
                                     <th>Image</th>
                                     <th>Name</th>
                                     <th>Description</th>
+                                    <th>Net Weight</th>
                                     <th>Price</th>
                                     <th>Category</th>
+                                    <th>Date Modefied</th>
                                     <th style="text-align:center;">Action</th>
                                 </tr>
                             </thead>
-                            <tbody> <br>
+                            <tbody>
                                 <?php 
-                                    $query = "SELECT DISTINCT * 
-                                    FROM product
-                                    ORDER BY prodId ASC";
+                                    $query = "SELECT DISTINCT product.prodId, prodimage.productImg, product.prodDescription, product.prodName, product.netWeight, product.prodPrice, product.prodCategory, product.dateModified
+                                                FROM product
+                                                INNER JOIN prodimage
+                                                ON prodimage.productId = product.prodId
+                                                ORDER BY prodId ASC";
+
                                     $query_run = mysqli_query($conn, $query);
                                     $space = " ";
+                                    $g = "grams"; 
+                                    $p = "₱"; 
 
                                     if (mysqli_num_rows($query_run) > 0) {
                                         foreach($query_run as $row) {
                                 ?>
-                                    <tr>
-                                        <?php 
-                                        echo "<td>".$row['prodId']."</td>";
-                                        echo "<td>".$row['prodImg']."</td>";
-                                        echo "<td>".$row['prodName']."</td>";
-                                        echo "<td>".$row['prodDescription']."</td>";
-                                        echo "<td>".$row['prodPrice']."</td>";
-                                        echo "<td>".$row['prodCategory']."</td>";
-                                        ?>
-                                        <td> 
-                                            <button onclick="editModal('<?php echo $row['prodId']?>', '<?php echo $row['prodImg']?>', '<?php echo $row['prodName']?>', '<?php echo $row['prodDescription']?>', '<?php echo $row['prodPrice']?>', '<?php echo $row['prodCategory']?>', '<?php echo $row['dateModified']?>','<?php echo $row['dateCreated']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
-                                            <form action="" method="POST" class="d-inline">
-                                                <button type="submit" value="<?=$row['prodId'];?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <?php
-                                        }
+                                <tr>
+                                    <td><?php echo $row['prodId']; ?></td>
+                                    <td><img src="<?php echo $row['productImg']; ?>" width="150px" height="100px"></td>
+                                    <td><?php echo $row['prodName']; ?></td>
+                                    <td><?php echo $row['prodDescription']; ?></td>
+                                    <td><?php echo $row['netWeight'], $space, $g; ?></td>
+                                    <td><?php echo $p, $space, $row['prodPrice']; ?></td>
+                                    <td><?php echo $row['prodCategory']; ?></td>
+                                    <td><?php echo $row['dateModified']; ?></td>
+                                    <td> 
+                                        <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
+                                        <form action="" method="POST" class="d-inline">
+                                            <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php
                                     }
-                                    else {
-                                        echo "<h5> No Record Found </h5>";
-                                    }
+                                }
+                                else {
+                                    echo "<h5> No Record Found </h5>";
+                                }
                                 ?>
-                                                        
                             </tbody>
                     </table>
                 </div>
@@ -172,43 +181,20 @@
             }
 
             //edit 
-            function editModal(acc_id, acc_name, acc_type, acc_pass, fname, mname, lname, email, DOB, date_modified) {
-                var modal1 = document.getElementById("editUserModal");
+            function editModal(prodId, productImg, prodName, prodDescription, prodPrice, netWeight,  prodCategory) {
+                var modal1 = document.getElementById("editMenuModal");
                 var span1 = document.getElementsByClassName("close")[1];
                 modal1.style.display = "block";
                 span1.onclick = function() {
                     modal1.style.display = "none";
                 }
-                document.getElementById('editEmp_id').value = acc_id;
-                document.getElementById('editEmp_fname').value = fname;
-                document.getElementById('editEmp_mname').value = mname;
-                document.getElementById('editEmp_lname').value = lname;
-                document.getElementById('editEmail').value = email;
-                document.getElementById('editEmp_DOB').value = DOB;
-
-                // Set the value of the password fields
-                document.getElementById('editUsername').value = acc_name;
-                document.getElementById('editEmp_type').value = acc_type;
-
-                // Password matching validation
-                var password1 ;
-                var password2 ;
-
-                password1.addEventListener('input', function () {
-                    if (password1.value !== password2.value) {
-                        password2.setCustomValidity("Passwords do not match.");
-                    } else {
-                        password2.setCustomValidity('');
-                    }
-                });
-
-                password2.addEventListener('input', function () {
-                    if (password1.value !== password2.value) {
-                        password2.setCustomValidity("Passwords do not match.");
-                    } else {
-                        password2.setCustomValidity('');
-                    }
-                });
+                document.getElementById('edit_prodId').value = prodId;
+                document.getElementById('edit_category').value = prodCategory;
+                document.getElementById('edit_prodName').value = prodName;
+                document.getElementById('edit_prodPrice').value = prodPrice;
+                document.getElementById('edit_netWeight').value = netWeight;
+                
+                document.getElementById('edit_prodDesc').value = prodDescription;
 
                 window.onclick = function() {
                     if (event.target == modal1) {

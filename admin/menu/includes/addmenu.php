@@ -21,20 +21,26 @@ $prodCategory = "";
 $netWeight = "";
 $prodPrice = "";
 $prodDesc = "";
+$prodImgName = "";
+$prodImgSize = "";
+$prodImgPath = "";
+$prodImgExtension = "";
 $errors = array();
 
+include('../server.php');
 // Function to handle image upload
 function uploadImage()
 {
-    global $conn; // Access the database connection object within the function
+    global $conn;
     global $prodId;
-
     $imageProcess = 0;
+
     if (is_array($_FILES)) {
         $fileName = $_FILES['prod_img']['tmp_name'];
         $sourceProperties = getimagesize($fileName);
         $resizeFileName = time();
         $uploadPath = 'C:/xampp/htdocs/capstone/admin/menu/includes/uploads/';
+        $path= "includes/uploads/"; 
         $fileExt = pathinfo($_FILES['prod_img']['name'], PATHINFO_EXTENSION);
         $uploadImageType = $sourceProperties[2];
         $sourceImageWidth = $sourceProperties[0];
@@ -57,30 +63,22 @@ function uploadImage()
                 break;
         }
         $imageProcess = 1;
-        $file_name = ($uploadPath . $resizeFileName . "." . $fileExt);
+        $file_name = ($path . $resizeFileName . "." . $fileExt);
     }
+    
     if ($imageProcess == 1) {
-        // Assuming you have a 'prodimage' table with 'productId', 'productImage', and 'dateCreated' columns
-        // You might need to adjust the column names to match your database schema
-        $insert = $conn->query("INSERT INTO prodimage (productId, productImage, dateCreated) VALUES ('$prodId', '$file_name', NOW())");
+        $insert = $conn->query("INSERT into prodimage (productId, productImg, dateCreated) VALUES ('$prodId', '$file_name', NOW())");
         if ($insert) {
             $done = move_uploaded_file($fileName, $uploadPath . $resizeFileName . "." . $fileExt);
             if ($done) {
-                ?>
-                <script>
-                    alert("Image has been successfully resized and uploaded");
-                </script>
-                <?php
+                return "success"; // Return "success" when the image upload is successful
             }
         }
     } else {
-        ?>
-        <script>
-            alert("Invalid Image");
-        </script>
-        <?php
+        return "Image upload failed"; // Return an error message when the image upload fails
     }
-    $imageProcess = 0;
+    
+    return "Image upload failed"; // Return an error message if the code reaches this point
 }
 
 if (isset($_POST['add_prod'])) {
@@ -95,22 +93,22 @@ if (isset($_POST['add_prod'])) {
     // Upload image and check if successful
     $uploadResult = uploadImage();
 
-    if ($uploadResult === "success") {
+    if ($uploadResult) {
         // Insert data into the database
-        $query = "INSERT INTO product (prodId, prodImg, prodDescription, prodName, netWeight, prodPrice, prodCategory, dateCreated)
-                  VALUES ('$prodId', '$file_name', '$prodDesc', '$prodName', '$netWeight', '$prodPrice', '$prodCategory', NOW())";
+        $query = "INSERT INTO product (prodId, prodDescription, prodName, netWeight, prodPrice, prodCategory, dateCreated)
+                  VALUES ('$prodId', '$prodDesc', '$prodName', '$netWeight', '$prodPrice', '$prodCategory', NOW())";
         $query_run = mysqli_query($conn, $query);
 
         if ($query_run) {
             echo '<script>alert("Product added successfully");</script>';
-            // You can redirect the user or perform additional actions here
         } else {
-            echo '<script>alert("Failed to add product to the database.");</script>';
+            echo '<script>alert("Failed to add product to the database: ' . mysqli_error($conn) . '");</script>';
         }
     } else {
         echo '<script>alert("' . $uploadResult . '");</script>';
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -152,7 +150,7 @@ if (isset($_POST['add_prod'])) {
                                 <input type="text" id="prodName" name="prod_name" placeholder="" value="" required>
                             </div>  
                             <div class = "card">
-                                <label for="netWeight">Net Weight</label><br>
+                                <label for="netWeight">Net Weight (grams)</label><br>
                                 <input type="text" id="netWeight" name="netWeight" placeholder="" value="" required>
                             </div> 
                             <div class = "card">
@@ -174,7 +172,7 @@ if (isset($_POST['add_prod'])) {
 
                     <?php 
                         function resizeImage($resourceType, $image_width, $image_height) {
-                            $resizeWidth = 500;
+                            $resizeWidth = 700;
                             $resizeHeight = 500;
                             $imageLayer = imagecreatetruecolor($resizeWidth, $resizeHeight);
                             imagecopyresampled($imageLayer, $resourceType, 0,0,0,0, $resizeWidth, $resizeHeight, $image_width, $image_height);
