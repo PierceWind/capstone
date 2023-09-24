@@ -112,7 +112,7 @@ if (isset($_POST['edit_prod'])) {
 
         
         if ($query_run) {
-            echo '<script>alert("Product added successfully");</script>';
+            echo '<script>alert("Product updated successfully");</script>';
         } else {
             echo '<script>alert("Failed to add product to the database: ' . mysqli_error($conn) . '");</script>';
         }

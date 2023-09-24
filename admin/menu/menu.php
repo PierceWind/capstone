@@ -111,7 +111,6 @@
                                     <th>Net Weight</th>
                                     <th>Price</th>
                                     <th>Category</th>
-                                    <th>Date Modefied</th>
                                     <th style="text-align:center;">Action</th>
                                 </tr>
                             </thead>
@@ -139,7 +138,6 @@
                                     <td><?php echo $row['netWeight'], $space, $g; ?></td>
                                     <td><?php echo $p, $space, $row['prodPrice']; ?></td>
                                     <td><?php echo $row['prodCategory']; ?></td>
-                                    <td><?php echo $row['dateModified']; ?></td>
                                     <td> 
                                         <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
                                         <form action="" method="POST" class="d-inline">
