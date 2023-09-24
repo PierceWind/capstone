@@ -302,7 +302,12 @@ body{
 
 .price {
   color: var(--blackColor);
-  }
+}
+
+/*PESO SIGN SYMBOL ON PRICE*/
+.price .quantitymain {
+  content: "\20B1";
+}
   
 
 /* Mobile view styles */
@@ -354,7 +359,7 @@ body{
   position:fixed;
   top:0;
   left: 100%;
-  width: 500px;
+  width: 400px;
   background-color: #453E3B;
   height:95%;
   transition: 0.5s;
@@ -380,14 +385,14 @@ body{
 .card .checkOut{
   position: absolute;
   bottom: 0;
-  width:80%;
+  width:100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 
 }
 .card .checkOut div{
   background-color: #E8BC0E;
-  width: 100%;
+  width:100%;
   height: 70px;
   display: flex;
   justify-content: center;
