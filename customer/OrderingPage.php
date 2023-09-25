@@ -16,7 +16,7 @@
         <!--Main navigation-->
         <div class="main-navbar">
             <a href="dashboard.html" >
-            <img class="go-back-button" src="files\icons\arrow.png" alt="">
+            <img class="go-back-button" src="capstoner\files\icons\arrow.png" alt=""> 
             
 
             </a>
