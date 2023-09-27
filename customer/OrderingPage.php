@@ -16,9 +16,7 @@
         <!--Main navigation-->
         <div class="main-navbar">
             <a href="dashboard.html" >
-            <img class="go-back-button" src="capstoner\files\icons\arrow.png" alt=""> 
-            
-
+                <img  class="go-back-button" src="../files/icons/arrow.png" alt=""> 
             </a>
 
             <!--search bar--> 
@@ -29,7 +27,7 @@
 
             <!-- icon on the upper right side of navbar-->
             <div class="shopping">
-                <a href="#" class="cart"><ion-icon name="cart-outline"></ion-icon></a>
+                <a href="#" ><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
                 <span class="quantity">0</span>
 
             <!--not sure if ilalagay or papalitan pa
