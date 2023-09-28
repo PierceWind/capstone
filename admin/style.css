@@ -154,7 +154,6 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
     box-sizing: border-box;
   }
 
-
 .submit-btn {
     color: black;
     width: 100%;
@@ -301,22 +300,6 @@ table thead tr{
   }  
 
 
-/* addstock.php 3 fragments*/
-.flex-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.fragment {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
-}
 
 /* Media query for smaller screens */
 @media screen and (max-width: 768px) {
@@ -329,8 +312,15 @@ table thead tr{
     color: red;
     font-weight: bold;
 }
+
+
+
+
+
 /*--------------------------------------------------*/
 /*alert*/
+
+
 
 
 
