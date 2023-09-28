@@ -16,9 +16,7 @@
         <!--Main navigation-->
         <div class="main-navbar">
             <a href="dashboard.html" >
-            <img class="go-back-button" src="capstoner\files\icons\arrow.png" alt=""> 
-            
-
+                <img  class="go-back-button" src="../files/icons/backIcon.png" alt=""> 
             </a>
 
             <!--search bar--> 
@@ -29,7 +27,7 @@
 
             <!-- icon on the upper right side of navbar-->
             <div class="shopping">
-                <a href="#" class="cart"><ion-icon name="cart-outline"></ion-icon></a>
+                <a href="#" ><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
                 <span class="quantity">0</span>
 
             <!--not sure if ilalagay or papalitan pa
@@ -58,8 +56,8 @@
             <div class="main-header">
                 <h2 class="main-title">Best Seller</h2>
                 <div class="main-arrow">
-                <i class='fas fa-chevron-left'></i>
-                <i class='fas fa-chevron-right'> </i>
+                <img  class=" back"  src="../files/icons/previous.png" alt="">
+                <img  class=" next"  src="../files/icons/next.png" alt="">
                 </div>
             </div>
             <div class="highlight-wrapper">
@@ -117,9 +115,9 @@
             <div class="main-menu">
                 <div class="filter-header">
                     <h2 class="filter-title">Food category</h2>
-                    <div class="filter-arrow">
-                        <ion-icon class="back-menu" name="chevron-back-circle-outline"></ion-icon>
-                        <ion-icon class="next-menu" name="chevron-forward-circle-outline"></ion-icon>
+                    <div class="filter-arrow"> 
+                        <img  class="back-menu"  src="../files/icons/previous.png" alt="">
+                        <img  class="next-menu"  src="../files/icons/next.png" alt="">
                     </div>
                 </div>
                 <div class="filter-wrapper">
@@ -151,15 +149,43 @@
                 <!--list of food section-->
                 <div class="main-detail">
                     <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
-                    <?php 
-                        $result = $food->itemsList();
-                        $count=0;
+                    <?php
+                        // Include or require your Product class file
+                        // require_once('Product.php');
+
+                        // Instantiate the Product class (replace 'Product' with your actual class name)
+                        $product = new Product();
+
+                        // Call the itemsList() method
+                        $result = $product->itemsList();
+                        $count = 0;
+
                         while ($item = $result->fetch_assoc()) { 
                             if ($count == 0) {
                                 echo "<div class='main-detail'>";
+                            }
+
+                            // Display item details (replace with your actual item properties)
+                            echo "<h4>{$item['name']}</h4>";
+                            echo "<p>{$item['description']}</p>";
+                            echo "<p class='price'><span></span>{$item['price']} /-</p>";
+
+                            $count++;
+
+                            if ($count == 3) {
+                                echo "</div>"; // Close the 'main-detail' div after displaying 3 items
+                                $count = 0;
+                            }
                         }
-                    }
+
+                        // Close any open div tag (if needed)
+                        if ($count > 0) {
+                            echo "</div>";
+                        }
+
+                    // Close the while loop
                     ?>
+
                     <h2 class="main-title">Choose Order</h2>
                     <div class="detail-wrapper">
                         <div class="detail-card">

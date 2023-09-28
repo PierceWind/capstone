@@ -44,7 +44,9 @@ body{
   align-items: center;
 }
 .go-back-button{
-  font-size: 30px;
+  padding-top: 2px;
+  width: 25px;
+  color: var(--blackColor);
 }
 .search{
   width: 70%;
@@ -96,8 +98,8 @@ body{
   align-items: center;
   color: #fff;
   position: absolute;
-  top: -5px;
-  left: 60%;
+  top: -15px;
+  left: 70%;
   padding: 1px 7px;
 }
 .cart{
@@ -105,11 +107,12 @@ body{
   justify-content: center;
   align-items: center;
   background-color: var(--whiteColor);
-  font-size: 20px;
+  padding-top: 2px;
+  width: 40px;
   color: var(--primaryColor);
   text-decoration: none;
-  padding: 0 8px;
-  height: 40px;
+  padding: 0 9px;
+  height: 35px;
   border-radius: 50%;
 }
 
@@ -137,15 +140,20 @@ body{
 }
 
 .main-arrow, .filter-arrow{
-  font-size: 30px;
+ font-size: 30px;
 }
 
 .back,.next{
   cursor: pointer;
+  background-color: var(--whiteColor);
+  border-radius: 90%;
+  width: 30px;
+  height: 30px;
 }
 
 .back:hover , .next:hover,.back-menu:hover, .next-menu:hover{
-  color: var(--primaryColor);
+  background-color:yellow;
+  border-radius: 90%;
 }
 
 .highlight-wrapper{
@@ -209,6 +217,8 @@ body{
 .back-menu, .next-menu{
   color: var(--blackColor);
   cursor: pointer;
+  width: 30px;
+  height: 30px;
 }
 
 .filter-wrapper{
@@ -303,9 +313,11 @@ body{
 .price {
   color: var(--blackColor);
 }
+.quantity{
 
+}
 /*PESO SIGN SYMBOL ON PRICE*/
-.price .quantitymain {
+.price .quantity {
   content: "\20B1";
 }
   
