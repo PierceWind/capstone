@@ -16,7 +16,7 @@
         <!--Main navigation-->
         <div class="main-navbar">
             <a href="dashboard.html" >
-                <img  class="go-back-button" src="../files/icons/arrow.png" alt=""> 
+                <img  class="go-back-button" src="../files/icons/backIcon.png" alt=""> 
             </a>
 
             <!--search bar--> 
@@ -56,8 +56,8 @@
             <div class="main-header">
                 <h2 class="main-title">Best Seller</h2>
                 <div class="main-arrow">
-                <i class='fas fa-chevron-left'></i>
-                <i class='fas fa-chevron-right'> </i>
+                <img  class=" back"  src="../files/icons/previous.png" alt="">
+                <img  class=" next"  src="../files/icons/next.png" alt="">
                 </div>
             </div>
             <div class="highlight-wrapper">
@@ -115,9 +115,9 @@
             <div class="main-menu">
                 <div class="filter-header">
                     <h2 class="filter-title">Food category</h2>
-                    <div class="filter-arrow">
-                        <ion-icon class="back-menu" name="chevron-back-circle-outline"></ion-icon>
-                        <ion-icon class="next-menu" name="chevron-forward-circle-outline"></ion-icon>
+                    <div class="filter-arrow"> 
+                        <img  class="back-menu"  src="../files/icons/previous.png" alt="">
+                        <img  class="next-menu"  src="../files/icons/next.png" alt="">
                     </div>
                 </div>
                 <div class="filter-wrapper">
