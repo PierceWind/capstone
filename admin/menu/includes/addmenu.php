@@ -18,6 +18,7 @@ include('../server.php'); // Include your database connection
 $prodId = "";
 $prodName = "";
 $prodCategory = "";
+$minReq = ""; 
 $netWeight = "";
 $prodPrice = "";
 $prodDesc = "";
@@ -82,10 +83,11 @@ function uploadImage()
 }
 
 if (isset($_POST['add_prod'])) {
-    // Get form data
+    // Get form data 
     $prodId = mysqli_real_escape_string($conn, $_POST['prod_id']);
     $prodName = mysqli_real_escape_string($conn, $_POST['prod_name']);
     $prodCategory = mysqli_real_escape_string($conn, $_POST['category']);
+    $minReq = mysqli_real_escape_string($conn, $_POST['min_req']);
     $netWeight = mysqli_real_escape_string($conn, $_POST['netWeight']);
     $prodPrice = mysqli_real_escape_string($conn, $_POST['prod_price']);
     $prodDesc = mysqli_real_escape_string($conn, $_POST['prod_desc']);
@@ -95,8 +97,8 @@ if (isset($_POST['add_prod'])) {
 
     if ($uploadResult) {
         // Insert data into the database
-        $query = "INSERT INTO product (prodId, prodDescription, prodName, netWeight, prodPrice, prodCategory, dateCreated)
-                  VALUES ('$prodId', '$prodDesc', '$prodName', '$netWeight', '$prodPrice', '$prodCategory', NOW())";
+        $query = "INSERT INTO product (prodId, prodDescription, minReq, prodName, netWeight, prodPrice, prodCategory, dateCreated)
+                  VALUES ('$prodId', '$prodDesc', '$prodName', '$minReq', '$netWeight', '$prodPrice', '$prodCategory', NOW())";
         $query_run = mysqli_query($conn, $query);
 
         if ($query_run) {
@@ -138,10 +140,14 @@ if (isset($_POST['add_prod'])) {
                                     <option value="Heritage">Heritage</option>
                                     <option value="Specialties">Specialties</option>
                                     <option value="Pasta">Pasta</option>
-                                    <option value="Salad">Salad</option>
+                                    <option value="Salad">Salad</option>    
                                     <option value="Sweets">Sweets</option>
                                     <option value="Drinks">Drinks</option>
                                 </select> <br>
+                            </div>
+                            <div class = "card"> 
+                                <label for="minreq">Min Req</label> <br>
+                                <input type="number" id="minReq" name="min_req" placeholder="" value="" min=2 max=20 required><br>
                             </div>
                         </div>
                         <div class = "group"> 
@@ -151,11 +157,11 @@ if (isset($_POST['add_prod'])) {
                             </div>  
                             <div class = "card">
                                 <label for="netWeight">Net Weight (grams)</label><br>
-                                <input type="text" id="netWeight" name="netWeight" placeholder="" value="" required>
+                                <input type="number" id="netWeight" name="netWeight" placeholder="" value="" min=80 max=5000 required>
                             </div> 
                             <div class = "card">
                                 <label for="prodprice">Price (₱)</label><br>
-                                <input type="text" id="prodPrice" name="prod_price" placeholder="" value="" required>
+                                <input type="number" id="prodPrice" name="prod_price" placeholder="" value="" min=30 max=10000 required>
                             </div> 
                         </div>
                         <div class = "card">

@@ -107,20 +107,21 @@
                                     <th style="text-align:center;">ID</th>
                                     <th>Image</th>
                                     <th>Name</th>
-                                    <th>Description</th>
+                                    <th style="width: 200px; margin:10px">Description</th>
                                     <th>Net Weight</th>
                                     <th>Price</th>
                                     <th>Category</th>
+                                    <th style="width: 70px;">Min Req</th>
                                     <th style="text-align:center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
-                                    $query = "SELECT DISTINCT product.prodId, prodimage.productImg, product.prodDescription, product.prodName, product.netWeight, product.prodPrice, product.prodCategory, product.dateModified
+                                    $query = "SELECT DISTINCT product.prodId, prodimage.productImg, product.prodDescription, product.prodName, product.netWeight, product.prodPrice, product.prodCategory, product.minReq, product.dateModified
                                                 FROM product
                                                 INNER JOIN prodimage
                                                 ON prodimage.productId = product.prodId
-                                                ORDER BY prodId ASC";
+                                                ORDER BY dateModified DESC";
 
                                     $query_run = mysqli_query($conn, $query);
                                     $space = " ";
@@ -138,8 +139,9 @@
                                     <td><?php echo $row['netWeight'], $space, $g; ?></td>
                                     <td><?php echo $p, $space, $row['prodPrice']; ?></td>
                                     <td><?php echo $row['prodCategory']; ?></td>
+                                    <td><?php echo $row['minReq']; ?></td>
                                     <td> 
-                                        <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
+                                        <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['minReq']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
                                         <form action="" method="POST" class="d-inline">
                                             <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
                                         </form>
@@ -179,19 +181,19 @@
             }
 
             //edit 
-            function editModal(prodId, productImg, prodName, prodDescription, prodPrice, netWeight,  prodCategory) {
+            function editModal(prodId, productImg, prodName, prodDescription, prodPrice, netWeight, minReq, prodCategory) {
                 var modal1 = document.getElementById("editMenuModal");
                 var span1 = document.getElementsByClassName("close")[1];
                 modal1.style.display = "block";
                 span1.onclick = function() {
-                    modal1.style.display = "none";
+                    modal1.style.display = "none";s
                 }
                 document.getElementById('edit_prodId').value = prodId;
-                document.getElementById('edit_category').value = prodCategory;
                 document.getElementById('edit_prodName').value = prodName;
+                document.getElementById('edit_category').value = prodCategory;
+                document.getElementById('edit_minReq').value = minReq;
                 document.getElementById('edit_prodPrice').value = prodPrice;
                 document.getElementById('edit_netWeight').value = netWeight;
-                
                 document.getElementById('edit_prodDesc').value = prodDescription;
 
                 window.onclick = function() {

@@ -101,7 +101,7 @@
                         <table class="table">
                             <thead>
                                 <tr class="head">
-                                    <a href="addstock.php" class="disabled"><button id="addBtn" style="width: 250px; pointer-events:none;    " class="addrec"><img class="button" src = "../../files/icons/add4.png">RECEIVED STOCK</button></a>
+                                    <a href="addstock.php" ><button id="addBtn" style="width: 250px;   " class="addrec"><img class="button" src = "../../files/icons/add4.png">RECEIVED STOCK</button></a>
                                 </tr>
                                 <tr>
                                     <th style="text-align:center;">Product ID</th>

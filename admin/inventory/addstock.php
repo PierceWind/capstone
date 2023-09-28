@@ -44,6 +44,31 @@
         <title>Manage Inventory</title>
         <link rel="icon" type="image/x-icon" href="../../files/icons/tdf.png">
         <link rel="stylesheet" type="text/css" href="../style.css">
+        <style>
+        /* Add these styles for the layout */
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .fragment {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Media query for smaller screens */
+        @media screen and (max-width: 768px) {
+            .flex-container {
+                flex-direction: column;
+            }
+        }
+    </style>
     </head>
     <body>
         <div class="container">
@@ -96,62 +121,49 @@
             </nav>
         
             <section class="view" id="view">
-                <div class="view-list"> <br>
-                    <h1 style="text-align: center;">Manage Stock Inventory Record</h1>  <br>       
-                        <table class="table">
-                            <thead>
-                                <tr class="head">
-                                    <button id="addBtn" style="width: 250px" class="addrec"><img class="button" src = "../../files/icons/add4.png">RECEIVED STOCK</button>
-                                </tr>
-                                <tr>
-                                    <th style="text-align:center;">Product ID</th>
-                                    <th>Product Name</th>
-                                    <th>Available Stock</th>
-                                    <th>Unit Price</th>
-                                    <th>Total Price</th>
-                                    <th>Status</th>
-                                    <th>Min Rqmts</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                    $query = "SELECT DISTINCT product.prodId, prodimage.productImg, product.prodDescription, product.prodName, product.netWeight, product.prodPrice, product.prodCategory, product.dateModified
-                                                FROM product
-                                                INNER JOIN prodimage
-                                                ON prodimage.productId = product.prodId
-                                                ORDER BY prodId ASC";
+                <div class="view-list">
+                    <h1 style="text-align: center;">Received Stock Inventory</h1>
+                    <form action="process_delivery.php" method="POST">
+                        <div class="flex-container">
+                            <!-- Delivery Information -->
+                            <div class="fragment">
+                                <h2>Delivery Information</h2>
+                                <label for="delivery_receipt">Delivery Receipt Number:</label>
+                                <input type="text" id="delivery_receipt" name="delivery_receipt" required>
+                                <label for="delivered_by">Delivered By:</label>
+                                <input type="text" id="delivered_by" name="delivered_by" required>
+                                <label for="delivery_date">Delivery Date:</label>
+                                <input type="date" id="delivery_date" name="delivery_date" required>
+                                <label for="received_by">Received By:</label>
+                                <input type="text" id="received_by" name="received_by" required>
+                            </div>
 
-                                    $query_run = mysqli_query($conn, $query);
-                                    $space = " ";
-                                    $g = "grams"; 
-                                    $p = "₱"; 
+                            <!-- Product Categories -->
+                            <div class="fragment">
+                                <h2>Product Categories</h2>
+                                <label for="product_category">Select Product Category:</label>
+                                <select id="product_category" name="product_category" required>
+                                    <option value="category1">Category 1</option>
+                                    <option value="category2">Category 2</option>
+                                    <!-- Add more categories as needed -->
+                                </select>
+                            </div>
+                        </div>
 
-                                    if (mysqli_num_rows($query_run) > 0) {
-                                        foreach($query_run as $row) {
-                                ?>
-                                <tr>
-                                    <td  style="text-align:center;"><?php echo $row['prodId']; ?></td>
-                                    <td><?php echo $row['prodName']; ?></td>
-                                    <td><?php echo $row['prodDescription']; ?></td>
-                                    <td><?php echo $row['netWeight'], $space, $g; ?></td>
-                                    <td><?php echo $p, $space, $row['prodPrice']; ?></td>
-                                    <td><?php echo $row['prodCategory']; ?></td>
-                                    <td> 
-                                        <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
-                                        <form action="" method="POST" class="d-inline">
-                                            <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php
-                                    }
-                                }
-                                else {
-                                    echo "<h5> No Record Found </h5>";
-                                }
-                                ?>
-                            </tbody>
-                    </table>
+                        <!-- Delivered Products -->
+                        <div class="fragment">
+                            <h2>Delivered Products</h2>
+                            <!-- Add delivered products form elements here -->
+                            <!-- Example:
+                            <label for="product_name">Product Name:</label>
+                            <input type="text" id="product_name" name="product_name" required>
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" id="quantity" name="quantity" required>
+                            -->
+                        </div>
+
+                        <input type="submit" value="Submit">
+                    </form>
                 </div>
             </section>
         </div>

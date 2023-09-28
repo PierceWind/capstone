@@ -1,3 +1,5 @@
+
+
 *{
     margin:0;
     padding:0;
@@ -51,7 +53,7 @@ nav{
 
 
 
-a{
+nav a{
     position: relative;
     color: #700202;
     font-size: 14px;
@@ -86,7 +88,7 @@ nav .fas{
     color: black; 
 }
 
-a:hover{
+nav a:hover{
     background: yellow;
 }
 nav:hover{
@@ -141,7 +143,7 @@ hr {
 .card {
  width: 100%;
 }
-input[type=text], select, input[type=date], input[type=password] {
+input[type=text], input[type=number], select, input[type=date], input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -298,6 +300,31 @@ table thead tr{
   }  
 
 
+/* addstock.php 3 fragments*/
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fragment {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .flex-container {
+        flex-direction: column;
+    }
+}
+
+
 /*--------------------------------------------------*/
 /*alert*/
 
@@ -323,3 +350,4 @@ table thead tr{
     border: 1px solid #3c763d;
     margin-bottom: 20px;
 }
+

@@ -18,6 +18,7 @@ include('../server.php'); // Include your database connection
 $prodId = "";
 $prodName = "";
 $prodCategory = "";
+$minReq = ""; 
 $netWeight = "";
 $prodPrice = "";
 $prodDesc = "";
@@ -90,6 +91,7 @@ if (isset($_POST['edit_prod'])) {
     $prodId = mysqli_real_escape_string($conn, $_POST['prod_id']);
     $prodName = mysqli_real_escape_string($conn, $_POST['prod_name']);
     $prodCategory = mysqli_real_escape_string($conn, $_POST['category']);
+    $minReq = mysqli_real_escape_string($conn, $_POST['min_req']);
     $netWeight = mysqli_real_escape_string($conn, $_POST['netWeight']);
     $prodPrice = mysqli_real_escape_string($conn, $_POST['prod_price']);
     $prodDesc = mysqli_real_escape_string($conn, $_POST['prod_desc']);
@@ -104,6 +106,7 @@ if (isset($_POST['edit_prod'])) {
         SET prodDescription = '$prodDesc', 
             prodName = '$prodName', 
             netWeight = '$netWeight', 
+            minReq = '$minReq',
             prodPrice = '$prodPrice', 
             prodCategory = '$prodCategory', 
             dateCreated = NOW()
@@ -155,6 +158,10 @@ if (isset($_POST['edit_prod'])) {
                                     <option value="Drinks">Drinks</option>
                                 </select> <br>
                             </div>
+                            <div class = "card"> 
+                                <label for="minreq">Min Requirements</label> <br>
+                                <input type="number" id="edit_minReq" name="min_req" placeholder="" value="" min=2 max=20 required><br>
+                            </div>
                         </div>
                         <div class = "group"> 
                             <div class = "card">
@@ -163,11 +170,11 @@ if (isset($_POST['edit_prod'])) {
                             </div>  
                             <div class = "card">
                                 <label for="netWeight">Net Weight (grams)</label><br>
-                                <input type="text" id="edit_netWeight" name="netWeight" placeholder="" value="" required>
+                                <input type="number" id="edit_netWeight" name="netWeight" placeholder="" value="" min=80 max=5000 required>
                             </div> 
                             <div class = "card">
                                 <label for="prodprice">Price (₱)</label><br>
-                                <input type="text" id="edit_prodPrice" name="prod_price" placeholder="" value="" required>
+                                <input type="number" id="edit_prodPrice" name="prod_price" placeholder="" value="" min=30 max=10000  required>
                             </div> 
                         </div>
                         <div class = "card">
