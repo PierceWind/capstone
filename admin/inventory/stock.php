@@ -104,51 +104,57 @@
                                     <a href="addstock.php" ><button id="addBtn" style="width: 250px;   " class="addrec"><img class="button" src = "../../files/icons/add4.png">RECEIVED STOCK</button></a>
                                 </tr>
                                 <tr>
-                                    <th style="text-align:center;">Product ID</th>
-                                    <th>Product Name</th>
-                                    <th>Available Stock</th>
-                                    <th>Unit Price</th>
-                                    <th>Total Price</th>
-                                    <th>Status</th>
-                                    <th>Min Rqmts</th>
+                                    <th style="text-align:center;">Code</th>
+                                    <th style="text-align:center;">Prod Name</th>
+                                    <th style="text-align:center;">Min Rqmts</th>
+                                    <th style="text-align:center;">Unit Price</th>
+                                    <th style="text-align:center;">Total Price</th>
+                                    <th style="text-align:center;">Available Qty</th>
+                                    <th style="text-align:center;">Sold Qty</th>
+                                    <th style="text-align:center;">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
-                                    $query = "SELECT DISTINCT product.prodId, prodimage.productImg, product.prodDescription, product.prodName, product.netWeight, product.prodPrice, product.prodCategory, product.dateModified
-                                                FROM product
-                                                INNER JOIN prodimage
-                                                ON prodimage.productId = product.prodId
-                                                ORDER BY prodId ASC";
-
+                                    $query = "SELECT DISTINCT product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.code, inventory.stock, inventory.sales
+                                    FROM inventory
+                                    INNER JOIN product
+                                    ON inventory.code = product.prodId
+                                    ORDER BY stock ASC";
+                          
                                     $query_run = mysqli_query($conn, $query);
                                     $space = " ";
-                                    $g = "grams"; 
-                                    $p = "₱"; 
-
+                                    $g = "grams";
+                                    $p = "₱";
+                                    
                                     if (mysqli_num_rows($query_run) > 0) {
-                                        foreach($query_run as $row) {
-                                ?>
-                                <tr>
-                                    <td  style="text-align:center;"><?php echo $row['prodId']; ?></td>
-                                    <td><?php echo $row['prodName']; ?></td>
-                                    <td><?php echo $row['prodDescription']; ?></td>
-                                    <td><?php echo $row['netWeight'], $space, $g; ?></td>
-                                    <td><?php echo $p, $space, $row['prodPrice']; ?></td>
-                                    <td><?php echo $row['prodCategory']; ?></td>
-                                    <td> 
-                                        <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
-                                        <form action="" method="POST" class="d-inline">
-                                            <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php
+                                        foreach ($query_run as $row) {
+                                            $totalPrice = $row['prodPrice'] * $row['stock']; // Calculate total price
+                                    
+                                            // Determine the status based on your conditions
+                                            if ($row['stock'] <= $row['minReq']) {
+                                                $status = '<span class="attention-status">Needs Attention</span>';
+                                            } elseif ($row['stock'] == 0) {
+                                                $status = 'Out of Stock';
+                                            } else {
+                                                $status = 'Available';
+                                            }
+                                    ?>
+                                            <tr>
+                                                <td style="text-align:center;"><?php echo $row['prodId']; ?></td>
+                                                <td style="text-align:center;"><?php echo $row['prodName']; ?></td>
+                                                <td style="text-align:center;"><?php echo $row['minReq']; ?></td>
+                                                <td style="text-align:center;"><?php echo $p, $row['prodPrice']; ?></td>
+                                                <td style="text-align:center;"><?php echo $p, $totalPrice; ?></td> <!-- Display the calculated total price -->
+                                                <td style="text-align:center;"><?php echo $row['stock']; ?></td>
+                                                <td style="text-align:center;"><?php echo $row['sales']; ?></td>
+                                                <td style="text-align:center;"><?php echo $status; ?></td> <!-- Display the calculated status -->
+                                            </tr>
+                                    <?php
+                                        }
+                                    } else {
+                                        echo "<h5> No Record Found </h5>";
                                     }
-                                }
-                                else {
-                                    echo "<h5> No Record Found </h5>";
-                                }
                                 ?>
                             </tbody>
                     </table>

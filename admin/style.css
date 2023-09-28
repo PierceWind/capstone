@@ -141,7 +141,8 @@ hr {
 }
 
 .card {
- width: 100%;
+    width: 100%;
+    
 }
 input[type=text], input[type=number], select, input[type=date], input[type=password] {
     width: 100%;
@@ -324,7 +325,10 @@ table thead tr{
     }
 }
 
-
+.attention-status {
+    color: red;
+    font-weight: bold;
+}
 /*--------------------------------------------------*/
 /*alert*/
 
