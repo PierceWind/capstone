@@ -149,15 +149,43 @@
                 <!--list of food section-->
                 <div class="main-detail">
                     <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
-                    <?php 
-                        $result = $food->itemsList();
-                        $count=0;
+                    <?php
+                        // Include or require your Product class file
+                        // require_once('Product.php');
+
+                        // Instantiate the Product class (replace 'Product' with your actual class name)
+                        $product = new Product();
+
+                        // Call the itemsList() method
+                        $result = $product->itemsList();
+                        $count = 0;
+
                         while ($item = $result->fetch_assoc()) { 
                             if ($count == 0) {
                                 echo "<div class='main-detail'>";
+                            }
+
+                            // Display item details (replace with your actual item properties)
+                            echo "<h4>{$item['name']}</h4>";
+                            echo "<p>{$item['description']}</p>";
+                            echo "<p class='price'><span></span>{$item['price']} /-</p>";
+
+                            $count++;
+
+                            if ($count == 3) {
+                                echo "</div>"; // Close the 'main-detail' div after displaying 3 items
+                                $count = 0;
+                            }
                         }
-                    }
+
+                        // Close any open div tag (if needed)
+                        if ($count > 0) {
+                            echo "</div>";
+                        }
+
+                    // Close the while loop
                     ?>
+
                     <h2 class="main-title">Choose Order</h2>
                     <div class="detail-wrapper">
                         <div class="detail-card">
