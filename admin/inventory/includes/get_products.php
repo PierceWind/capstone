@@ -1,5 +1,5 @@
 <?php
-// Include your database connection here
+//database connection here
 include('../../server.php');
 
 if (isset($_POST['categories'])) {
@@ -16,10 +16,11 @@ if (isset($_POST['categories'])) {
     }
 
     if (!empty($products)) {
-        echo '<h3>Products:</h3>';
+        echo '<h4>Select Products:</h4> <br>';
         foreach ($products as $product) {
-            echo '<label><input type="checkbox" name="selected_products[]" value="' . $product['prodId'] . '"> ' . $product['prodName'] . '</label>
-                <input type="number" name="product_quantity[' . $product['prodId'] . ']" placeholder="Quantity" min="1" required><br>';
+            $productId = $product['prodId'];
+            echo '<div class="d"> <label><input type="checkbox" name="selected_products[]" value="' . $productId . '"> ' . $product['prodName'] . '</label>
+                <input type="number" name="product_quantity[' . $productId . ']" placeholder="Quantity" min="1" ><br></div>';
         }
     } else {
         echo '<p>No products available for the selected categories.</p>';

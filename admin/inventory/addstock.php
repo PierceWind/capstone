@@ -32,7 +32,38 @@ if (isset($_POST['delete_rec'])) {
 
 }
 
+// SAVE RECORD 
+// Check if the form is submitted
+if (isset($_POST['add_stock'])) {
+    $drNum = mysqli_real_escape_string($conn, $_POST['dr_num']);
+    $drName = mysqli_real_escape_string($conn, $_POST['dr_name']);
+    $drDate = mysqli_real_escape_string($conn, $_POST['dr_date']);
+    $drRName = mysqli_real_escape_string($conn, $_POST['dr_Rname']);
+    $categories = $_POST['categories'];
+    $selectedProducts = $_POST['selected_products'];
+    $productQuantities = $_POST['product_quantity'];
+
+    // Insert delivery information into a table (replace 'your_table_name' with your actual table name)
+    $deliveryQuery = "INSERT INTO delivery (drNum, drName, drDate, drRName, dateCreated) VALUES ('$drNum', '$drName', '$drDate', '$drRName', NOW())";
+    mysqli_query($conn, $deliveryQuery);
+
+    // Get the last inserted delivery ID
+    $deliveryId = mysqli_insert_id($conn);
+
+    // Insert selected products and quantities into a table (replace 'your_table_name' with your actual table name)
+    foreach ($selectedProducts as $productId) {
+        $quantity = $productQuantities[$productId];
+        $productQuery = "INSERT INTO inventory (deliveryId, prodCode, stock) VALUES ('$deliveryId', '$productId', '$quantity')";
+        mysqli_query($conn, $productQuery);
+    }
+
+    // Redirect or display a success message
+    echo '<script>alert("Data saved successfully.");</script>';
+    // You can redirect the user to a success page or wherever you need them to go.
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,6 +74,7 @@ if (isset($_POST['delete_rec'])) {
     <title>Manage Inventory</title>
     <link rel="icon" type="image/x-icon" href="../../files/icons/tdf.png">
     <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="includes/bootscript.js"></script>
     <script src="includes/script.js"></script>
 
@@ -121,30 +153,32 @@ if (isset($_POST['delete_rec'])) {
                             <input type="text" id="drRName" name="dr_Rname" placeholder="e.g Maria Magdalena" value="" required><br>
                         </div>
                     </div>
-                    <br><hr style="border: 1px solid #808080;"><br><h3>Product Categories</h3><br>
-                    <div class="group">
-                        <div class="card">
-                            <label>Select Category</label><br>
+                    <br><hr style="border: 1px solid #808080; "><br><h3>Product Details</h3><br>
+                    <div class="r">
+                        <div class="c">
+                            <h4>Select Category:</h4><br>
                             <?php
-                                // Query to retrieve product categories from your database
-                                $category_query = "SELECT DISTINCT prodCategory FROM product";
-                                $category_result = mysqli_query($conn, $category_query);
-                                while ($category_row = mysqli_fetch_assoc($category_result)) {
-                                    $category = $category_row['prodCategory'];
-                                    echo '<input type="checkbox" id="category_' . $category . '" name="categories[]" value="' . $category . '">
-                                        <label for="category_' . $category . '">' . $category . '</label><br>';
-                                }
-                            ?>
+                            // Query to retrieve product categories from your database
+                            $category_query = "SELECT DISTINCT prodCategory FROM product";
+                            $category_result = mysqli_query($conn, $category_query);
+                            while ($category_row = mysqli_fetch_assoc($category_result)) {
+                                $category = $category_row['prodCategory'];
+                                echo '<input type="checkbox" id="category_' . $category . '" name="categories[]" value="' . $category . '">
+                                <label for="category_' . $category . '">' . $category . '</label><br>';
+                            }
+                            ?> 
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="selected-products">
-                            <h3>Selected Products:</h3>
-                            <div class="product-list">
+                        <div class="c">
+                            <div class="selected-products">
                                 <!-- Products will be displayed here -->
-                            </div>
+                            </div>  
                         </div>
                     </div>
+                   
+                    <!-- Products will be displayed here on the right side -->
+                    <div class="vertical-line"></div>
+                    
+
                     <br><br>
                     <button style="color:white; background-color:#7002022;" type="submit" class="submit-btn" name="add_stock">Submit</button>
                 </form>
@@ -152,23 +186,49 @@ if (isset($_POST['delete_rec'])) {
         </section>
     </div>
     <script>
-        // jQuery script for handling category selection and displaying products
-        $(document).ready(function () {
-            $('input[name="categories[]"]').change(function () {
-                var selectedCategories = $('input[name="categories[]"]:checked').map(function(){
-                    return this.value;
-                }).get();
+    // Function to update the right side with selected products
+    function updateSelectedProducts() {
+        var selectedCategories = $('input[name="categories[]"]:checked').map(function () {
+            return this.value;
+        }).get();
 
-                $.ajax({
-                    type: "POST",
-                    url: "includes/get_products.php", // Create a separate PHP script to fetch products based on categories
-                    data: {categories: selectedCategories},
-                    success: function (response) {
-                        $(".selected-products").html(response);
-                    }
-                });
-            });
+        $.ajax({
+            type: "POST",
+            url: "includes/get_products.php",
+            data: { categories: selectedCategories },
+            success: function (response) {
+                $(".selected-products").html(response);
+
+                // Show the input fields when products are loaded
+                $('input[type="number"]').show();
+            }
         });
-    </script>
+    }
+
+    // Handle category selection change
+    $('input[name="categories[]"]').change(function () {
+        updateSelectedProducts();
+    });
+
+    // Handle product selection change
+    $(document).on('change', 'input[name="selected_products[]"]', function () {
+        var productCheckbox = $(this);
+        var productId = productCheckbox.val();
+        var quantityInput = $('input[name="product_quantity[' + productId + ']"]');
+
+        if (productCheckbox.is(':checked')) {
+            // Show the quantity input field when a product is selected
+            quantityInput.show();
+        } else {
+            // Hide the quantity input field when a product is deselected
+            quantityInput.hide();
+        }
+    });
+
+    // Initial update when the page loads
+    updateSelectedProducts();
+</script>
+
+
 </body>
 </html>

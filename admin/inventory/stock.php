@@ -116,11 +116,14 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                    $query = "SELECT DISTINCT product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.code, inventory.stock, inventory.sales
+                                    $query = "SELECT product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.code, inventory.stock, SUM(sales.sales) AS totalSales
                                     FROM inventory
                                     INNER JOIN product
                                     ON inventory.code = product.prodId
-                                    ORDER BY stock ASC";
+                                    INNER JOIN sales
+                                    ON product.prodId = sales.code
+                                    GROUP BY product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.code, inventory.stock
+                                    ORDER BY inventory.stock ASC;";
                           
                                     $query_run = mysqli_query($conn, $query);
                                     $space = " ";
@@ -147,13 +150,13 @@
                                                 <td style="text-align:center;"><?php echo $p, $row['prodPrice']; ?></td>
                                                 <td style="text-align:center;"><?php echo $p, $totalPrice; ?></td> <!-- Display the calculated total price -->
                                                 <td style="text-align:center;"><?php echo $row['stock']; ?></td>
-                                                <td style="text-align:center;"><?php echo $row['sales']; ?></td>
+                                                <td style="text-align:center;"><?php echo $row['totalSales']; ?></td>
                                                 <td style="text-align:center;"><?php echo $status; ?></td> <!-- Display the calculated status -->
                                             </tr>
                                     <?php
                                         }
-                                    } else {
-                                        echo "<h5> No Record Found </h5>";
+                                    } else { 
+                                        echo "<br> <br><h5> No Record Found </h5>";
                                     }
                                 ?>
                             </tbody>

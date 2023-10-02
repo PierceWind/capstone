@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2023 at 08:03 PM
+-- Generation Time: Oct 02, 2023 at 04:55 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -74,21 +74,46 @@ INSERT INTO `account` (`acc_id`, `acc_name`, `acc_pass`, `acc_type`, `date_creat
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `delivery`
+--
+
+CREATE TABLE `delivery` (
+  `drNum` int(11) NOT NULL,
+  `drName` varchar(255) NOT NULL,
+  `drDate` date NOT NULL,
+  `drRName` varchar(255) NOT NULL,
+  `dateCreated` datetime NOT NULL,
+  `dateModified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `delivery`
+--
+
+INSERT INTO `delivery` (`drNum`, `drName`, `drDate`, `drRName`, `dateCreated`, `dateModified`) VALUES
+(23423, 'JJ', '2023-10-02', 'Maria', '2023-10-02 10:52:37', '0000-00-00 00:00:00'),
+(42552, 'Juan ', '2023-10-02', 'Maria', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `inventory`
 --
 
 CREATE TABLE `inventory` (
-  `code` varchar(20) NOT NULL,
-  `stock` int(11) NOT NULL,
-  `sales` int(255) NOT NULL
+  `id` int(11) NOT NULL,
+  `deliveryId` int(11) NOT NULL,
+  `prodCode` varchar(20) NOT NULL,
+  `stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`code`, `stock`, `sales`) VALUES
-('1', 2, 0);
+INSERT INTO `inventory` (`id`, `deliveryId`, `prodCode`, `stock`) VALUES
+(0, 0, '14', 60),
+(1, 1241, '1', 2);
 
 -- --------------------------------------------------------
 
@@ -174,6 +199,27 @@ INSERT INTO `product` (`prodId`, `prodDescription`, `prodName`, `netWeight`, `pr
 ('8', 'Radish', 'Pinoy Salad', 100, 100, 0, 'Salad', '2023-09-25 00:19:10', '2023-09-25 00:19:10'),
 ('9', 'Ubod ', 'Atsarang Ubod', 350, 100, 10, 'Specialties', '2023-09-25 00:20:03', '2023-09-25 00:20:03');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales`
+--
+
+CREATE TABLE `sales` (
+  `id` int(11) NOT NULL,
+  `code` int(11) NOT NULL,
+  `sales` int(11) NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `code`, `sales`, `date`) VALUES
+(1, 1, 2, '2023-10-01 21:52:29'),
+(2, 1, 5, '2023-10-01 04:00:47');
+
 --
 -- Indexes for dumped tables
 --
@@ -191,10 +237,16 @@ ALTER TABLE `account`
   ADD PRIMARY KEY (`acc_id`);
 
 --
+-- Indexes for table `delivery`
+--
+ALTER TABLE `delivery`
+  ADD PRIMARY KEY (`drNum`);
+
+--
 -- Indexes for table `inventory`
 --
 ALTER TABLE `inventory`
-  ADD PRIMARY KEY (`code`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `prodimage`
@@ -207,6 +259,22 @@ ALTER TABLE `prodimage`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`prodId`(11));
+
+--
+-- Indexes for table `sales`
+--
+ALTER TABLE `sales`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `sales`
+--
+ALTER TABLE `sales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

@@ -154,6 +154,22 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
     box-sizing: border-box;
   }
 
+input[type=checkbox] {
+    width: 5%;
+    padding: 12px 0px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Initially hide the input fields for product quantities */
+.card input[type="number"] {
+    display: none;
+}
+
+
 .submit-btn {
     color: black;
     width: 100%;
@@ -313,8 +329,41 @@ table thead tr{
     font-weight: bold;
 }
 
+.vertical-line {
+    width: 1px; /* Adjust the width as needed */
+    height: auto;
+    background-color: #808080; /* Line color */
+    margin: 0 10px; /* Adjust the margin to control the spacing between products */
+}
 
+@media screen and (max-width: 650px) {
+    html {
+    width: 100%;
+    display: block;
+    max-zoom: 100%;
+    min-zoom: 80%;
+    }
+}
+.c {  
+    float: left;
+    width: 50%;
+    padding: 5px;
+    height: auto;
+    line-height: 220%;
+}
+.d {  
+    float: left;
+    width: 50%;
+    padding: 5px;
+    height: auto;
+    line-height: 220%;
+}
 
+.r:after {
+    content: "";
+    display: table;
+    clear: both;
+}
 
 
 /*--------------------------------------------------*/
