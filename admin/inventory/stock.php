@@ -116,13 +116,13 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                    $query = "SELECT product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.code, inventory.stock, SUM(sales.sales) AS totalSales
+                                    $query = "SELECT product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.stock, SUM(sales.sales) AS totalSales
                                     FROM inventory
                                     INNER JOIN product
-                                    ON inventory.code = product.prodId
+                                    ON inventory.prodCode = product.prodId
                                     INNER JOIN sales
                                     ON product.prodId = sales.code
-                                    GROUP BY product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.code, inventory.stock
+                                    GROUP BY product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.prodCode, inventory.stock
                                     ORDER BY inventory.stock ASC;";
                           
                                     $query_run = mysqli_query($conn, $query);
