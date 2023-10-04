@@ -73,7 +73,7 @@ if (isset($_POST['add_stock'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Inventory</title>
     <link rel="icon" type="image/x-icon" href="../../files/icons/tdf.png">
-    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="includes/bootscript.js"></script>
     <script src="includes/script.js"></script>

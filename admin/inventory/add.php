@@ -115,7 +115,7 @@ if (isset($_POST['add_stock'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Inventory</title>
     <link rel="icon" type="image/x-icon" href="../../files/icons/tdf.png">
-    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="includes/bootscript.js"></script>
     <script src="includes/script.js"></script>
@@ -215,7 +215,7 @@ if (isset($_POST['add_stock'])) {
 
                     <br><br>
                     <button class="clear-btn" id="clearButton" type="button">Clear</button> 
-                    <button style="color:white; background-color:#7002022;" type="submit" class="submit-btn" name="add_stock">Submit</button>
+                    <button style="color:white; background-color:#7002022; float:left; width:10%;" type="submit" class="submit-btn" name="add_stock">Submit</button>
                     <br><br>
                 </form>
             </div>

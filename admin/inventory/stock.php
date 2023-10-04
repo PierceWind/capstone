@@ -43,7 +43,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Manage Inventory</title>
         <link rel="icon" type="image/x-icon" href="../../files/icons/tdf.png">
-        <link rel="stylesheet" type="text/css" href="../style.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
         <div class="container">
@@ -57,7 +57,7 @@
                         </a>
                     </li> <br>
                     <li>
-                        <a href="">
+                        <a href="../profile/settings.php">
                             <img src="../../files/icons/admin.png" alt="" class="fas"> 
                             <span class="nav-item">Administrator</span>
                         </a>
@@ -101,7 +101,7 @@
                         <table class="table">
                             <thead>
                                 <tr class="head">
-                                    <a href="addstock.php" ><button id="addBtn" style="width: 250px;   " class="addrec"><img class="button" src = "../../files/icons/add4.png">RECEIVED STOCK</button></a>
+                                    <a href="add.php" ><button id="addBtn" style="width: 250px;   " class="addrec"><img class="button" src = "../../files/icons/add4.png">RECEIVED STOCK</button></a>
                                 </tr>
                                 <tr>
                                     <th style="text-align:center;">Code</th>
