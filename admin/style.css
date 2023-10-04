@@ -171,8 +171,9 @@ input[type=checkbox] {
 
 
 .submit-btn {
+    float:left;
     color: black;
-    width: 100%;
+    width: 10%;
     padding: 10px 30px;
     cursor: pointer;
     display: block;
@@ -184,6 +185,21 @@ input[type=checkbox] {
     size: 20px; 
 }
 
+.clear-btn {
+    float: left;
+    color: white;
+    width: 10%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin-right : 10px;
+    margin-left : 40%;
+    background-color: red;
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+    size: 20px; 
+}
 /*--------------------------------------------------*/
 /*user.php*/
 
@@ -363,6 +379,12 @@ table thead tr{
     content: "";
     display: table;
     clear: both;
+}
+
+ul {
+    list-style-type: none; /* This removes the bullet points */
+    padding: 0; /* Optionally remove padding */
+    margin: 0; /* Optionally remove margin */
 }
 
 

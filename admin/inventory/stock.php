@@ -116,48 +116,48 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                    $query = "SELECT product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.stock, SUM(sales.sales) AS totalSales
-                                    FROM inventory
-                                    INNER JOIN product
-                                    ON inventory.prodCode = product.prodId
-                                    INNER JOIN sales
-                                    ON product.prodId = sales.code
-                                    GROUP BY product.prodId, product.minReq, product.prodName, product.prodPrice, inventory.prodCode, inventory.stock
-                                    ORDER BY inventory.stock ASC;";
-                          
+                                    $query = "SELECT product.prodId, product.minReq, product.prodName, product.prodPrice, 
+                                    COALESCE(inventory.stock, 0) AS stock, COALESCE(SUM(sales.sales), 0) AS totalSales
+                                    FROM product
+                                    LEFT JOIN inventory ON product.prodId = inventory.prodCode
+                                    LEFT JOIN sales ON product.prodId = sales.code
+                                    GROUP BY product.prodId, product.minReq, product.prodName, product.prodPrice
+                                    ORDER BY stock ASC;";
+
                                     $query_run = mysqli_query($conn, $query);
                                     $space = " ";
                                     $g = "grams";
                                     $p = "₱";
-                                    
+
                                     if (mysqli_num_rows($query_run) > 0) {
-                                        foreach ($query_run as $row) {
-                                            $totalPrice = $row['prodPrice'] * $row['stock']; // Calculate total price
-                                    
-                                            // Determine the status based on your conditions
-                                            if ($row['stock'] <= $row['minReq']) {
-                                                $status = '<span class="attention-status">Needs Attention</span>';
-                                            } elseif ($row['stock'] == 0) {
-                                                $status = 'Out of Stock';
-                                            } else {
-                                                $status = 'Available';
-                                            }
-                                    ?>
-                                            <tr>
-                                                <td style="text-align:center;"><?php echo $row['prodId']; ?></td>
-                                                <td style="text-align:center;"><?php echo $row['prodName']; ?></td>
-                                                <td style="text-align:center;"><?php echo $row['minReq']; ?></td>
-                                                <td style="text-align:center;"><?php echo $p, $row['prodPrice']; ?></td>
-                                                <td style="text-align:center;"><?php echo $p, $totalPrice; ?></td> <!-- Display the calculated total price -->
-                                                <td style="text-align:center;"><?php echo $row['stock']; ?></td>
-                                                <td style="text-align:center;"><?php echo $row['totalSales']; ?></td>
-                                                <td style="text-align:center;"><?php echo $status; ?></td> <!-- Display the calculated status -->
-                                            </tr>
-                                    <?php
-                                        }
-                                    } else { 
-                                        echo "<br> <br><h5> No Record Found </h5>";
+                                    foreach ($query_run as $row) {
+                                    $totalPrice = $row['prodPrice'] * $row['stock']; // Calculate total price
+
+                                    // Determine the status based on your conditions
+                                    if ($row['stock'] <= $row['minReq']) {
+                                    $status = '<span class="attention-status">Needs Attention</span>';
+                                    } elseif ($row['stock'] == 0) {
+                                    $status = 'Out of Stock';
+                                    } else {
+                                    $status = 'Available';
                                     }
+                                    ?>
+                                    <tr>
+                                    <td style="text-align:center;"><?php echo $row['prodId']; ?></td>
+                                    <td style="text-align:center;"><?php echo $row['prodName']; ?></td>
+                                    <td style="text-align:center;"><?php echo $row['minReq']; ?></td>
+                                    <td style="text-align:center;"><?php echo $p, $row['prodPrice']; ?></td>
+                                    <td style="text-align:center;"><?php echo $p, $totalPrice; ?></td> <!-- Display the calculated total price -->
+                                    <td style="text-align:center;"><?php echo $row['stock']; ?></td>
+                                    <td style="text-align:center;"><?php echo $row['totalSales']; ?></td>
+                                    <td style="text-align:center;"><?php echo $status; ?></td> <!-- Display the calculated status -->
+                                    </tr>
+                                    <?php
+                                    }
+                                    } else { 
+                                    echo "<br><br><h5>No Record Found</h5>";
+                                    } 
+
                                 ?>
                             </tbody>
                     </table>

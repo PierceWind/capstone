@@ -208,14 +208,15 @@ if (isset($_POST['add_stock'])) {
                         <div class="c">
                             <h4>Selected Products:</h4><br>
                             <ul id="selectedProducts"></ul>
-                            <button id="clearButton" type="button">Clear</button>
                         </div>
                     </div>
 
                     <!-- Quantity input fields go here -->
 
                     <br><br>
+                    <button class="clear-btn" id="clearButton" type="button">Clear</button> 
                     <button style="color:white; background-color:#7002022;" type="submit" class="submit-btn" name="add_stock">Submit</button>
+                    <br><br>
                 </form>
             </div>
         </section>
