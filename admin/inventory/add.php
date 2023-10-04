@@ -42,6 +42,8 @@ if ($categoryResult && $productResult) {
     }
 }
 
+$emp_DOB = date('Y-m-d');
+
 if (isset($_POST['add_stock'])) {
     // Retrieve delivery information from the form
     $drNum = mysqli_real_escape_string($conn, $_POST['dr_num']);
@@ -187,8 +189,8 @@ if (isset($_POST['add_stock'])) {
                             <input type="text" id="drName" name="dr_name" placeholder="e.g Juan dela Cruz" value="" required><br>
                         </div>
                         <div class="card"> 
-                            <label for="drDate">Delivery Dsate</label> <br>
-                            <input type="date" id="drDate" name="dr_date" required>
+                            <label for="drDate">Delivery Date</label> <br>
+                            <input type="date" id="drDate" name="dr_date" value="<?php echo $emp_DOB; ?>" required>
                         </div>
                         <div class="card"> 
                             <label for="drRName">Delivered by: </label> <br>

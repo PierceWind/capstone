@@ -1,7 +1,8 @@
 <?php 
-    sleep(0);
+    sleep(1);
     session_start();
 
+    
     if (!isset($_SESSION['acc_name'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location:../../login/log.php');
@@ -13,6 +14,33 @@
     }
     include('../users/server.php');
     include ('master/emaster.php');
+
+    $acc_name = $_SESSION['acc_name'] ;
+
+    // Prefill the form with existing user data
+    /* $query = "SELECT account.*, accinfo.*
+        FROM account
+        INNER JOIN accinfo
+        ON account.acc_id = accinfo.acc_id
+        WHERE account.acc_name = '$acc_name'";
+    $result = mysql_query($query, $conn);
+
+    if (!$result) {
+        die("Database query failed: " . mysql_error());
+    }
+
+    if (mysql_num_rows($result) == 1) {
+        $row = mysql_fetch_assoc($result);
+        $emp_id = $row['acc_id'];
+        $emp_fname = $row['fname'];
+        $emp_mname = $row['mname'];
+        $emp_lname = $row['lname'];
+        $emp_DOB = $row['DOB'];
+        $email = $row['email'];
+        $username = $row['username'];
+    }
+    */
+
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +103,6 @@
                 </a></li>
             </ul>
         </nav>
-
         <section class="view" id="view">
             <div class="view-list">
                 <h1 style="text-align: center;">Administrator Settings</h1> 
@@ -103,12 +130,16 @@
                                 <label for="username">Username</label>
                                 <input type="text" id="editUsername" name="acc_name" placeholder="example123" value="<?php echo $username;?>" required><br>
                             </div>
-                            <div class = "card"> 
+                            <div class="card">
                                 <label for="dob">Date of Birth</label>
-                                <input type="date" class=" input-group" id="editEmp_DOB" name="DOB" required><br> <br>
+                                <input type="date" class="input-group" id="editEmp_DOB" name="DOB" value="<?php echo $emp_DOB; ?>" required><br> <br>
                             </div>
                         </div> 
                         <div class = "group">
+                            <div class = "card"> 
+                                <label for="currentPassword">Enter Current Password</label><br>
+                                <input type="password" id="currentPassword" name="currentPassword" placeholder="Current Password" required><br>
+                            </div>
                             <div class = "card"> 
                                 <label for="password1">Enter New Password</label><br> 
                                 <input type="password" id="editPassword_1" name="Password_1" placeholder="" value="<?php echo $password_1;?>" required><br>
@@ -127,68 +158,7 @@
 
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const categoryList = document.getElementById("categoryList");
-        const selectedProductsList = document.getElementById("selectedProducts");
-        const clearButton = document.getElementById("clearButton");
-        const categories = <?php echo json_encode($categories); ?>;
-        const product = <?php echo json_encode($product); ?>;
-        const selectedProducts = [];
-
-        // Function to display product for a selected category
-        function displayProducts(category) {
-            const categoryProducts = product.filter((product) => product.category === category);
-            const productItems = categoryProducts.map((product) => {
-                return `
-                    <li>
-                        <input type="checkbox" class="product-checkbox" data-product-id="${product.id}">
-                        ${product.name}
-                    </li>
-                `;
-            });
-            return productItems.join("");
-        }
-
-        // Event listener for category clicks
-        categoryList.addEventListener("click", (e) => {
-            if (e.target.classList.contains("category")) {
-                const category = e.target.getAttribute("data-category");
-                const productItems = displayProducts(category);
-                selectedProductsList.innerHTML = "";
-                selectedProductsList.innerHTML = productItems;
-            }
-        });
-
-        // Event listener for product checkboxes
-
-        selectedProductsList.addEventListener("change", (e) => {
-            if (e.target.classList.contains("product-checkbox")) {
-                const productId = e.target.getAttribute("data-product-id");
-                const productName = product.find((product) => product.id === productId).name;
-                if (e.target.checked) {
-                    // Product is selected, add it to the selectedProducts array
-                    selectedProducts.push({ id: productId, name: productName });
-                } else {
-                    // Product is deselected, remove it from the selectedProducts array
-                    const indexToRemove = selectedProducts.findIndex((product) => product.id === productId);
-                    if (indexToRemove !== -1) {
-                        selectedProducts.splice(indexToRemove, 1);
-                    }
-                }
-
-                // Update the selected product display
-                const selectedProductItems = selectedProducts.map((product) => {
-                    return `<li>${product.name} <input type="number" name="quantity_${product.id}" placeholder="Quantity"></li>`;
-                });
-                selectedProductsList.innerHTML = selectedProductItems.join("");
-            }
-        });
-
-        // Event listener for the "Clear" button
-        clearButton.addEventListener("click", () => {
-            selectedProducts.length = 0; // Clear the selected product array
-            selectedProductsList.innerHTML = ""; // Clear the selected product display
-            // You can also clear the quantity input fields here if needed
-        });
+        // JavaScript code here
     });
     </script>
 </body>

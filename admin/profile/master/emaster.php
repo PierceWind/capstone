@@ -5,13 +5,17 @@ $emp_id = "";
 $emp_fname = "";
 $emp_mname = "";
 $emp_lname = "";
-$emp_DOB = "";
+$emp_DOB = date('Y-m-d');
 $emp_type = "";
 $email = "";
 $username = "";
 $password_1 = "";
 $password_2 = "";
+$currentPass = ""; 
 $errors = array();
+
+$acc_name = $_SESSION['acc_name'] ;
+
 
 // EDIT RECORD
 if (isset($_POST['edit_emp'])) {
@@ -25,83 +29,99 @@ if (isset($_POST['edit_emp'])) {
     $username = mysqli_real_escape_string($conn, $_POST['acc_name']);
     $password_1 = mysqli_real_escape_string($conn, $_POST['Password_1']);
     $password_2 = mysqli_real_escape_string($conn, $_POST['Password_2']);
+    $currentPass = mysqli_real_escape_string($conn, $_POST['currentPassword']); 
 
-    // Check if both entered passwords match
-    if ($password_1 != $password_2) {
-        ?>
-        <script>
-            alert("Password does not match");
-        </script>
-        <?php
-    } else {
-        // Validate if the entered password is similar to the stored password
-        $employee_check_query = "SELECT acc_pass FROM account WHERE acc_id = '$emp_id' LIMIT 1";
-        $result = mysqli_query($conn, $employee_check_query);
-        $account = mysqli_fetch_assoc($result);
-        $db_hashedpass = $account["acc_pass"];
+    $check_pass_query = "SELECT acc_pass FROM account WHERE acc_name='$acc_name'";  
+    $res = mysqli_query($conn, $check_pass_query); 
+    $fetch = mysqli_fetch_assoc($res);
+    $db_hashedpass = $fetch["acc_pass"];
 
-        // Hash the inputted password with md5 for comparison
-        $inputted_pass_hash = md5($password_1);
+    $current_input_pass = md5($currentPass); 
 
-        if ($inputted_pass_hash == $db_hashedpass) {
-            // If similar, update all fields except acc_pass
-            $query = "UPDATE account SET 
-                        acc_name = '$username',
-                        date_modified = NOW()
-                        WHERE acc_id = '$emp_id'";
-            $done = mysqli_query($conn, $query);
-
-            if ($done) {
-                $query1 = "UPDATE accinfo SET
-                            fname = '$emp_fname',
-                            mname = '$emp_mname',
-                            lname = '$emp_lname',
-                            email = '$email',
-                            DOB = '$emp_DOB', 
-                            date_modified = NOW()
-                            WHERE acc_id = '$emp_id'";
-                mysqli_query($conn, $query1);
-
-                ?>
-                <script>
-                    alert("Record has been successfully updated");
-                </script>
-                <?php
-            }
-        } else if ($inputted_pass_hash != $db_hashedpass) {
-            // If not similar, update all fields
-            $password = md5($password_1); // password encryption before saving in the database
-            $query = "UPDATE account SET 
-                        acc_name = '$username',
-                        acc_pass = '$password',
-                        date_modified = NOW()
-                        WHERE acc_id = '$emp_id'";
-            $done = mysqli_query($conn, $query);
-
-            if ($done) {
-                $query1 = "UPDATE accinfo SET
-                            fname = '$emp_fname',
-                            mname = '$emp_mname',
-                            lname = '$emp_lname',
-                            email = '$email',
-                            DOB = '$emp_DOB', 
-                            date_modified = NOW()
-                            WHERE acc_id = '$emp_id'";
-                mysqli_query($conn, $query1);
-
-                ?>
-                <script>
-                    alert("Password and other information has been successfully updated");
-                </script>
-                <?php
-            }
-        } else {
+    if ($db_hashedpass == $current_input_pass) {
+        // Check if both entered passwords match
+        if ($password_1 != $password_2) {
             ?>
-                <script>
-                    alert("Record has not heen successfully updated. Try again later.");
-                </script>
+            <script>
+                alert("Password does not match");
+            </script>
+            <?php
+        } else {
+            // Validate if the entered password is similar to the stored password
+            $employee_check_query = "SELECT acc_pass FROM account WHERE acc_id = '$emp_id' LIMIT 1";
+            $result = mysqli_query($conn, $employee_check_query);
+            $account = mysqli_fetch_assoc($result);
+            $db_hashedpass = $account["acc_pass"];
+
+            // Hash the inputted password with md5 for comparison
+            $inputted_pass_hash = md5($password_1);
+
+            if ($inputted_pass_hash == $db_hashedpass) {
+                // If similar, update all fields except acc_pass
+                $query = "UPDATE account SET 
+                            acc_name = '$username',
+                            date_modified = NOW()
+                            WHERE acc_id = '$emp_id'";
+                $done = mysqli_query($conn, $query);
+
+                if ($done) {
+                    $query1 = "UPDATE accinfo SET
+                                fname = '$emp_fname',
+                                mname = '$emp_mname',
+                                lname = '$emp_lname',
+                                email = '$email',
+                                DOB = '$emp_DOB', 
+                                date_modified = NOW()
+                                WHERE acc_id = '$emp_id'";
+                    mysqli_query($conn, $query1);
+
+                    ?>
+                    <script>
+                        alert("Record has been successfully updated");
+                    </script>
+                    <?php
+                }
+            } else if ($inputted_pass_hash != $db_hashedpass) {
+                // If not similar, update all fields
+                $password = md5($password_1); // password encryption before saving in the database
+                $query = "UPDATE account SET 
+                            acc_name = '$username',
+                            acc_pass = '$password',
+                            date_modified = NOW()
+                            WHERE acc_id = '$emp_id'";
+                $done = mysqli_query($conn, $query);
+
+                if ($done) {
+                    $query1 = "UPDATE accinfo SET
+                                fname = '$emp_fname',
+                                mname = '$emp_mname',
+                                lname = '$emp_lname',
+                                email = '$email',
+                                DOB = '$emp_DOB', 
+                                date_modified = NOW()
+                                WHERE acc_id = '$emp_id'";
+                    mysqli_query($conn, $query1);
+
+                    ?>
+                    <script>
+                        alert("Password and other information has been successfully updated");
+                    </script>
+                    <?php
+                }
+            } else {
+                ?>
+                    <script>
+                        alert("Record has not heen successfully updated. Try again later.");
+                    </script>
                 <?php
+            }
         }
+    } else { 
+        ?>
+            <script>
+                alert("Wrong Password.");
+            </script>
+        <?php
     }
 }
 mysqli_close($conn);
