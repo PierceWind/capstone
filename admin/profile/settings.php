@@ -12,99 +12,7 @@
         header('location:../../login/log.php');
     }
     include('../users/server.php');
-?>
-
-<?php
-
-// Fetch distinct categories
-$categoryQuery = "SELECT DISTINCT prodCategory FROM product";
-$categoryResult = mysqli_query($conn, $categoryQuery);
-
-// Fetch all product
-$productQuery = "SELECT prodId, prodName, prodCategory FROM product";
-$productResult = mysqli_query($conn, $productQuery);
-
-// Initialize arrays to store category and product data
-$categories = [];
-$product = [];
-
-if ($categoryResult && $productResult) {
-    while ($row = mysqli_fetch_assoc($categoryResult)) {
-        $categories[] = $row['prodCategory'];
-    }
-
-    while ($row = mysqli_fetch_assoc($productResult)) {
-        $product[] = [
-            'id' => $row['prodId'],
-            'name' => $row['prodName'],
-            'category' => $row['prodCategory']
-        ];
-    }
-}
-
-if (isset($_POST['add_stock'])) {
-    // Retrieve delivery information from the form
-    $drNum = mysqli_real_escape_string($conn, $_POST['dr_num']);
-    $drName = mysqli_real_escape_string($conn, $_POST['dr_name']);
-    $drDate = mysqli_real_escape_string($conn, $_POST['dr_date']);
-    $drRName = mysqli_real_escape_string($conn, $_POST['dr_Rname']);
-
-    // Insert data into the "delivery" table
-    $insertDeliveryQuery = "INSERT INTO delivery (drNum, drName, drDate, drRname, dateCreated) VALUES ('$drNum', '$drName', '$drDate', '$drRName', NOW())";
-    mysqli_query($conn, $insertDeliveryQuery);
-    $deliveryId = mysqli_insert_id($conn); // Get the ID of the newly inserted delivery record
-    echo "deliveryId  = ", $deliveryId;
-
-    // Retrieve and process product quantities
-    foreach ($_POST as $key => $value) {
-        if (strpos($key, 'quantity_') === 0) {
-            $productId = substr($key, strlen('quantity_'));
-            $quantity = (int)$value;
-
-            // Debug output
-            echo "Product ID: $productId, Quantity: $quantity<br>";
-
-            // Insert data into the "delivery_products" table
-            $insertDeliveryProductsQuery = "INSERT INTO delivery_products (deliveryId, productId, quantity, dateCreated) VALUES ('$drNum', '$productId', '$quantity', NOW())";
-
-            if (mysqli_query($conn, $insertDeliveryProductsQuery)) {
-                // Successfully inserted into delivery_products
-                // Check if the record exists in the inventory table
-                $checkInventoryQuery = "SELECT * FROM inventory WHERE prodCode = '$productId'";
-                $checkInventoryResult = mysqli_query($conn, $checkInventoryQuery);
-
-                if (mysqli_num_rows($checkInventoryResult) > 0) {
-                    // Update the existing record
-                    $updateInventoryQuery = "UPDATE inventory SET stock = stock + $quantity WHERE  prodCode = '$productId'";
-                    $updateResult = mysqli_query($conn, $updateInventoryQuery);
-
-                    if (!$updateResult) {
-                        echo "Error updating inventory: " . mysqli_error($conn);
-                    }
-                } else {
-                    // Insert a new record
-                    $insertInventoryQuery = "INSERT INTO inventory (prodCode, stock) VALUES ('$productId', $quantity)";
-                    $insertResult = mysqli_query($conn, $insertInventoryQuery);
-
-                    if (!$insertResult) {
-                        echo "Error inserting into inventory: " . mysqli_error($conn);
-                    }
-                }
-            } else {
-                echo "Error inserting into delivery_products: " . mysqli_error($conn);
-            }
-            
-
-        }
-    }
-
-    // Close the database connection
-    mysqli_close($conn);
-
-    // Redirect to a success page or display a success message
-    header('location: stock.php'); // Change 'success.php' to the appropriate page
-}
-
+    include ('master/emaster.php');
 ?>
 
 <!DOCTYPE html>
@@ -116,10 +24,6 @@ if (isset($_POST['add_stock'])) {
     <title>Manage Inventory</title>
     <link rel="icon" type="image/x-icon" href="../../files/icons/tdf.png">
     <link rel="stylesheet" type="text/css" href="../style.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="includes/bootscript.js"></script>
-    <script src="includes/script.js"></script>
-
 
 </head>
 <body>
@@ -160,7 +64,7 @@ if (isset($_POST['add_stock'])) {
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="../inventory/stock.php">
                         <img src="../../files/icons/inventory.png" alt="" class="fas">
                         <span class="nav-item">Manage Inventory</span>
                     </a>
@@ -175,23 +79,12 @@ if (isset($_POST['add_stock'])) {
         <section class="view" id="view">
             <div class="view-list">
                 <h1 style="text-align: center;">Administrator Settings</h1> 
+                <br><hr style="border: 1px solid #808080;"><br><br>
                 <form method="post" id="editusers" class="input-group" enctype="multipart/form-data" action="">
                         <div class = "group">
                             <div class = "card"> 
                                 <label for="editEmpid">Employee Number</label> <br>
                                 <input type="text" id="editEmp_id" name="acc_id" placeholder="ID number" value="<?php echo $emp_id;?>" required><br>
-                            </div>
-                            <div class = "card"> 
-                                <label for="employee">Access Role</label><br>
-                                <select id="editEmp_type" name="acc_type" required>
-                                    <?php 
-                                    foreach ($options as $option) {
-                                    ?>
-                                        <option> <?php echo $option['acc_type']; ?> </option>
-                                        <?php 
-                                        }
-                                    ?>
-                                </select> <br>
                             </div>
                             <div class = "card"> 
                                 <label for="email">Email</label><br> 

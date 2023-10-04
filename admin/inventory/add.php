@@ -134,7 +134,7 @@ if (isset($_POST['add_stock'])) {
                     </a>
                 </li> <br>
                 <li>
-                    <a href="">
+                    <a href="../profile/settings.php">
                         <img src="../../files/icons/admin.png" alt="" class="fas"> 
                         <span class="nav-item">Administrator</span>
                     </a>
