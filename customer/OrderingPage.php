@@ -1,7 +1,7 @@
 <?php
-    require_once'server.php';
-    
-    $sql = 'SELECT * FROM product';
+    require_once 'server.php';
+
+    $sql = "SELECT * FROM `product`;";
     $all_product = $conn->query($sql);
 ?>
 
@@ -151,7 +151,6 @@
                         <p class="category">Sweets</p>
                     </div>
                 </div>
-               
                 <hr class="divider">
                 <!--start of php code for listing item menu-->
                 <?php
@@ -163,7 +162,7 @@
                         $description = $row['description'];
                         $category = $row['category'];
                     }
-               ?>
+                ?>
 
                 <!--list of food section-->
                 <div class="main-detail">
@@ -175,25 +174,15 @@
                                 <h4><?php echo $name;?></h4>
                                 <p><?php echo $description;?></p>
                                 <div class="detail-price">
-                                    <p class="price">$<?php echo $price;?></p>
+                                    <p class="price"><?php echo $price;?></p>
                                 </div>
                                 <div class="detail-btn">
                                     <a href="order.php?id=<?php echo $id;?>">
-                                        <button class="btn btn-primary">Order</button>
+                                        <button class="btn btn-primary">Add to</button>
                                     </a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="detail-card">
-                            <img class="detail-img" src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                            </div>
-                        </div> 
-                        
+                        </div>          
                     </div>
                 </div>
             </div>               
