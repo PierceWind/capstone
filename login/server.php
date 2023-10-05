@@ -33,11 +33,17 @@ if (isset($_POST['login_user'])) {
             $row = mysqli_fetch_array($results);
     
             if (mysqli_num_rows($results)==1) {
-                if($row["acc_type"]=="user") {
-                    $userid=$_SESSION['user']['teacher_id'];
+                if($row["acc_type"]=="cashier") {
+                    $userid=$_SESSION['user']['acc_id'];
                     echo $_SESSION['acc_name'] = $username; 
                     echo $_SESSION['success'] = "You are now logged in";
-                    header('location: ../cash/dash.php');
+                    header('location: ../cashier/dash.php');
+                } 
+                if($row["acc_type"]=="kitchen") {
+                    $userid=$_SESSION['user']['acc_id'];
+                    echo $_SESSION['acc_name'] = $username; 
+                    echo $_SESSION['success'] = "You are now logged in";
+                    header('location: ../kitchen/dash.php');
                 } 
                 if($row["acc_type"]=="admin") {
                     echo $_SESSION['acc_name'] = $username; 
@@ -45,7 +51,7 @@ if (isset($_POST['login_user'])) {
                     header('location: ../admin/dash.php');
                 }
                 mysqli_query($db,"delete from loginlogs where IpAddress='$ip_address' AND datelog=current_date()");
-                echo "<script>window.location.href='dash.php';</script>";
+                echo "<script>window.location.href='../admin/dash.php';</script>";
             } else {
                 $total_count++;
                 $rem_attm=3-$total_count;

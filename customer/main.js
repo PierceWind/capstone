@@ -1,3 +1,27 @@
+<<<<<<< HEAD
+=======
+function incrementValue()
+{
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    if(value<10){
+        value++;
+            document.getElementById('number').value = value;
+    }
+}
+function decrementValue()
+{
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    if(value>1){
+        value--;
+            document.getElementById('number').value = value;
+    }
+
+}
+
+
+>>>>>>> bc0e471d32708425cfc835f1936bf2e1d9b3d9a5
 $(document).ready(function ($) {
     "use strict";
 
@@ -169,4 +193,8 @@ jQuery(window).on('load', function () {
         }
 
     }
+<<<<<<< HEAD
 }); 
+=======
+}); 
+>>>>>>> bc0e471d32708425cfc835f1936bf2e1d9b3d9a5

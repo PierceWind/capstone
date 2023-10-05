@@ -1,0 +1,257 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: wheat;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.launching-container {
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+    width: 35%; 
+    padding: 20px;
+    border-radius: 10px;
+    background-color: 0000;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #700202;
+    font-family: Baskerville;
+}
+
+.image-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.button-container {
+    margin-top: 20px; 
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    background-color: #700202;
+    color: #fff;
+    border: none;
+    padding: 10px; 
+    font-size: 18px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 100px;
+    border-color: #c40f0f;
+    border-style: solid;
+}
+
+.button-text {
+    width: 120px; 
+    display: inline-block;
+    text-align: center;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 999;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    animation: rotateAndScaleLogo 5s linear infinite; 
+}
+
+@keyframes rotateAndScaleLogo {
+    0% {
+        transform: rotate(0deg) scale(1); 
+    }
+    50% {
+        transform: rotate(180deg) scale(0.8); 
+    }
+    100% {
+        transform: rotate(360deg) scale(1); 
+    }
+}
+
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    animation: rotateAndScaleLogo 5s ease-in-out; 
+}
+
+@keyframes rotateAndScaleLogo {
+    0% {
+        transform: rotate(0deg) scale(1); 
+    }
+    100% {
+        transform: rotate(360deg) scale(1); 
+    }
+}
+
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    transform-origin: center;
+    animation: spinAndScaleLogo 1s linear; 
+}
+
+@keyframes spinAndScaleLogo {
+    0% {
+        transform: scale(0.2) rotate(0deg); 
+    }
+    100% {
+        transform: scale(1) rotate(360deg); 
+    }
+}
+
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    animation: bounceText 5s ease infinite;
+}
+
+@keyframes bounceText {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2); 
+    }
+    100% {
+        transform: scale(1); 
+    }
+}
+
+.spoon-image,
+.fork-image {
+    width: 30px; 
+    height: auto; 
+    margin: 0 10px; 
+}
+
+.button-container {
+    display: flex;
+    align-items: center; 
+}
+
+button {
+    background-color: #700202;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 50px; 
+    border-color: #c40f0f;
+    border-style: solid;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.button-text {
+    display: inline-block;
+    text-align: center;
+}
+
+button:hover {
+    transform: scale(1.1); 
+}
+
+.spoon-image,
+.fork-image {
+    width: 30px;
+    height: auto;
+    margin: 0 10px;
+    animation: floatUpDown 2s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px); 
+    }
+}
+
+.button-animation {
+    animation: scaleUp 0.5s ease-in-out;
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2); 
+    }
+}
+
+.button-close-animation {
+    animation: closeTransition 0.5s ease-in-out forwards;
+}
+
+@keyframes closeTransition {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.1);
+        opacity: 0;
+    }
+}
+
+.fade-out-animation {
+    animation: fadeOut 2s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none; 
+    }
+}

@@ -1,0 +1,417 @@
+
+
+*{
+    margin:0;
+    padding:0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    background:#F8EEEE;
+}
+
+nav{
+    position:sticky;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    left: 0;
+    background: #F8F3F3;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+    width: 120px;
+    overflow: hidden;
+    transition: 1s;
+
+}
+
+.logo{
+    text-align: center;
+    display: flex;
+    transition: all 0.5s ease;
+    margin: 10px 0 0 0;
+}
+.logo img{
+    width: 90px;
+    height: 70px;
+    border-radius: 50%;
+}
+.logo span{
+    font-weight: bold;
+    padding-left: 5px;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.logo:hover{
+    background: yellow;
+}
+
+
+
+nav a{
+    position: relative;
+    color: #700202;
+    font-size: 14px;
+    display: table;
+    width: 320px;
+    padding: 10px;
+}
+
+.disabled {
+    position: relative;
+    color: #700202;
+    font-size: 14px;
+    width: 250px;
+}
+
+nav .fas{
+    position:relative;
+    fill: #700202;
+    width: 25px;
+    height:25px;
+    margin-top: 14px;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 32px;
+    margin-right: 32px;
+}
+
+.nav-item{
+    position:relative;
+    top: -12px;
+    margin-left: 12px;  
+    color: black; 
+}
+
+nav a:hover{
+    background: yellow;
+}
+nav:hover{
+    width: 320px;
+    transition: all 0.5s ease;
+}
+
+.logout{
+    position:absolute;
+    bottom: 0;
+}
+
+.container{
+    position: relative;
+    display:flex;
+}
+
+/*--------------------------------------------------*/
+/*addUser.php*/
+
+.main{
+    position:relative;
+    padding:50px;
+    width: 100%;
+}
+
+hr {
+    border: 1px solid #FFE711;
+}
+
+
+.sec1 .input-group {
+    width: 100%;
+    margin: 10px;
+    margin-right: 10px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+
+.group {
+    width: 100%;
+    display: flex; 
+    gap: 15px; 
+    margin: 8px 0; 
+}
+.group label { 
+    float: top; 
+}
+
+.card {
+    width: 100%;
+    
+}
+input[type=text], input[type=number], select, input[type=date], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+input[type=checkbox] {
+    width: 5%;
+    padding: 12px 0px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Initially hide the input fields for product quantities */
+.card input[type="number"] {
+    display: none;
+}
+
+
+.submit-btn {
+    color: black;
+    width: 100%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background-color: blue;
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+    size: 20px; 
+}
+
+.clear-btn {
+    float: left;
+    color: white;
+    width: 10%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin-right : 10px;
+    margin-left : 40%;
+    background-color: red;
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+    size: 20px; 
+}
+/*--------------------------------------------------*/
+/*user.php*/
+
+.view{
+    position: relative;
+    margin-top: 10px;
+    padding:50px;
+    width: 100%;
+}
+.view-list{
+    width: 100%;
+    padding: 30px;
+    margin-top: 5px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+
+
+.addrec {
+    color: #700202;
+    font-weight: bold;
+    float: right;   
+    width: 200px;
+    padding: 5px 20px;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 15px;
+    background-color: #e4e4e4;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 40px;
+}
+
+.addrec:hover {
+    color: black; 
+    background-color: yellow;
+}
+
+
+.table{
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 15px;
+    min-width: 100%;
+    overflow: hidden;
+    border-radius: 3px 3px 0 0;
+    table-layout: fixed;
+}
+
+table thead tr{
+    color: black;
+    background: yellow;
+    text-align: left;
+    font-weight: bold;
+}
+
+.table th, .table td{
+    padding: 15px 3px;
+    word-break: break-all;
+}
+
+.table tbody tr{
+    border-bottom: 1px solid #ddd;
+    width: 5%;
+}
+
+.table tbody tr:hover{
+    background: #e4e4e4;
+}
+
+.button {
+    float: left;
+    position: relative;
+    border: none;
+    color: white;
+    width: 30px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button img{
+    float: left;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px; 
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 30px;
+    border: 1px solid #888;
+    width: 60%; /* Could be more or less, depending on screen size */
+    border-radius: 10px;
+  }
+
+
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }  
+
+
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .flex-container {
+        flex-direction: column;
+    }
+}
+
+.attention-status {
+    color: red;
+    font-weight: bold;
+}
+
+.vertical-line {
+    width: 1px; /* Adjust the width as needed */
+    height: auto;
+    background-color: #808080; /* Line color */
+    margin: 0 10px; /* Adjust the margin to control the spacing between products */
+}
+
+@media screen and (max-width: 650px) {
+    html {
+    width: 100%;
+    display: block;
+    max-zoom: 100%;
+    min-zoom: 80%;
+    }
+}
+.c {  
+    float: left;
+    width: 50%;
+    padding: 5px;
+    height: auto;
+    line-height: 220%;
+}
+.d {  
+    float: left;
+    width: 50%;
+    padding: 5px;
+    height: auto;
+    line-height: 220%;
+}
+
+.r:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+ul {
+    list-style-type: none; /* This removes the bullet points */
+    padding: 0; /* Optionally remove padding */
+    margin: 0; /* Optionally remove margin */
+}
+
+
+/*--------------------------------------------------*/
+/*alert*/
+
+
+
+
+
+.error {
+    float: center;
+    width: 120%;
+    margin: 0px auto;
+    margin-left: -30px;
+    padding: 10px;
+    border: 1px solid #a94442;
+    color: #a94442;
+    background: #f2dede;
+    border-radius: 5px;
+    text-align: left;
+    overflow: visible;
+}
+
+.success {
+    color: #3c763d;
+    background: #dff0d8;
+    border: 1px solid #3c763d;
+    margin-bottom: 20px;
+}
+

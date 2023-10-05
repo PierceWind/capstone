@@ -1,3 +1,5 @@
+
+
 *{
     margin:0;
     padding:0;
@@ -50,7 +52,8 @@ nav{
 }
 
 
-a{
+
+nav a{
     position: relative;
     color: #700202;
     font-size: 14px;
@@ -59,6 +62,12 @@ a{
     padding: 10px;
 }
 
+.disabled {
+    position: relative;
+    color: #700202;
+    font-size: 14px;
+    width: 250px;
+}
 
 nav .fas{
     position:relative;
@@ -79,7 +88,7 @@ nav .fas{
     color: black; 
 }
 
-a:hover{
+nav a:hover{
     background: yellow;
 }
 nav:hover{
@@ -98,7 +107,7 @@ nav:hover{
 }
 
 /*--------------------------------------------------*/
-/*dash.php*/
+/*addUser.php*/
 
 .main{
     position:relative;
@@ -110,7 +119,33 @@ hr {
     border: 1px solid #FFE711;
 }
 
-input[type=text], select, input[type=date], input[type=password] {
+
+.sec1 .input-group {
+    width: 100%;
+    margin: 10px;
+    margin-right: 10px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+
+.group {
+    width: 100%;
+    display: flex; 
+    gap: 15px; 
+    margin: 8px 0; 
+}
+.group label { 
+    float: top; 
+}
+
+.card {
+    width: 100%;
+    
+}
+
+input[type=text], input[type=number], select, input[type=date], input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -120,14 +155,19 @@ input[type=text], select, input[type=date], input[type=password] {
     box-sizing: border-box;
   }
 
-.sec1 .input-group {
-    width: 100%;
-    margin: 10px;
-    background: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+input[type=checkbox] {
+    width: 5%;
+    padding: 12px 0px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
+
+
+
+
 .submit-btn {
     color: black;
     width: 100%;
@@ -142,26 +182,41 @@ input[type=text], select, input[type=date], input[type=password] {
     size: 20px; 
 }
 
+.clear-btn {
+    float: left;
+    color: white;
+    width: 10%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin-right : 10px;
+    margin-left : 40%;
+    background-color: red;
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+    size: 20px; 
+}
 /*--------------------------------------------------*/
 /*user.php*/
 
 .view{
     position: relative;
-    margin-top: 20px;
+    margin-top: 10px;
     padding:50px;
     width: 100%;
 }
 .view-list{
     width: 100%;
     padding: 30px;
-    margin-top: 10px;
+    margin-top: 5px;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
 }
 
 
-.addrec{
+.addrec {
     color: #700202;
     font-weight: bold;
     float: right;   
@@ -184,11 +239,11 @@ input[type=text], select, input[type=date], input[type=password] {
 
 .table{
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 15px 0;
     font-size: 15px;
     min-width: 100%;
     overflow: hidden;
-    border-radius: 5px 5px 0 0;
+    border-radius: 3px 3px 0 0;
     table-layout: fixed;
 }
 
@@ -200,8 +255,8 @@ table thead tr{
 }
 
 .table th, .table td{
-    padding: 10px 10px;
-    word-break:break-all;
+    padding: 15px 3px;
+    word-break: break-all;
 }
 
 .table tbody tr{
@@ -256,7 +311,8 @@ table thead tr{
     width: 60%; /* Could be more or less, depending on screen size */
     border-radius: 10px;
   }
-  
+
+
   /* The Close Button */
   .close {
     color: #aaa;
@@ -273,8 +329,66 @@ table thead tr{
   }  
 
 
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .flex-container {
+        flex-direction: column;
+    }
+}
+
+.attention-status {
+    color: red;
+    font-weight: bold;
+}
+
+.vertical-line {
+    width: 1px; /* Adjust the width as needed */
+    height: auto;
+    background-color: #808080; /* Line color */
+    margin: 0 10px; /* Adjust the margin to control the spacing between products */
+}
+
+@media screen and (max-width: 650px) {
+    html {
+    width: 100%;
+    display: block;
+    max-zoom: 100%;
+    min-zoom: 80%;
+    }
+}
+.c {  
+    float: left;
+    width: 50%;
+    padding: 5px;
+    height: auto;
+    line-height: 220%;
+}
+.d {  
+    float: left;
+    width: 50%;
+    padding: 5px;
+    height: auto;
+    line-height: 220%;
+}
+
+.r:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+ul {
+    list-style-type: none; /* This removes the bullet points */
+    padding: 0; /* Optionally remove padding */
+    margin: 0; /* Optionally remove margin */
+}
+
+
 /*--------------------------------------------------*/
 /*alert*/
+
+
 
 
 
@@ -298,3 +412,4 @@ table thead tr{
     border: 1px solid #3c763d;
     margin-bottom: 20px;
 }
+
