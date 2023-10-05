@@ -1,3 +1,11 @@
+<?php
+    require_once'server.php';
+    
+    $sql = 'SELECT * FROM product';
+    $all_product = $conn->query($sql);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -145,62 +153,37 @@
                 </div>
                
                 <hr class="divider">
-                <!--PHP CODE HERE-->
+                <!--start of php code for listing item menu-->
+                <?php
+                    while($row = $all_product->fetch_assoc()) {
+                        $id = $row['id'];
+                        $image = $row['image'];
+                        $name = $row['name'];
+                        $price = $row['price'];
+                        $description = $row['description'];
+                        $category = $row['category'];
+                    }
+               ?>
+
                 <!--list of food section-->
                 <div class="main-detail">
-                    <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
-                    <?php
-                        // Include or require your Product class file
-                        // require_once('Product.php');
-
-                        // Instantiate the Product class (replace 'Product' with your actual class name)
-                        $product = new Product();
-
-                        // Call the itemsList() method
-                        $result = $product->itemsList();
-                        $count = 0;
-
-                        while ($item = $result->fetch_assoc()) { 
-                            if ($count == 0) {
-                                echo "<div class='main-detail'>";
-                            }
-
-                            // Display item details (replace with your actual item properties)
-                            echo "<h4>{$item['name']}</h4>";
-                            echo "<p>{$item['description']}</p>";
-                            echo "<p class='price'><span></span>{$item['price']} /-</p>";
-
-                            $count++;
-
-                            if ($count == 3) {
-                                echo "</div>"; // Close the 'main-detail' div after displaying 3 items
-                                $count = 0;
-                            }
-                        }
-
-                        // Close any open div tag (if needed)
-                        if ($count > 0) {
-                            echo "</div>";
-                        }
-
-                    // Close the while loop
-                    ?>
-
                     <h2 class="main-title">Choose Order</h2>
                     <div class="detail-wrapper">
                         <div class="detail-card">
-                            <form method="post" action="cart.php?action=add&id=<?php echo $item["id"]; ?>">
-                                    <img class="detail-img" src="images/<?php echo $item["images"]; ?>">
-                                    <div class="detail-desc">
-                                        <div class="detail-name">
-                                        <h4><?php echo $item["name"]; ?></h4>
-                                        <p><?php echo $item["description"]; ?></p>
-                                        <p class="price"><span></span><?php echo $item["price"]; ?>/-</p>
-                                        </div>
-                                    </div>
-                                    <input type="submit" name="add" style="margin-top:5px;" class="btn btn-success" value="Add to Cart">
-                            </form>
-			            </div>
+                            <img class="detail-img" src="images/<?php echo $image;?>">
+                            <div class="detail-desc">
+                                <h4><?php echo $name;?></h4>
+                                <p><?php echo $description;?></p>
+                                <div class="detail-price">
+                                    <p class="price">$<?php echo $price;?></p>
+                                </div>
+                                <div class="detail-btn">
+                                    <a href="order.php?id=<?php echo $id;?>">
+                                        <button class="btn btn-primary">Order</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="detail-card">
                             <img class="detail-img" src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
                             <div class="detail-desc">
