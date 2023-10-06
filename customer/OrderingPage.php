@@ -1,5 +1,5 @@
 <?php
-    require_once'../admin/server.php';
+    require_once '../admin/server.php';
 
     $sql = 'SELECT product.*,prodimage.* FROM product inner join prodimage on product.prodId = prodimage.productId';
     $all_product = $conn->query($sql);
@@ -162,11 +162,12 @@
                         $price = $row['prodPrice'];
                         $description = $row['prodDescription'];
                         $category = $row['prodCategory'];
+
                     
                ?>
                     <div class="detail-wrapper">
                         <div class="detail-card">
-                            <img class="detail-img" src="<?php echo $row["productImg"]; ?>" >
+                            <img class="detail-img" src="<?php echo $image ?>" >
                             <div class="detail-desc">
                                 <h4><?php echo $name;?></h4>
                                 <p><?php echo $description;?></p>

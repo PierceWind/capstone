@@ -1,3 +1,19 @@
+<?php
+include '../admin/server.php';
+
+$sql = 'SELECT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+FROM product 
+LEFT JOIN prodimage 
+ON product.prodId = prodimage.productId
+LEFT JOIN inventory 
+ON inventory.prodCode = product.prodId
+LEFT JOIN sales 
+ON sales.code = product.prodId';
+$all_product = $conn->query($sql);
+
+?>
+
+
 <!DOCTYPE html>
 <html lang ="en">
 <head>
@@ -46,8 +62,7 @@
         <button class="search-btn">Search</button>
     </div>
     <section>
-        <hr>
-        <div class = "sec1" id = "popularCuisines"> 
+        <hr style="border: 1px solid #700202;">
         <div class="sections">
             <a button class="popularCuisines" href="#popularCuisines"> Popular Cuisines </a>
             <a button class="heritage" href="#heritage"> Heritage </a>
@@ -56,26 +71,46 @@
             <a button class="sweets" href="#sweets"> Sweets </a>
             <a button class="beverages" href="#beverages"> Beverages </a>
         </div>
+        <div class="sec1" id="popularCuisines">
         
-           <div class="row">
-            <div class="col">
-              
-            </div>
-            <div class="col">
-              
-            </div>
+        
+
+        <div class="row">
+            <h2 class="main-title"></h2>
+            <?php
+            while ($row = $all_product->fetch_assoc()) {
+                $id = $row['prodId'];
+                $image = $row['productImg'];
+                $name = $row['prodName'];
+                $price = $row['prodPrice'];
+                $description = $row['prodDescription'];
+                $category = $row['prodCategory'];
+                $extension = "../admin/menu/";
+                ?>
+                <div class="column">
+                    <div class="card">
+                        <img class="detail-img" src="<?php echo $extension, $image; ?>">
+                        <div class="container">
+                            <h4><?php echo $name; ?></h4>
+                            <p style="font-size: 12px;"><?php echo $description; ?></p>
+                            <p class="price">Php<?php echo $price; ?></p>
+                            <p><a href="order.php?id=<?php echo $id; ?>"><button class="button">Add to Cart</button></a></p>
+                        </div>
+                    </div>
+                </div>
+            <?php
+                }
+            ?>
         </div>
+        <hr>
     </div>
-    <hr>
-    
-    </section>
-    <br><br>
-</body>
+</section>
+<br><br>
 <footer>
-    <div class = "footer">
-        
+    <div class="footer">
+        <!-- Your footer content here -->
         <br>
     </div>
-
 </footer>
+</body>
 </html>
