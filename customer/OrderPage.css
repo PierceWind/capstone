@@ -79,7 +79,7 @@ body{
 }
 
 .main{
-  width: 90%;
+  width: 100%;
   height: max-content;
   min-height: 100vh;
   padding: 2%;
@@ -97,7 +97,7 @@ body{
   display:none;
 }
 .search{
-  width: 60%;
+  width: 90%;
   height: 40px;
   display: flex;
   justify-content: space-around;
@@ -110,15 +110,15 @@ body{
   height: 100%;
   padding: 20px;
   border: none;
-  border-radius: 15px
+  border-radius: 15px; 
 }
 
 .search-btn{
-  background-color:#fb2a2a;
+  background-color:#700202;
   color: var(--whiteColor);
   border: none;
   border-radius: 20px;
-  width: 125px;
+  width: 130px;
   cursor: pointer;
 }
 
@@ -127,7 +127,7 @@ body{
 }
 
 .search-btn:hover{
-  background-color: var(--secondaryColor);
+  background-color: brown;
 }
 
 .icon{
