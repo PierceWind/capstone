@@ -57,22 +57,12 @@
             <a button class="beverages" href="#beverages"> Beverages </a>
         </div>
         
-            <img src = "https://i.ibb.co/WgyLctd/abalos-about-me.jpg"> <br> <br>
-            <h3> Discover </h3> 
-            <h1> About Me </h1> <hr>
-            <p> Hi! I am Jerusa Mae Peñarubia Abalos. A BSIS2-02 student of Dr. Filemon C. Aguilar Information Technology Training Institute. I practically seek for environments that provide me with an opportunities to enhance my professional skills, creativity, character, and competencies. This is my third time to create a website and the first time I have used HTML and CSS. </p>
-        <div class="row">
+           <div class="row">
             <div class="col">
-                <p> <b> Name: </b> Jerusa Mae P. Abalos </p>
-                <p> <b> Phone </b> +63 948 821 5837 </p>
-                <p> <b> Experience: </b> thrice </p>    
-                <p> <b> Messenger </b> @jerusa.penarubia </p>
+              
             </div>
             <div class="col">
-                <p> <b> Age: </b> 19 years old </p>
-                <p> <b> Address: </b> Las Piñas City</p>
-                <p> <b> Status: </b> Single </p>    
-                <p> <b> Language: </b> Filipino, English, Spanish</p> 
+              
             </div>
         </div>
     </div>
@@ -83,9 +73,7 @@
 </body>
 <footer>
     <div class = "footer">
-        <h2> Final Project </h2>
-        <p> Abalos | Bagobe | Bataller | Gaborno</p>
-        <p> ©2021 ITE105
+        
         <br>
     </div>
 
