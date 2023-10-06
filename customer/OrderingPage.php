@@ -1,7 +1,7 @@
 <?php
-    require_once 'server.php';
+    require_once'../admin/server.php';
 
-    $sql = "SELECT * FROM `product`;";
+    $sql = 'SELECT product.*,prodimage.* FROM product inner join prodimage on product.prodId = prodimage.productId';
     $all_product = $conn->query($sql);
 ?>
 
@@ -11,66 +11,57 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="OrderPage.css">
     
     <title>ORDERING PAGE</title>
     <link rel="icon" type="image/x-icon" href="tdf.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/lib/font-awesome/5.15.3/css/all.min.css">
 </head>
+
 <body >
-    <!--sidebar-->
-    <div class="sidebar">
-        <!--logo-->
-        <img src="tdf.png" alt="tdf_logo">
-        <h1 class="logo">To Die For</h1>
-
-        <!--list of menu-->
-        <div class="sidebar-menu">
-            <a href="#">Heritage</a>
-            <a href="#">Pasta</a>
-            <a href="#">Salad</a>
-            <a href="#">Sweets</a>
-            <a href="#">Drinks</a>
-            <a href="#">Specialties</a>
-        </div>
-
-        <!--GO BACK BUTTON-->
-        <div class="sidebar-GBbutton">
-            <a href="#"><ion-icon name="arrow-back-circle-outline"></ion-icon>Go Back</a>
-        </div>
-    </div>
-
     <!-- Main-->
     <div class="main">
         <!--Main navigation-->
         <div class="main-navbar">
-            <!-- menu appear on mobile ver.-->
-            <div class="menu-toggle">
-            <ion-icon name="grid-outline"></ion-icon>
-            </div>
-
-            <!--search bar-->
+            <a href="dashboard.html" >
+                <img  class="go-back-button" src="../files/icons/backIcon.png" alt=""> 
+            </a>
+            <!--search bar--> 
             <div class="search">
                 <input type="text" placeholder="What are you looking for?">
                 <button class="search-btn">Search</button>
             </div>
-
             <!-- icon on the upper right side of navbar-->
-            <div class="icon">
-                <a href="#" class="cart"><ion-icon name="cart-outline"></ion-icon></a>
-                <a href="#" class="filter"><ion-icon name="filter-outline"></ion-icon></ion-ion></a>
-
+            <div class="shopping">
+                <a href="#" ><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
+                <span class="quantity">0</span>
+            <!--not sure if ilalagay or papalitan pa
+            < h5 class="text-info">Quantity: <input type="number" min="1" max="25" name="quantity" 
+            class="form-control" value="1" > </h5>-->
+            </div>
+            <div class="list">
+                <!--added to cart orders -->
+            </div>
+            
+            <!--CARD FOR PRODUCT ADDED TO CART-->
+            <div class="card">
+                <h1>List of Orders</h1>
+                <ul class="listCard">
+                </ul>
+                <div class="checkOut">
+                    <div class="total">0</div>
+                    <div class="closeShopping">Close</div>
+                </div>
             </div>
         </div>
-
         <!-- menu recommendation-->
         <div class="main-highlight">
-
             <div class="main-header">
                 <h2 class="main-title">Best Seller</h2>
                 <div class="main-arrow">
-                    <ion-icon class="back" name="chevron-back-circle-outline"></ion-icon>
-                    <ion-icon class="next" name="chevron-forward-circle-outline"></ion-icon>
+                <img  class=" back"  src="../files/icons/previous.png" alt="">
+                <img  class=" next"  src="../files/icons/next.png" alt="">
                 </div>
             </div>
             <div class="highlight-wrapper">
@@ -106,110 +97,101 @@
                         <p>1000.00</p>
                     </div>  
                 </div>
+                <div class="highlight-card">
+                    <!-- TO BE RECODE INTO PHP LANG.-->
+                    <img class="highlight-img" src="assets/images/menu-3.png" alt="">                     
+                    <div class="highlight-desc">
+                        <h4>MENU 1</h4>
+                        <p>1000.00</p>
+                    </div>  
+                </div>
+                <div class="highlight-card">
+                    <!-- TO BE RECODE INTO PHP LANG.-->
+                    <img class="highlight-img" src="assets/images/menu-4.png" alt="">                     
+                    <div class="highlight-desc">
+                        <h4>MENU 1</h4>
+                        <p>1000.00</p>
+                    </div>  
+                </div>
             </div>
-
-            <hr class="divider">
+           
             <!--MAIN MENU/ORDER-->
             <div class="main-menu">
-                <!--PHP CODE HERE-->
+                <div class="filter-header">
+                    <h2 class="filter-title">Food category</h2>
+                    <div class="filter-arrow"> 
+                        <img  class="back-menu"  src="../files/icons/previous.png" alt="">
+                        <img  class="next-menu"  src="../files/icons/next.png" alt="">
+                    </div>
+                </div>
+                <div class="filter-wrapper">
+                    <div class="filter-card">
+                        <p class="category">All Menu</p>
+                    </div>
+                    <div class="filter-card">
+                        <p class="category">Heritage</p>
+                    </div>
+                    <div class="filter-card">
+                        <p class="category">Pasta</p>
+                    </div>
+                    <div class="filter-card">
+                        <p class="category">Sweets</p>
+                    </div>
+                    <div class="filter-card">
+                        <p class="category">Sweets</p>
+                    </div>
+                    <div class="filter-card">
+                        <p class="category">Sweets</p>
+                    </div>
+                    <div class="filter-card">
+                        <p class="category">Sweets</p>
+                    </div>
+                </div>
+
+                <hr class="divider">
+                <div class="list-header">
                 <!--list of food section-->
                 <div class="main-detail">
+                    <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
                     <h2 class="main-title">Choose Order</h2>
+                    <?php
+                    while($row = $all_product->fetch_assoc()) {
+                        $id = $row['prodId'];
+                        $image = $row['productImg'];
+                        $name = $row['prodName'];
+                        $price = $row['prodPrice'];
+                        $description = $row['prodDescription'];
+                        $category = $row['prodCategory'];
+                    
+               ?>
                     <div class="detail-wrapper">
                         <div class="detail-card">
-                            <img src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
+                            <img class="detail-img" src="<?php echo $row["productImg"]; ?>" >
                             <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
+                                <h4><?php echo $name;?></h4>
+                                <p><?php echo $description;?></p>
+                                <div class="detail-price">
+                                    <p class="price">Php<?php echo $price;?></p>
                                 </div>
-                                
-                            </div>
-                        </div>  
-                         <div class="detail-card">
-                            <img src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
+                                <div class="detail-btn">
+                                    <a href="order.php?id=<?php echo $id;?>">
+                                        <button class="btn btn-primary">add to cart</button>
+                                    </a>
                                 </div>
-                                
                             </div>
-                        </div>  
-                        <div class="detail-card">
-                            <img src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                                
-                            </div>
-                        </div>  
-                        <div class="detail-card">
-                            <img src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                                
-                            </div>
-                        </div>  
-                        <div class="detail-card">
-                            <img src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                                
-                            </div>
-                        </div>  
-                        <div class="detail-card">
-                            <img src="assets/images/dish/dish1.jpg" alt="" class="detail-img">
-                            <div class="detail-desc">
-                                <div class="detail-name">
-                                    <h4>Dish 1</h4>
-                                    <p class="price">150 php</p>
-                                </div>
-                                
-                            </div>
-                        </div>  
-
-                    </div>
-                </div>
-            </div> 
-            <div class="quantity-cart">
-                <h2 class="quantity-title">QUANTITY </h2>
-                <div class="quantity-wrapper">
-                    <div class= "myform">
-                        
-                        <ion-icon class="minus" name="remove-circle"></ion-icon>
-                        <input type='text' class="value" value='0'>
-                        <ion-icon class="add" name="add-circle"></ion-icon>
+                        </div>
                         
                     </div>
-                
                 </div>
-                <div class="submit">
-                    <button class="submit-btn"> ADD TO CART</button>
-                </div>
-            </div>     
-                
-                
+            </div>               
         </div>
-    </div>    
-   
-   
-
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-
-<script src="app.js"></script>
- 
+        <?php
+                        }
+            
+        ?>
+    </div>  <!--end of div main--> 
+    
 </body>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="app.js"></script>
 </html>
-
