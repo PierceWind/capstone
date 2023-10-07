@@ -176,11 +176,10 @@
                         <div class="detail-card">
                             <img class="detail-img" src="<?php echo $extension, $image; ?>" >
                             <div class="detail-desc">
-                                <h4><?php echo $name;?></h4>
-                                
-                                <p><?php echo $description;?></p>
+                                <h4 class="d-name"><?php echo $name; ?> </h4> 
+                                <p class="d-desc"><?php echo $description;?></p>
                                 <div class="detail-price">
-                                    <p class="price">Php<?php echo $price;?></p>
+                                    <p class="price">Php <?php echo $price;?></p>
                                 </div>
                                 <div class="detail-btn">
                                     <a href="order.php?id=<?php echo $id;?>">
