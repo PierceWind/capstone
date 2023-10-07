@@ -1,7 +1,14 @@
 <?php
     require_once '../admin/server.php';
-
-    $sql = 'SELECT product.*,prodimage.* FROM product inner join prodimage on product.prodId = prodimage.productId';
+    
+    $sql = 'SELECT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+    FROM product 
+    LEFT JOIN prodimage 
+    ON product.prodId = prodimage.productId
+    LEFT JOIN inventory 
+    ON inventory.prodCode = product.prodId
+    LEFT JOIN sales 
+    ON sales.code = product.prodId';
     $all_product = $conn->query($sql);
 ?>
 
@@ -45,7 +52,7 @@
             </div>
             
             <!--CARD FOR PRODUCT ADDED TO CART-->
-            <div class="card">
+            <div class="cart_card">
                 <h1>List of Orders</h1>
                 <ul class="listCard">
                 </ul>
@@ -98,6 +105,7 @@
                     </div>  
                 </div>
                 <div class="highlight-card">
+
                     <!-- TO BE RECODE INTO PHP LANG.-->
                     <img class="highlight-img" src="assets/images/menu-3.png" alt="">                     
                     <div class="highlight-desc">
@@ -154,22 +162,22 @@
                 <div class="main-detail">
                     <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
                     <h2 class="main-title">Choose Order</h2>
-                    <?php
-                    while($row = $all_product->fetch_assoc()) {
-                        $id = $row['prodId'];
-                        $image = $row['productImg'];
-                        $name = $row['prodName'];
-                        $price = $row['prodPrice'];
-                        $description = $row['prodDescription'];
-                        $category = $row['prodCategory'];
-
-                    
-               ?>
                     <div class="detail-wrapper">
+                    <?php
+                        while($row = $all_product->fetch_assoc()) {
+                            $id = $row['prodId'];
+                            $image = $row['productImg'];
+                            $name = $row['prodName'];
+                            $price = $row['prodPrice'];
+                            $description = $row['prodDescription'];
+                            $category = $row['prodCategory'];
+                            $extension = "../admin/menu/";
+                    ?>
                         <div class="detail-card">
-                            <img class="detail-img" src="<?php echo $image ?>" >
+                            <img class="detail-img" src="<?php echo $extension, $image; ?>" >
                             <div class="detail-desc">
                                 <h4><?php echo $name;?></h4>
+                                
                                 <p><?php echo $description;?></p>
                                 <div class="detail-price">
                                     <p class="price">Php<?php echo $price;?></p>
@@ -181,18 +189,19 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        <?php
+                             }
+                        ?>
                     </div>
                 </div>
             </div>               
         </div>
-        <?php
-                        }
-            
-        ?>
+        
     </div>  <!--end of div main--> 
     
 </body>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="app.js"></script>
+    <script src="main.js"></script>
+    
 </html>
