@@ -181,11 +181,9 @@
                                 <div class="detail-price">
                                     <p class="price">Php <?php echo $price;?></p>
                                 </div>
-                                <div class="detail-btn">
-                                    <a href="order.php?id=<?php echo $id;?>">
-                                        <button class="btn btn-primary">add to cart</button>
-                                    </a>
-                                </div>
+                                <a href="order.php?id=<?php echo $id;?>">
+                                    <img class="addtoc"src="../files/icons/shopping-cart.png" title="Add to cart">
+                                </a>
                             </div>
                         </div>
                         <?php

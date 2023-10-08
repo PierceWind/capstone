@@ -314,6 +314,8 @@ body{
   margin: 1% 0; /* Adjusted top and bottom margin */
   box-shadow: rgba(176, 176, 176, 0.2) 0px 2px 8px 0px;
   cursor: pointer;
+  overflow: hidden;
+
 }
 
 .detail-img {
@@ -346,24 +348,21 @@ body{
   color:var(--blackColor);
 
 }
-.detail-btn{
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
-.btn-primary{
-  background-color:#fb2a2a;
-  color: var(--whiteColor);
-  border: none;
-  border-radius: 5px;
-  width: 90px;
-  cursor: pointer;
-  padding: 3px;
-  justify-content: center; /* Center horizontally */
 
+.btn-primary{
+  position: relative;
+  display: inline-flex;
+  align-items: center; 
+  
 }
+
 .btn-primary:hover{
   background-color: #E8BC0E;
+}
+.addtoc {
+  margin-left: 100px;
+  width: 30px;
+  height: 30px;
 }
 .quantity-title{
   color: var(--whiteColor);
