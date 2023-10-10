@@ -62,8 +62,10 @@
     -->
     <h2>0 Items</h2>
     <br>
+
     <div class="detail-card">
         <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+        
         <div class="detail-desc">
             <h4 class="d-name"><?php echo $name; ?> </h4> 
             <p class="d-desc"><?php echo $description;?></p>
