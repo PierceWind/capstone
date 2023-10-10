@@ -1,0 +1,55 @@
+/* HEADER */
+/*NAVIGATION BAR, LOGO,AND DROPDOWN fceca7*/
+
+.logo {
+    float: left; 
+    height: 60px;
+    width: auto; 
+    padding-right: 30px;
+    padding-left: 50px;
+    margin-top: 5px;
+}
+
+.topnav { /*not fixed menu*/
+  overflow: hidden;
+  background-color: #700202;
+  height: 70px; 
+}
+
+.topnav h1 {
+    color: white;
+    float: left;
+    margin-top: 15px;
+    font-size: 30px;
+}
+
+.topnav a {
+  float: right;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 15px 35px;;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.active {
+  background-color: #fceca7;
+  color: black;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+
+.topnav a:hover, .dropdown:hover .dropbtn {
+  background-color: #fceca7;
+  color: black;
+}
+
+.topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }

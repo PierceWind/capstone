@@ -174,7 +174,7 @@ if (isset($_POST['edit_prod'])) {
                             </div> 
                             <div class = "card">
                                 <label for="prodprice">Price (₱)</label><br>
-                                <input type="number" id="edit_prodPrice" name="prod_price" placeholder="" value="" min=30 max=10000  required>
+                                <input type="number" step="0.01" id="edit_prodPrice" name="prod_price" placeholder="" value="" min=30 max=10000  required>
                             </div> 
                         </div>
                         <div class = "card">
