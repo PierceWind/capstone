@@ -43,23 +43,6 @@
             <div class="shopping">
                 <a href="#" ><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
                 <span class="quantity">0</span>
-            <!--not sure if ilalagay or papalitan pa
-            < h5 class="text-info">Quantity: <input type="number" min="1" max="25" name="quantity" 
-            class="form-control" value="1" > </h5>-->
-            </div>
-            <div class="list">
-                <!--added to cart orders -->
-            </div>
-            
-            <!--CARD FOR PRODUCT ADDED TO CART-->
-            <div class="cart_card">
-                <h1>List of Orders</h1>
-                <ul class="listCard">
-                </ul>
-                <div class="checkOut">
-                    <div class="total">0</div>
-                    <div class="closeShopping">Close</div>
-                </div>
             </div>
         </div>
         <!-- menu recommendation-->
@@ -199,6 +182,5 @@
 </body>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="app.js"></script>
-    <script src="main.js"></script>
     
 </html>

@@ -1,90 +1,82 @@
-<?php
-// Start a session to store cart data
-session_start();
-
-// Check if the action is 'add' and an item ID is provided
-if (isset($_GET['action']) && $_GET['action'] === 'add' && isset($_GET['id'])) {
-    $item_id = $_GET['id'];
-
-    // Check if the item already exists in the cart
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = array();
-    }
-
-    if (isset($_SESSION['cart'][$item_id])) {
-        // Item already exists, increase the quantity
-        $_SESSION['cart'][$item_id]['quantity']++;
-    } else {
-        // Item doesn't exist, add it to the cart
-        $item = array(
-            'id' => $item_id,
-            'name' => $item['name'],  // You should fetch this data from your database
-            'price' => $item['price'], // You should fetch this data from your database
-            'quantity' => 1
-        );
-        $_SESSION['cart'][$item_id] = $item;
-    }
-}
-
-// Function to calculate the total price of items in the cart
-function calculateTotalPrice($cart) {
-    $total = 0;
-    foreach ($cart as $item) {
-        $total += $item['price'] * $item['quantity'];
-    }
-    return $total;
-}
-
-// Display cart contents
-?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Shopping Cart</title>
-</head>
-<body>
-    <h1>Shopping Cart</h1>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="OrderPage.css">
     
-    <!-- Display cart items -->
-    <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-                foreach ($_SESSION['cart'] as $item) {
-                    $total = $item['price'] * $item['quantity'];
-                    echo "<tr>";
-                    echo "<td>{$item['name']}</td>";
-                    echo "<td>{$item['price']} /-</td>";
-                    echo "<td>{$item['quantity']}</td>";
-                    echo "<td>{$total} /-</td>";
-                    echo "<td><a href='cart.php?action=remove&id={$item['id']}'>Remove</a></td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='5'>Your cart is empty.</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
+    <title>ORDERING PAGE</title>
+    <link rel="icon" type="image/x-icon" href="tdf.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/lib/font-awesome/5.15.3/css/all.min.css">
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+    /* font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif; */
+    :root{
+        --primaryColor: #0e6253;
+        --secondaryColor: #700202;
+        --whiteColor: #fff;
+        --blackColor:#222;
+        --softgreenColor: #d9f2ee;
+        --darkgreenColor: #a7a7a7;
+        --greyColor: #f5f5f5;
+    }
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        outline: none;
+        font-family: 'Poppins', sans-serif;
+    }
 
-    <!-- Display total price -->
-    <?php
-    $totalPrice = calculateTotalPrice($_SESSION['cart']);
-    echo "<p>Total Price: {$totalPrice} /-</p>";
-    ?>
+    body{
+        background-color: var(--softgreenColor);
+        overflow-x: hidden;
+        font-family: 'Poppins', sans-serif;
+        width: 100;
+        height: auto;
+        display: flex;
+    }
+    .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
 
-    <!-- Continue shopping or checkout buttons -->
-    <p><a href="index.php">Continue Shopping</a></p>
-    <p><a href="checkout.php">Checkout</a></p>
+    .header img{
+        width: 30%;
+        height: 60%;
+    }
+    
+</style>
+
+<body>
+    <!--
+    <div class="header">
+        <img src="tdf.png" alt="" class="logo">
+        <h3>To Die For Foods</h3>
+    </div>
+    -->
+    <h2>0 Items</h2>
+    <br>
+    <div class="detail-card">
+        <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+        <div class="detail-desc">
+            <h4 class="d-name"><?php echo $name; ?> </h4> 
+            <p class="d-desc"><?php echo $description;?></p>
+            <div class="detail-price">
+                <p class="price">Php <?php echo $price;?></p>
+            </div>
+            <a href="order.php?id=<?php echo $id;?>">
+                <img class="addtoc"src="../files/icons/shopping-cart.png" title="Add to cart">
+            </a>
+        </div>
+    </div>
+    
+    
+
+
 </body>
-</html>
