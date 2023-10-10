@@ -100,19 +100,19 @@ if (isset($_POST['add_stock'])) {
                 <hr style="border: 1px solid #700202;">
                 <br>
                 <li>   
-                    <a href="../dash.php">
+                    <a href="../index.php">
                         <img src="../../files/icons/dashboard.png" alt="" class="fas">
                         <span class="nav-item">Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="../users/user.php">
+                    <a href="../users/index.php">
                         <img src="../../files/icons/user.png" alt="" class="fas">
                         <span class="nav-item">Manage Users</span>
                     </a>
                 </li>
                 <li>
-                    <a href="../menu/menu.php">
+                    <a href="../menu/index.php">
                         <img src="../../files/icons/menu.png" alt="" class="fas">
                         <span class="nav-item">Manage Menu</span>
                     </a>
@@ -123,7 +123,7 @@ if (isset($_POST['add_stock'])) {
                         <span class="nav-item">Manage Inventory</span>
                     </a>
                 </li>
-                <li><a href="../dash.php?logout='1'" class="logout">
+                <li><a href="../index.php?logout='1'" class="logout">
                     <img src="../../files/icons/logout.png" alt="" class="fas">
                     <span class="nav-item">Sign Out</span>
                 </a></li>

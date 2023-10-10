@@ -37,21 +37,21 @@ if (isset($_POST['login_user'])) {
                     $userid=$_SESSION['user']['acc_id'];
                     echo $_SESSION['acc_name'] = $username; 
                     echo $_SESSION['success'] = "You are now logged in";
-                    header('location: ../cashier/dash.php');
+                    header('location: ../cashier/index.php');
                 } 
                 if($row["acc_type"]=="kitchen") {
                     $userid=$_SESSION['user']['acc_id'];
                     echo $_SESSION['acc_name'] = $username; 
                     echo $_SESSION['success'] = "You are now logged in";
-                    header('location: ../kitchen/dash.php');
+                    header('location: ../kitchen/index.php');
                 } 
                 if($row["acc_type"]=="admin") {
                     echo $_SESSION['acc_name'] = $username; 
                     echo $_SESSION['success'] = "You are now logged in as an admin";
-                    header('location: ../admin/dash.php');
+                    header('location: ../admin/index.php');
                 }
                 mysqli_query($db,"delete from loginlogs where IpAddress='$ip_address' AND datelog=current_date()");
-                echo "<script>window.location.href='../admin/dash.php';</script>";
+                echo "<script>window.location.href='../admin/index.php';</script>";
             } else {
                 $total_count++;
                 $rem_attm=3-$total_count;

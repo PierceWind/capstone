@@ -65,13 +65,13 @@
                     <hr style="border: 1px solid #700202;">
                     <br>
                     <li>   
-                        <a href="../dash.php">
+                        <a href="../index.php">
                             <img src="../../files/icons/dashboard.png" alt="" class="fas">
                             <span class="nav-item">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="../users/user.php">
+                        <a href="../users/index.php">
                             <img src="../../files/icons/user.png" alt="" class="fas">
                             <span class="nav-item">Manage Users</span>
                         </a>
@@ -83,12 +83,12 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../inventory/stock.php">
+                        <a href="../inventory/index.php">
                             <img src="../../files/icons/inventory.png" alt="" class="fas">
                             <span class="nav-item">Manage Inventory</span>
                         </a>
                     </li>
-                    <li><a href="../dash.php?logout='1'" class="logout">
+                    <li><a href="../index.php?logout='1'" class="logout">
                         <img src="../../files/icons/logout.png" alt="" class="fas">
                         <span class="nav-item">Sign Out</span>
                     </a></li>
