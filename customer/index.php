@@ -19,6 +19,7 @@ $all_product = $conn->query($sql);
 <head>
      <meta charset="utf-8" name="homepage" content=width=device-width, initial-scale=1 >
         <link rel="stylesheet" type="text/css" href="style.css" media="screen"/> 
+        <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
     <div class="topnav" id="myTopnav">
         <img class="logo" src="../files/icons/tdf.png" alt="GroupLogo" href="index.html">
         <h1> To Die For Foods </h1> 

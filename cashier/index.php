@@ -1,3 +1,20 @@
+<?php 
+    sleep(0);
+    session_start();
+
+    if (!isset($_SESSION['acc_name'])) {
+        $_SESSION['msg'] = "You must log in first";
+        header('location:../login/log.php');
+    }
+    if (isset($_GET['logout'])) {
+        session_destroy();
+        unset($_SESSION['acc_name']);
+        header('location:../login/log.php');
+    }
+    include('server.php');
+    date_default_timezone_set('Asia/Manila');
+?> 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,71 +29,93 @@
     <link rel="stylesheet" href="../filesassets/css/Navbar-Centered-Links-icons.css">
     <link rel="stylesheet" href="../filesassets/css/Off-Canvas-Sidebar-Drawer-Navbar.css">
     <link rel="stylesheet" href="../filesassets/css/project-card.css">
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/> 
+    <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
 </head>  
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-md py-3">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><img src="assets/img/tdfLogo.png" style="width: 120px;"></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-3"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-3">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item d-flex" style="margin-right: 30px;"><i class="fa fa-dashboard fs-3 d-xl-flex align-items-xl-center"></i><a class="nav-link active" href="#"><strong>Dashboard</strong></a></li>
-                    <li class="nav-item d-flex" style="margin-right: 30px;"><i class="fa fa-list fs-3 d-xl-flex align-items-xl-center"></i><a class="nav-link active" href="#"><strong>Order List</strong></a></li>
-                    <li class="nav-item d-flex" style="margin-right: 30px;"><i class="fa fa-history fs-3 d-xl-flex align-items-xl-center"></i><a class="nav-link active" href="#"><strong>History</strong></a></li>
-                    <li class="nav-item d-flex align-items-xl-center" style="margin-right: 30px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -64 640 640" width="1em" height="1em" fill="currentColor" class="fs-3 d-xl-flex align-items-xl-center">
-                            <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
-                            <path d="M96 96C96 60.65 124.7 32 160 32H576C611.3 32 640 60.65 640 96V320C640 355.3 611.3 384 576 384H160C124.7 384 96 355.3 96 320V96zM160 320H224C224 284.7 195.3 256 160 256V320zM160 96V160C195.3 160 224 131.3 224 96H160zM576 256C540.7 256 512 284.7 512 320H576V256zM512 96C512 131.3 540.7 160 576 160V96H512zM368 128C323.8 128 288 163.8 288 208C288 252.2 323.8 288 368 288C412.2 288 448 252.2 448 208C448 163.8 412.2 128 368 128zM48 360C48 399.8 80.24 432 120 432H520C533.3 432 544 442.7 544 456C544 469.3 533.3 480 520 480H120C53.73 480 0 426.3 0 360V120C0 106.7 10.75 96 24 96C37.25 96 48 106.7 48 120V360z"></path>
-                        </svg><a class="nav-link active" href="#"><strong>Bills</strong></a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div class="topnav" id="myTopnav">
+        <img class="logo" src="../files/icons/tdf.png" alt="GroupLogo" href="index.html">
+        <strong><h1> To Die For Foods </h1> 
+        <a href="index.php?logout='1'">Log Out</a>
+        <a href="transacation.php">History</a>
+        <a href="">POS</a></strong>
+    </div>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
+        }
+    </script>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 col-xl-3 d-md-flex flex-column justify-content-xl-center" style="background: #edd1d0;">
+            <div class="col-md-3 col-xl-3 d-md-flex flex-column justify-content-xl-center" style="background: #fceca7; width: 20%;">
                 <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center">
-                    <h2 class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center" style="margin-top: 20px;">Waiting List</h2><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-yellow);color: var(--bs-black);margin-bottom: 15px;"><strong>#0001</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-white);color: var(--bs-black);margin-bottom: 15px;"><strong>#0002</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-active-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0003</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-disabled-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0004</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-disabled-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0005</strong></button>
+                    <h2 class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center" style="margin-bottom: 50px;">Waiting List</h2>
+                    <button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-yellow);color: var(--bs-black)  ;margin-bottom: 15px;"><strong>#0001</strong></button>
+                    <button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-white);color: var(--bs-black);margin-bottom: 15px;"><strong>#0002</strong></button>
+                    <button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-active-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0003</strong></button>
+                    <button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-disabled-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0004</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-disabled-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0005</strong></button>
                 </section>
             </div>
-            <div class="col-md-8" style="/*margin-top: 100px;*/">
+            <div class="col-md-8" style="padding: 30px; width: 80%;">
                 <section>
                     <h2>Order Details</h2>
                     <p style="font-size: 17px;font-weight: bold;margin-bottom: 0px;">Order Number: #0001</p>
-                    <p style="font-size: 17px;font-weight: bold;margin-top: 0px;">Date: May, 6, 2023</p>
+                    <p style="font-size: 17px; font-weight: bold; margin-top: 0px;"> Date: <?php echo date('F j, Y | g:i a'); ?></p><br>
                 </section>
                 <section style="padding-bottom: 20px;border-bottom-style: solid;border-bottom-color: var(--bs-black);">
-                    <div class="table-responsive" style="background: #edd1d0;border-radius: 10px;">
+                    <div class="table-responsive" style="background: #fceca7; border-radius: 10px;">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th style="border-bottom-color: var(--bs-black);">QTY</th>
-                                    <th style="border-bottom-color: var(--bs-table-striped-color);">PRODUCT</th>
-                                    <th style="border-bottom-color: var(--bs-table-striped-color);">PRICE</th>
-                                    <th style="border-bottom-color: var(--bs-table-striped-color);">TAX</th>
-                                    <th style="border-bottom-color: var(--bs-table-striped-color);">TOTAL</th>
+                                    <th style="border-bottom-color: var(--bs-black);">DESCRIPTION</th>
+                                    <th style="border-bottom-color: var(--bs-table-striped-color);">QTY</th>
+                                    <th style="border-bottom-color: var(--bs-table-striped-color);">UNIT PRICE</th>
+                                    <th style="border-bottom-color: var(--bs-table-striped-color);">GROSS AMT</th>
+                                    <th style="border-bottom-color: var(--bs-table-striped-color);">DISCOUNT</th>
+                                    <th style="border-bottom-color: var(--bs-table-striped-color);">NET AMT</th>
+                                    <th style="border-bottom-color: var(--bs-table-striped-color);">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php 
+                                    $query = "SELECT DISTINCT product.*, order_items.*, 
+                                                FROM product
+                                                INNER JOIN order_items
+                                                ON product.prodId = order_items.ProductID
+                                                ORDER BY OrderItemID DESC";
+
+                                    $query_run = mysqli_query($conn, $query);
+
+                                    if (mysqli_num_rows($query_run) > 0) {
+                                        foreach($query_run as $row) {
+                                ?>
                                 <tr>
-                                    <td>2</td>
-                                    <td>Kare-Kare</td>
-                                    <td>150</td>
-                                    <td>0</td>
-                                    <td>300</td>
+                                    <td><?php echo $row['prodName']; ?></td>
+                                    <td><?php echo $row['Quantity']; ?></td>
+                                    <td><?php echo $row['prodPrice']; ?></td>
+                                    <td><?php echo $row['SubTotal']; ?></td>
+                                    <td><?php echo $row['DANG']; ?></td>
+                                    <td><?php echo $row['netAmt']; ?></td>
+                                    <td> 
+                                        <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['minReq']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
+                                        <form action="" method="POST" class="d-inline">
+                                            <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
+                                        </form>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Dinuguan</td>
-                                    <td>120</td>
-                                    <td>0</td>
-                                    <td>120</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Bopis</td>
-                                    <td>130</td>
-                                    <td>0</td>
-                                    <td>130</td>
-                                </tr>
+                                <?php
+                                    }
+                                }
+                                else {
+                                    echo "<h5> No Record Found </h5>";
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
