@@ -21,7 +21,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Ordering System</title>
+    <title>TDF POS</title>
     <link rel="stylesheet" href="../files/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+Hebrew&amp;display=swap">
     <link rel="stylesheet" href="../filesassets/fonts/font-awesome.min.css">
@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="../filesassets/css/project-card.css">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen"/> 
     <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
+    <script src="../files/assets/bootstrap/js/bootstrap.min.js"></script>
 </head>  
 
 <body>
@@ -65,8 +66,15 @@
             <div class="col-md-8" style="padding: 30px; width: 80%;">
                 <section>
                     <h2>Order Details</h2>
-                    <p style="font-size: 17px;font-weight: bold;margin-bottom: 0px;">Order Number: #0001</p>
-                    <p style="font-size: 17px; font-weight: bold; margin-top: 0px;"> Date: <?php echo date('F j, Y | g:i a'); ?></p><br>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <p style="font-size: 17px; font-weight: bold; margin-bottom: 0px;">Order Number: #0001</p>
+                            <p style="font-size: 17px; font-weight: bold; margin-top: 0px;">Date: <?php echo date('F j, Y | g:i a'); ?></p>
+                        </div>
+                        <button type="button" style="background:#700202; border:none;" id="applyDiscountBtn" class="btn btn-primary" data-toggle="modal" data-target="#applyDiscModal">
+                            <strong>Apply Discount</strong>
+                        </button>
+                    </div>
                 </section>
                 <section style="padding-bottom: 20px;border-bottom-style: solid;border-bottom-color: var(--bs-black);">
                     <div class="table-responsive" style="background: #fceca7; border-radius: 10px;">
@@ -100,7 +108,7 @@
                                     <td><?php echo $row['Quantity']; ?></td>
                                     <td><?php echo $row['prodPrice']; ?></td>
                                     <td><?php echo $row['SubTotal']; ?></td>
-                                    <td><?php echo $row['DANG']; ?></td>
+                                    <td><?php echo $row['disc']; ?></td>
                                     <td><?php echo $row['netAmt']; ?></td>
                                     <td> 
                                         <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['minReq']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
@@ -143,6 +151,27 @@
             </div>
         </div>
     </div>
+
+    <?php include ('includes/discModal.php');?>
+        
+    <script type="text/javascript"> 
+        //DISCOUNT MODAL
+        var modal = document.getElementById("discountModal");
+        var btn = document.getElementById("applyDiscountBtn");
+        var span = document.getElementsByClassName("close")[0];
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/Off-Canvas-Sidebar-Drawer-Navbar-swipe.js"></script>
