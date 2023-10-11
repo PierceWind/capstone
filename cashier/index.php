@@ -92,7 +92,7 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                    $query = "SELECT DISTINCT product.*, order_items.*, 
+                                    $query = "SELECT DISTINCT product.*, order_items.* 
                                                 FROM product
                                                 INNER JOIN order_items
                                                 ON product.prodId = order_items.ProductID
@@ -120,8 +120,10 @@
                                 <?php
                                     }
                                 }
-                                else {
-                                    echo "<h5> No Record Found </h5>";
+                                else {  
+                                    ?> 
+                                    <tr> <td style="color:red; "> <?php echo '<strong>NO RECORD FOUND</strong>'; ?>
+                                    <?php 
                                 }
                                 ?>
                             </tbody>

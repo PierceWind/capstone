@@ -143,24 +143,26 @@
                                     }
                                     ?>
                                     <tr>
-                                    <td style="text-align:center;"><?php echo $row['prodId']; ?></td>
-                                    <td style="text-align:center;"><?php echo $row['prodName']; ?></td>
-                                    <td style="text-align:center;"><?php echo $row['minReq']; ?></td>
-                                    <td style="text-align:center;"><?php echo $p, $row['prodPrice']; ?></td>
-                                    <td style="text-align:center;"><?php echo $p, $totalPrice; ?></td> <!-- Display the calculated total price -->
-                                    <td style="text-align:center;"><?php echo $row['stock']; ?></td>
-                                    <td style="text-align:center;"><?php echo $row['totalSales']; ?></td>
-                                    <td style="text-align:center;"><?php echo $status; ?></td> <!-- Display the calculated status -->
+                                        <td style="text-align:center;"><?php echo $row['prodId']; ?></td>
+                                        <td style="text-align:center;"><?php echo $row['prodName']; ?></td>
+                                        <td style="text-align:center;"><?php echo $row['minReq']; ?></td>
+                                        <td style="text-align:center;"><?php echo $p, $row['prodPrice']; ?></td>
+                                        <td style="text-align:center;"><?php echo $p, $totalPrice; ?></td> <!-- Display the calculated total price -->
+                                        <td style="text-align:center;"><?php echo $row['stock']; ?></td>
+                                        <td style="text-align:center;"><?php echo $row['totalSales']; ?></td>
+                                        <td style="text-align:center;"><?php echo $status; ?></td> <!-- Display the calculated status -->
                                     </tr>
-                                    <?php
+                                <?php
                                     }
-                                    } else { 
-                                    echo "<br><br><h5>No Record Found</h5>";
-                                    } 
-
+                                }
+                                else {  
+                                    ?> 
+                                    <tr> <td style="color:red; "> <?php echo '<strong>NO RECORD FOUND</strong>'; ?>
+                                    <?php 
+                                }
                                 ?>
                             </tbody>
-                    </table>
+                        </table>
                 </div>
             </section>
         </div>

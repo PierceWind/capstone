@@ -150,12 +150,14 @@
                                 <?php
                                     }
                                 }
-                                else {
-                                    echo "<h5> No Record Found </h5>";
+                                else {  
+                                    ?> 
+                                    <tr> <td style="color:red;"> <?php echo '<strong>NO RECORD FOUND</strong>'; ?>
+                                    <?php 
                                 }
                                 ?>
                             </tbody>
-                    </table>
+                        </table>
                 </div>
             </section>
         </div>
