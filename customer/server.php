@@ -14,19 +14,19 @@ if ($conn->connect_error) {
 }
 if(isset( $_GET["id"])){
     $prodId = $_GET["id"];
-    $sql = 'SELECT * FROM order_items WHERE prodId = $prodId';
+    $sql = "SELECT * FROM order_items WHERE ProductID = $prodId";
     $result = $conn->query($sql);
     $totalCart = "SELECT * FROM order_items";
     $totalResult = $conn->query($totalCart);
     $cartNum = mysqli_num_rows($totalResult);
 
-    if ($result->num_rows > 0) {
+    if (mysqli_num_rows($result)> 0) {
         // output data of each row
         $in_cart = "already in cart";//supposedly if the button is clicked lalabas to instead of add to cart
 
         echo json_encode(["numCart" => $cartNum, "in_cart" => $in_cart]);
     }else{
-        $insert = "INSERT INTO cart(prodId) VALUES($prodId)";
+        $insert = "INSERT INTO cart(ProductID) VALUES($ProductID)"; //possible error in here
         if ($conn->query($insert) === TRUE) {
             $in_cart = "added into cart"; // same here
             echo json_encode(["numCart" => $cartNum, "in_cart" => $in_cart]);
@@ -39,7 +39,7 @@ if(isset( $_GET["id"])){
 
 if(isset( $_GET["orderId"])){
     $prodId = $_GET["orderId"];
-    $sql = "DELETE FROM order_items WHERE prodId = $prodId";
+    $sql = "DELETE FROM order_items WHERE ProductID = $ProductID";
     
 
     if ($conn->query($sql)=== TRUE) {
@@ -55,4 +55,16 @@ if(isset( $_GET["orderId"])){
     }
     
 }
+if(isset( $_GET["OrderID"])){
+    $prodId = $_GET["OrderID"];
+    $sql = "DELETE FROM order_items WHERE productID = $productID";
+    
+
+    if ($conn->query($sql)=== TRUE) {
+        echo "REMOVED FROM CART";
+    }
+    
+}
+
+
 ?>

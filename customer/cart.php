@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">   
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="OrderPage.css">
     
@@ -122,26 +122,27 @@
         
     </div>    
     <main>
-    <h1>0 Items</h1>
+        
+    <h1><?php echo mysqli_num_rows($all_cart);?>Items</h1>
     <hr class="divider">
     <?php
-        while($row_cart = mysqli_fetch_assoc($all_cart)){
-            $sql = "SELECT * FROM product WHERE prodId=" .$row_cart["[prodId"];
+        while($row_cart = mysqli_fetch_assoc($all_cart)){ 
+            $sql = "SELECT * FROM product WHERE prodId =" .$row_cart[ 'ProductID'];
             $all_product = $conn->query($sql);
             while($row = mysqli_fetch_assoc($all_product)) {
+                
       ?>  
     <div class="detail-card">
-        <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+        <img class="detail-img" <?php echo $row [$prodimage]; ?> >
         
         <div class="detail-desc">
-            <h4 class="d-name"><?php echo $name; ?> </h4> 
-            <p class="d-desc"><?php echo $description;?></p>
+            <h4 class="d-name"><?php echo $row[$name]; ?> </h4> 
+            <p class="d-desc"><?php echo $row[$description];?></p>
             <div class="detail-price">
-                <p class="price">Php <?php echo $price;?></p>
+                <p class="price">Php <?php echo $row[$price];?></p>
             </div>
-            <a href="order.php?id=<?php echo $id;?>">
-                <button class="remove"> Remove from Cart</button>
-            </a>
+            <button class="remove"> Remove from Cart</button>
+
         </div>
         
     </div>
@@ -156,7 +157,7 @@
         for (var i = 0; i < remove.length; i++) {
             remove[i].addEventListener("click",function(event){
                 var target = event.target;
-                var orderId = target.getAttribute("data-id");
+                var oOrderID = target.getAttribute("data-id");
                 var xml = new XMLHttpRequest();
                 xml.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -164,7 +165,7 @@
                         target.style.opacity= .3;
                     }
             }
-                xml.open("GET","server.php?id=" + id, true);
+                xml.open("GET","server.php?id=" + OrderID, true);
                 xml.send(); 
             })           
         }
