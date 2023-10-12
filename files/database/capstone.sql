@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2023 at 08:29 PM
+-- Generation Time: Oct 12, 2023 at 04:28 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -106,6 +106,7 @@ INSERT INTO `delivery` (`drNum`, `drName`, `drDate`, `drRName`, `dateCreated`, `
 (29999, '2fvf', '2023-10-09', '434', '2023-10-03 10:30:02', '0000-00-00 00:00:00'),
 (34253, 'fdev', '2023-10-01', 'dfs', '2023-10-03 09:44:33', '0000-00-00 00:00:00'),
 (55555, 'dsd', '2023-10-03', 'gdfdf', '2023-10-03 10:04:24', '0000-00-00 00:00:00'),
+(121212, 'JJ', '2023-10-12', 'MM', '2023-10-12 09:37:14', '2023-10-12 01:37:14'),
 (222222, 'ff', '2023-10-03', 'ssc', '2023-10-04 23:52:07', '2023-10-04 15:52:07'),
 (433333, 'ssda', '2023-10-03', 'dsacads', '2023-10-05 00:17:37', '2023-10-04 16:17:37'),
 (1111111, 'MM', '2023-10-01', 'FF', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -137,7 +138,12 @@ INSERT INTO `delivery_products` (`id`, `deliveryId`, `productId`, `quantity`, `d
 (32, 6666, '12', 6, '2023-10-03 10:14:57', '2023-10-03 02:14:57'),
 (33, 7777, '1', 75, '2023-10-03 10:17:15', '2023-10-03 02:17:15'),
 (34, 7777, '12', 75, '2023-10-03 10:17:15', '2023-10-03 02:17:15'),
-(48, 123456789, '5', 50, '2023-10-05 00:29:02', '2023-10-04 16:29:02');
+(48, 123456789, '5', 50, '2023-10-05 00:29:02', '2023-10-04 16:29:02'),
+(49, 121212, '12', 10, '2023-10-12 09:37:14', '2023-10-12 01:37:14'),
+(50, 121212, '4', 12, '2023-10-12 09:37:14', '2023-10-12 01:37:14'),
+(51, 121212, '5', 50, '2023-10-12 09:37:14', '2023-10-12 01:37:14'),
+(52, 121212, '11', 10, '2023-10-12 09:41:34', '2023-10-12 01:41:34'),
+(53, 121212, '12', 20, '2023-10-12 09:41:34', '2023-10-12 01:41:34');
 
 -- --------------------------------------------------------
 
@@ -156,15 +162,15 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`id`, `prodCode`, `stock`) VALUES
-(2, '11', 4),
+(2, '11', 14),
 (3, '1', 176),
-(4, '12', 198),
+(4, '12', 228),
 (7, '13', 22),
-(8, '5', 150),
+(8, '5', 200),
 (9, '3', 99),
 (10, '10', 23),
 (11, '2', 9),
-(12, '4', 10);
+(12, '4', 22);
 
 -- --------------------------------------------------------
 
@@ -192,6 +198,14 @@ CREATE TABLE `orders` (
   `queueNumber` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`orderID`, `orderDateTime`, `orderStatus`, `queueNumber`) VALUES
+(1, '2023-10-12 11:28:51', 'Queued', 1),
+(2, '2023-10-12 14:11:32', 'Queued', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -205,6 +219,17 @@ CREATE TABLE `order_items` (
   `Quantity` int(11) NOT NULL,
   `Subtotal` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Subtotal`) VALUES
+(1, 1, 12, 5, '1500.00'),
+(2, 1, 1, 5, '1500.00'),
+(3, 2, 6, 10, '1000.00'),
+(4, 2, 7, 10, '1500.00'),
+(5, 2, 9, 10, '1000.00');
 
 -- --------------------------------------------------------
 
@@ -264,7 +289,7 @@ CREATE TABLE `product` (
   `prodDescription` varchar(255) NOT NULL,
   `prodName` varchar(50) NOT NULL,
   `netWeight` int(20) NOT NULL,
-  `prodPrice` decimal(10,0) NOT NULL,
+  `prodPrice` decimal(10,2) NOT NULL,
   `minReq` int(255) NOT NULL,
   `prodCategory` varchar(20) NOT NULL,
   `dateCreated` datetime NOT NULL DEFAULT current_timestamp(),
@@ -276,20 +301,20 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`prodId`, `prodDescription`, `prodName`, `netWeight`, `prodPrice`, `minReq`, `prodCategory`, `dateCreated`, `dateModified`) VALUES
-('1', 'olive oil and tomato ', 'Puttanesca', 300, '300', 5, 'Heritage', '2023-09-25 00:08:07', '2023-09-25 00:08:07'),
-('10', 'Olive Oil ', 'Beef Mechado', 400, '400', 5, 'Heritage', '2023-09-25 00:21:50', '2023-09-25 00:21:50'),
-('11', '..', 'Bopis', 220, '250', 5, 'Specialties', '2023-09-25 00:22:36', '2023-09-25 00:22:36'),
-('12', 'Tomato', 'Bolognese', 400, '300', 5, 'Pasta', '2023-09-25 00:23:22', '2023-09-25 00:23:22'),
-('13', 'Fish Egg', 'Bottarga', 400, '200', 2, 'Heritage', '2023-09-25 00:25:18', '2023-09-25 00:25:18'),
-('14', 'goat ', 'Goat Caldereta', 400, '401', 10, 'Heritage', '2023-10-11 01:38:17', '2023-09-28 23:19:48'),
-('2', 'Orange', 'Marmalade', 300, '120', 10, 'Sweets', '2023-09-25 00:09:20', '2023-09-25 00:09:20'),
-('3', 'sample here', 'Baby Back Ribs', 100, '90', 5, 'Heritage', '2023-09-25 00:02:51', '2023-09-24 20:57:13'),
-('4', 'Bread, Celery, and Spice', 'Roast Turkey', 1000, '1000', 0, 'Specialties', '2023-09-25 00:11:49', '2023-09-25 00:11:49'),
-('5', 'Coconut Milk ', 'Suman Sa Lihiya', 100, '30', 10, 'Sweets', '2023-09-25 00:12:59', '2023-09-25 00:12:59'),
-('6', 'Papaya, Onion, Carrots', 'Atsarang Papaya', 350, '100', 10, 'Specialties', '2023-09-25 00:13:56', '2023-09-25 00:13:56'),
-('7', 'Onion, Garlic, Vinegar', 'Shallot', 400, '150', 10, 'Specialties', '2023-09-25 00:18:05', '2023-09-25 00:17:45'),
-('8', 'Radish', 'Pinoy Salad', 100, '100', 0, 'Salad', '2023-09-25 00:19:10', '2023-09-25 00:19:10'),
-('9', 'Ubod ', 'Atsarang Ubod', 350, '100', 10, 'Specialties', '2023-09-25 00:20:03', '2023-09-25 00:20:03');
+('1', 'olive oil and tomato ', 'Puttanesca', 300, '300.00', 5, 'Heritage', '2023-09-25 00:08:07', '2023-09-25 00:08:07'),
+('10', 'Olive Oil ', 'Beef Mechado', 400, '400.00', 5, 'Heritage', '2023-09-25 00:21:50', '2023-09-25 00:21:50'),
+('11', '..', 'Bopis', 220, '250.00', 5, 'Specialties', '2023-09-25 00:22:36', '2023-09-25 00:22:36'),
+('12', 'Tomato', 'Bolognese', 400, '300.00', 5, 'Pasta', '2023-09-25 00:23:22', '2023-09-25 00:23:22'),
+('13', 'Fish Egg', 'Bottarga', 400, '200.00', 2, 'Heritage', '2023-09-25 00:25:18', '2023-09-25 00:25:18'),
+('14', 'goat ', 'Goat Caldereta', 400, '401.00', 10, 'Heritage', '2023-10-11 01:38:17', '2023-09-28 23:19:48'),
+('2', 'Orange', 'Marmalade', 300, '120.00', 10, 'Sweets', '2023-09-25 00:09:20', '2023-09-25 00:09:20'),
+('3', 'sample here', 'Baby Back Ribs', 100, '90.00', 5, 'Heritage', '2023-09-25 00:02:51', '2023-09-24 20:57:13'),
+('4', 'Bread, Celery, and Spice', 'Roast Turkey', 1000, '1000.00', 0, 'Specialties', '2023-09-25 00:11:49', '2023-09-25 00:11:49'),
+('5', 'Coconut Milk ', 'Suman Sa Lihiya', 100, '30.00', 10, 'Sweets', '2023-09-25 00:12:59', '2023-09-25 00:12:59'),
+('6', 'Papaya, Onion, Carrots', 'Atsarang Papaya', 350, '100.00', 10, 'Specialties', '2023-09-25 00:13:56', '2023-09-25 00:13:56'),
+('7', 'Onion, Garlic, Vinegar', 'Shallot', 400, '150.00', 10, 'Specialties', '2023-09-25 00:18:05', '2023-09-25 00:17:45'),
+('8', 'Radish', 'Pinoy Salad', 100, '100.00', 0, 'Salad', '2023-09-25 00:19:10', '2023-09-25 00:19:10'),
+('9', 'Ubod ', 'Atsarang Ubod', 350, '100.00', 10, 'Specialties', '2023-09-25 00:20:03', '2023-09-25 00:20:03');
 
 -- --------------------------------------------------------
 
@@ -412,7 +437,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `delivery_products`
 --
 ALTER TABLE `delivery_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -424,13 +449,13 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `OrderItemID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `OrderItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payments`
