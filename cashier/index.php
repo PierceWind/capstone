@@ -16,25 +16,26 @@ include('server.php');
 
 date_default_timezone_set('Asia/Manila');
 
-$discType = isset($_GET['discType']) ? $_GET['discType'] : "";
-$discPercent = isset($_GET['discPercent']) ? (float)$_GET['discPercent'] : 0;
-$customerID = isset($_GET['customerID']) ? (int)$_GET['customerID'] : 0;
+if (isset($_POST['applyDiscountBtn'])) {
+    // Form was submitted, retrieve and assign the values
+    $discType = isset($_POST['discType']) ? $_POST['discType'] : "";
+    $discPercent = isset($_POST['discPercent']) ? (float)$_POST['discPercent'] : 0;
+    $customerID = isset($_POST['customerID']) ? (int)$_POST['customerID'] : 0;
+
+    // Now you have the inputted values in $discType, $discPercent, and $customerID
+    // You can use these variables for further processing.
+}
 
 ?> 
 <?php
-// ... (previous code)
-
 // Check if an order is currently being processed (you need to retrieve this information from your system)
 $currentlyProcessingOrder = true; // Change this based on your system logic
 $currentlyProcessingOrderQueueNumber = "0001"; // Replace with the actual queue number of the processing order
 
 // Get the next queue number
-$nextQueueNumber = getNextQueueNumber($currentlyProcessingOrderQueueNumber); // Implement this function
+$nextQueueNumber = getNextQueueNumber($conn, $currentlyProcessingOrderQueueNumber);
 
-function getNextQueueNumber($currentQueueNumber) {
-    // Query your database to get the next queue number based on your logic
-    // For example, you can find the minimum Queue Number greater than the current one
-    // Here is a sample query, but you should adapt it to your database schema:
+function getNextQueueNumber($conn, $currentQueueNumber) {
     $query = "SELECT MIN(queueNumber) AS NextQueueNumber FROM orders WHERE queueNumber > '$currentQueueNumber'";
     $result = mysqli_query($conn, $query);
 
@@ -46,10 +47,6 @@ function getNextQueueNumber($currentQueueNumber) {
     }
 }
 ?>
-
-<!-- ... (rest of your HTML code) -->
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -90,21 +87,21 @@ function getNextQueueNumber($currentQueueNumber) {
     </script>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 col-xl-3 d-md-flex flex-column justify-content-xl-center" style="background: #fceca7; width: 20%;">
+            <div class="col-md-3 col-xl-3 d-md-flex flex-column justify-content-xl-center" style="background: #fceca7; width: 20%; height: 100vh">
                 <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center">
                     <h2 class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center" style="margin-bottom: 50px;">Waiting List</h2>
                     <?php
                     // Fetch the first 100 queue numbers from your database
-                    $query = "SELECT orderID, QueueNumber, orderDateTime FROM orders ORDER BY orderDateTime ASC LIMIT 5";
+                    $query = "SELECT orderID, queueNumber, orderDateTime FROM orders ORDER BY orderDateTime ASC LIMIT 5";
                     $query_run = mysqli_query($conn, $query);
 
                     if (mysqli_num_rows($query_run) > 0) {
                         while ($row = mysqli_fetch_assoc($query_run)) {
-                            $queueNumber = sprintf("%04d", $row['QueueNumber']); // Format as 4 digits
+                            $queueNumber = sprintf("%04d", $row['queueNumber']); // Format as 4 digits
                             $orderID = $row['orderID'];
                             $isProcessing = ($currentlyProcessingOrder && $queueNumber == $currentlyProcessingOrderQueueNumber);
                     ?>
-                        <button class="btn btn-primary<?php echo $isProcessing ? ' active' : ''; ?>" type="button" style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-yellow); color: var(--bs-black); margin-bottom: 15px;">
+                        <button class="btn btn-primary queue-button" data-queue-number="<?php echo $queueNumber; ?>" data-order-id="<?php echo $orderID; ?>"  style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-yellow); color: var(--bs-black); margin-bottom: 15px;">
                             <strong>#<?php echo $queueNumber; ?></strong>
                         </button>
                     <?php
@@ -128,14 +125,13 @@ function getNextQueueNumber($currentQueueNumber) {
                 </section>
                 <section style="padding-bottom: 20px;border-bottom-style: solid;border-bottom-color: var(--bs-black);">
                     <div class="table-responsive" style="background: #fceca7; border-radius: 10px;">
-                        <table class="table">
+                        <table id="order-list" class="table">
                             <thead>
                                 <tr>
                                     <th style="border-bottom-color: var(--bs-black);">DESCRIPTION</th>
                                     <th style="border-bottom-color: var(--bs-table-striped-color);">QTY</th>
                                     <th style="border-bottom-color: var(--bs-table-striped-color);">UNIT PRICE</th>
-                                    <th style="border-bottom-color: var(--bs-table-striped-color);">GROSS AMT</th>
-                                    <th style="border-bottom-color: var(--bs-table-striped-color);">NET AMT</th>
+                                    <th style="border-bottom-color: var(--bs-table-striped-color);">SUBTOTAL</th>
                                     <th style="border-bottom-color: var(--bs-table-striped-color);">ACTION</th>
                                 </tr>
                             </thead>
@@ -160,7 +156,6 @@ function getNextQueueNumber($currentQueueNumber) {
                                             <td><?php echo $row['Quantity']; ?></td>
                                             <td><?php echo $row['prodPrice']; ?></td>
                                             <td><?php echo $formattedGrossAmount; ?></td>
-                                            <td><?php echo $row['netAmt']; ?></td>
                                             <td> 
                                                 <form action="" method="POST" class="d-inline">
                                                     <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></button>   
@@ -193,33 +188,81 @@ function getNextQueueNumber($currentQueueNumber) {
 
     <?php include ('includes/discModal.php');?>
         
-<script type="text/javascript">
-    // Get the modal element
-    var modal = document.getElementById("discountModal");
-    
-    // Get the button that opens the modal
-    var btn = document.getElementById("applyDiscountBtn");
+    <script type="text/javascript">
+        var modal = document.getElementById("discountModal");
+        var btn = document.getElementById("applyDiscountBtn");
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementsByClassName("close")[0];
 
-    // When the button is clicked, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
 
-    // When the <span> (x) is clicked, close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
+        span.onclick = function() {
             modal.style.display = "none";
         }
-    }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get references to the queue buttons and the order list table
+        const queueButtons = document.querySelectorAll(".queue-button");
+        const orderListTable = document.getElementById("order-list");
+
+        // Function to clear the order list table
+        function clearOrderList() {
+            const tbody = orderListTable.querySelector("tbody");
+            tbody.innerHTML = ''; // Clear existing rows
+        }
+
+        // Attach a click event handler to each queue button
+        queueButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                // Get the queue number and order ID from the clicked button's data attributes
+                const queueNumber = button.getAttribute("data-queue-number");
+                const orderID = button.getAttribute("data-order-id");
+
+                // Clear the order list table before loading new order details
+                clearOrderList();
+
+                // Call a function to load order details based on queueNumber
+                loadOrderDetails(queueNumber);
+            });
+        });
+
+        // Function to load order details based on queueNumber
+        function loadOrderDetails(queueNumber) {
+            // You can make an AJAX request to fetch order details from the server
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `fetch_order_details.php?queueNumber=${queueNumber}`, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Parse the JSON response from the server
+                    const orderDetails = JSON.parse(xhr.responseText);
+
+                    // Populate the order list table with the retrieved order details
+                    orderDetails.forEach(item => {
+                        const newRow = orderListTable.insertRow();
+                        newRow.insertCell(0).textContent = item.productName;
+                        newRow.insertCell(1).textContent = item.quantity;
+                        newRow.insertCell(2).textContent = item.unitPrice;
+                        newRow.insertCell(3).textContent = item.subtotal;
+                    });
+                }
+            };
+
+            xhr.send();
+        }
+    });
 </script>
+
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

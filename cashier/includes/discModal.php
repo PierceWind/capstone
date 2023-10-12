@@ -16,7 +16,7 @@
                     <form method="post" id="users" class="input-group" enctype="multipart/form-data" action="">
                         <label for="discType">Discount Type</label><br>
                         <select name="discType">
-                            <option value="regular">Frequent Customer</option>
+                            <option value="frequent">Frequent Customer</option>
                             <option value="pwd">PWD</option>
                             <option value="senior">Senior</option>
                         </select> <br>
@@ -27,7 +27,7 @@
                         <input type="number" id="" name="customerID" placeholder="Just place 1 for a regular customer" required><br><br><br>
 
                         <div class="footer">
-                            <button type="button" class="submit-btn" id="applyDiscountBtn">Apply Discount</button>
+                            <button type="button" class="submit-btn" id="applyBtn">Apply Discount</button>
                         </div>
                     </form> 
                 </div>
@@ -36,7 +36,7 @@
 
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function () {
-                var applyDiscountBtn = document.getElementById("applyDiscountBtn");
+                var applyDiscountBtn = document.getElementById("applyBtn");
                 var discTypeInput = document.querySelector("select[name='discType']");
                 var discPercentInput = document.querySelector("input[name='discPercent']");
                 var customerIDInput = document.querySelector("input[name='customerID']");
