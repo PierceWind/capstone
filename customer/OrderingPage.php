@@ -1,5 +1,5 @@
 <?php
-    require_once '../admin/server.php';
+    require_once 'server.php';
     
     $sql = 'SELECT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
     FROM product 
@@ -42,7 +42,7 @@
             <!-- icon on the upper right side of navbar-->
             <div class="shopping">
                 <a href="cart.php" ><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
-                <span class="quantity">0</span>
+                <span id="quantity">0</span>
             </div>
         </div>
         <!-- menu recommendation-->
@@ -164,15 +164,38 @@
                                 <div class="detail-price">
                                     <p class="price">Php <?php echo $price;?></p>
                                 </div>
-                                <a href="order.php?id=<?php echo $id;?>">
-                                    <img class="addtoc"src="../files/icons/shopping-cart.png" title="Add to cart">
-                                </a>
+                                        <img class="addtoc"src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"/
+                                        title="Add to cart">
+                                    </a>
                             </div>
                         </div>
                         <?php
                              }
                         ?>
                     </div>
+                    <script>
+                        var prodId = document.getElementsByClassName("addtoc");
+
+                        for (var i = 0; i < prodId.length; i++) {
+                            prodId[i].addEventListener("click", function(event) {
+                                var target = event.target;
+                                var id = target.getAttribute("data-id");
+                                var xml = new XMLHttpRequest();
+                                xml.onreadystatechange = function() {
+                                    
+                                    if (this.readyState == 4 && this.status == 200) {
+                                        var data = JSON.parse(this.responseText);
+                                        target.innerHTML = data.in_cart;
+                                        document.getElementById("quantity").innerHTML = data.numCart + 1;
+                                        
+                                    }
+                                }
+                                xml.open("GET", "server.php?id=" + id, true);
+                                xml.send(); 
+                                
+                            })
+                        }
+                    </script>
                 </div>
             </div>               
         </div>

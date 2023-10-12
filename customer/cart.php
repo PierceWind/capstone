@@ -1,3 +1,11 @@
+<?php
+    require_once 'server.php';
+    
+    $sql_cart= "SELECT *  FROM order_items";
+    $all_cart = $conn->query($sql_cart);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +58,7 @@
         width: 80%;
         margin: 30px auto;
         display: flex;
-        flex-wrap:wrap;
+        flex-wrap: wrap;
     }
 
     main .detail-card{
@@ -81,6 +89,18 @@
     main .detail-card .detail-desc p{
         font-size: 1.5rem;
     }
+
+    main .detail-card .detail-desc button{
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        border: none;
+        background-color: var(--primaryColor);
+        color: var(--whiteColor);
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
     
 </style>
 
@@ -104,7 +124,12 @@
     <main>
     <h1>0 Items</h1>
     <hr class="divider">
-
+    <?php
+        while($row_cart = mysqli_fetch_assoc($all_cart)){
+            $sql = "SELECT * FROM product WHERE prodId=" .$row_cart["[prodId"];
+            $all_product = $conn->query($sql);
+            while($row = mysqli_fetch_assoc($all_product)) {
+      ?>  
     <div class="detail-card">
         <img class="detail-img" src="<?php echo $extension, $image; ?>" >
         
@@ -118,9 +143,32 @@
                 <button class="remove"> Remove from Cart</button>
             </a>
         </div>
+        
     </div>
+    <?php
+            }
+        }
+    ?>
     </main>
     
-
+    <script>
+        var remove = document.getElementsByClassName("remove");
+        for (var i = 0; i < remove.length; i++) {
+            remove[i].addEventListener("click",function(event){
+                var target = event.target;
+                var orderId = target.getAttribute("data-id");
+                var xml = new XMLHttpRequest();
+                xml.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        target.innerHTML = this.responseText;
+                        target.style.opacity= .3;
+                    }
+            }
+                xml.open("GET","server.php?id=" + id, true);
+                xml.send(); 
+            })           
+        }
+    </script>
 
 </body>
+</html>
