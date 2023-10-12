@@ -65,11 +65,11 @@
             </div>
             <div class="col-md-8" style="padding: 30px; width: 80%;">
                 <section>
-                    <h2>Order Details</h2>
+                    <h2><strong>Order Details</strong></h2>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <p style="font-size: 17px; font-weight: bold; margin-bottom: 0px;">Order Number: #0001</p>
-                            <p style="font-size: 17px; font-weight: bold; margin-top: 0px;">Date: <?php echo date('F j, Y | g:i a'); ?></p>
+                            <p style="font-size: 17px; font-weight: bold; margin-bottom: 0px;">Order Number:</p>
+                            <p style="font-size: 17px; font-weight: bold; margin-top: 0px;">Date: <strong><?php echo date('F j, Y | g:i a'); ?></strong></p>
                         </div>
                         <button type="button" style="background:#700202; border:none;" id="applyDiscountBtn" class="btn btn-primary" data-toggle="modal" data-target="#applyDiscModal">
                             <strong>Apply Discount</strong>

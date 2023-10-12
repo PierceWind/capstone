@@ -1,17 +1,3 @@
-<?php 
-    sleep(1);
-
-    if (!isset($_SESSION['acc_name'])) {
-        $_SESSION['msg'] = "You must log in first";
-        header('location: ../login/log.php');
-    }
-    if (isset($_GET['logout'])) {
-        session_destroy();
-        unset($_SESSION['acc_name']);
-        header('location: ../login/log.php');
-    }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -30,7 +16,7 @@
                     <form method="post" id="users" class="input-group" enctype="multipart/form-data"  action = ""> 
                         <label for="discType">Discount Type</label><br>
                         <select name="discType">
-                            <option value="regular">Regular</option>
+                            <option value="regular">Frequent Customer</option>
                             <option value="pwd">PWD</option>
                             <option value="senior">Senior</option>
                         </select> <br>

@@ -104,7 +104,7 @@ if (isset($_POST['add_stock'])) {
     mysqli_close($conn);
 
     // Redirect to a success page or display a success message
-    header('location: stock.php'); // Change 'success.php' to the appropriate page
+    header('location: index.php'); // Change 'success.php' to the appropriate page
 }
 
 ?>

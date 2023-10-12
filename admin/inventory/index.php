@@ -88,7 +88,7 @@
                             <span class="nav-item">Manage Inventory</span>
                         </a>
                     </li>
-                    <li><a href="../dash.php?logout='1'" class="logout">
+                    <li><a href="../index.php?logout='1'" class="logout">
                         <img src="../../files/icons/logout.png" alt="" class="fas">
                         <span class="nav-item">Sign Out</span>
                     </a></li>

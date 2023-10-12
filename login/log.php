@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Register & Login Form</title>
         <link rel="stylesheet" type="text/css" href="style.css" media="screen">
+        <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
     </head>
     <body>
         <div class="col">
