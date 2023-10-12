@@ -22,7 +22,7 @@
                         </select> <br>
                     
                         <label for="discPercent">Discount Percentage</label> <br>
-                        <input type="number" id="discPercent" name="discPercent" placeholder="20" value="" min=1 max=90 required> <br>
+                        <input type="number" id="discPercent" name="discPercent" placeholder="20" value="0" min=1 max=90 required> <br>
                         <label for="customerID">Customer ID Number</label><br> 
                         <input type="number" id="" name="customerID" placeholder="Just place 1 for regular customer" required><br><br><br>
                         
@@ -33,5 +33,32 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                var applyDiscountBtn = document.getElementById("applyDiscountBtn");
+                var discTypeInput = document.querySelector("select[name='discType']");
+                var discPercentInput = document.querySelector("input[name='discPercent']");
+                var customerIDInput = document.querySelector("input[name='customerID']");
+
+                applyDiscountBtn.addEventListener('click', function () {
+                    // Get the selected values
+                    var discType = discTypeInput.value;
+                    var discPercent = discPercentInput.value !== '' ? discPercentInput.value : 0; // Set to 0 if empty
+                    var customerID = customerIDInput.value;
+
+                    // Check if a discount type is selected, and if so, pass the values to index.php
+                    if (discType) {
+                        // Pass the values using JavaScript by setting them as query parameters in the URL
+                        window.location.href = 'index.php?discType=' + discType + '&discPercent=' + discPercent + '&customerID=' + customerID;
+                    }
+
+                    // Close the discount modal
+                    var modal = document.getElementById("discountModal");
+                    modal.style.display = "none";
+                });
+            });
+        </script>
+
+
     </body>
 </html>
