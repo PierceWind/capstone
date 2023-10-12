@@ -41,7 +41,7 @@
             </div>
             <!-- icon on the upper right side of navbar-->
             <div class="shopping">
-                <a href="#" ><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
+                <a href="cart.php" ><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
                 <span class="quantity">0</span>
             </div>
         </div>

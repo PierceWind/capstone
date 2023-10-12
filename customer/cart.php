@@ -27,41 +27,83 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        outline: none;
+        text-decoration:none;
         font-family: 'Poppins', sans-serif;
     }
-
-    body{
-        background-color: var(--softgreenColor);
-        overflow-x: hidden;
-        font-family: 'Poppins', sans-serif;
-        width: 100;
-        height: auto;
-        display: flex;
+    html{
+        font-size: 62.5%;
     }
-    .header {
-        display: flex;
+    .banner-text-item {
+        text-align: center;
+        justify-content: center;
+    }
+    img{
         justify-content: center;
         align-items: center;
-        
+        margin-top: 10px;
+        width: 160px;
+        height: 100px;
     }
 
-    .header img{
-        width: 30%;
-        height: 60%;
+    main{
+        max-width: 1500px;
+        width: 80%;
+        margin: 30px auto;
+        display: flex;
+        flex-wrap:wrap;
+    }
+
+    main .detail-card{
+        height: 150px;
+        border: 1px solid lightgray;
+        margin: 20px;
+        display: flex;
+    }
+
+    main .detail-card .detail-img{
+        width: 20%;
+    }
+    main .detail-card .detail-img img{
+        width: 100%;
+        height: 100%;
+        object-fit:cover;
+    }
+    main .detail-card .detail-desc{
+        line-height: 3em;
+        margin-left: 30px;
+        position: relative;
+        width:75%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    main .detail-card .detail-desc p{
+        font-size: 1.5rem;
     }
     
 </style>
 
 <body>
-    <!--
-    <div class="header">
-        <img src="tdf.png" alt="" class="logo">
-        <h3>To Die For Foods</h3>
-    </div>
-    -->
-    <h2>0 Items</h2>
     <br>
+    <div class="banner-text-item">
+        <div class="banner-heading">
+            <div class="image">
+                <img src="../files/icons/tdf.png" alt="TDF LOGO">
+            </div>
+            <div class = "content"> 
+                <br> <br>
+                <h2>Your Ultimate Cravings Satisfied Exclusively </h2>
+                <h1> @TDF FOODS</h1>
+                <p> 1159 Zobel Roxas corner Espiritu St. </p>
+                <p> Barangay 757, Manila, 1009 Metro Manila </p> 
+            </div> 
+        </div>
+        
+    </div>    
+    <main>
+    <h1>0 Items</h1>
+    <hr class="divider">
 
     <div class="detail-card">
         <img class="detail-img" src="<?php echo $extension, $image; ?>" >
@@ -73,11 +115,11 @@
                 <p class="price">Php <?php echo $price;?></p>
             </div>
             <a href="order.php?id=<?php echo $id;?>">
-                <img class="addtoc"src="../files/icons/shopping-cart.png" title="Add to cart">
+                <button class="remove"> Remove from Cart</button>
             </a>
         </div>
     </div>
-    
+    </main>
     
 
 
