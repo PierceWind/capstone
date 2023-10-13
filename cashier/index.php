@@ -16,18 +16,30 @@ include('server.php');
 
 date_default_timezone_set('Asia/Manila');
 
+//for egtting discModal values 
 if (isset($_POST['applyDiscountBtn'])) {
-    // Form was submitted, retrieve and assign the values
     $discType = isset($_POST['discType']) ? $_POST['discType'] : "";
     $discPercent = isset($_POST['discPercent']) ? (float)$_POST['discPercent'] : 0;
     $customerID = isset($_POST['customerID']) ? (int)$_POST['customerID'] : 0;
-
-    // Now you have the inputted values in $discType, $discPercent, and $customerID
-    // You can use these variables for further processing.
 }
 
 ?> 
 <?php
+
+// Get the first queue number
+$firstQueueNumber = getFirstQueueNumber($conn);
+
+function getFirstQueueNumber($conn) {
+    $query = "SELECT MIN(queueNumber) AS FirstQueueNumber FROM orders ORDER BY orderDateTime ASC LIMIT 1";
+    $result = mysqli_query($conn, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['FirstQueueNumber'];
+    } else {
+        return null; // No queue number found
+    }
+}
 // Check if an order is currently being processed (you need to retrieve this information from your system)
 $currentlyProcessingOrder = true; // Change this based on your system logic
 $currentlyProcessingOrderQueueNumber = "0001"; // Replace with the actual queue number of the processing order
@@ -158,7 +170,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                                             <td><?php echo $formattedGrossAmount; ?></td>
                                             <td> 
                                                 <form action="" method="POST" class="d-inline">
-                                                    <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></button>   
+                                                    <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../files/icons/delete.png" alt="delete"></button>   
                                                 </form>
                                             </td>
                                         </tr>

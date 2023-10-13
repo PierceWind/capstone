@@ -132,6 +132,26 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
   size: 20px; 
 }
 
+.button {
+  float: left;
+  position: relative;
+  border: none;
+  color: white;
+  width: 30px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.button img{
+  float: left;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px; 
+}
+s
+
 
 /* The Close Button */
 .close {
