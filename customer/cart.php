@@ -1,9 +1,18 @@
 <?php
     require_once 'server.php';
-    
-    $sql_cart= "SELECT *  FROM order_items";
+    $sql = 'SELECT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+    FROM product 
+    LEFT JOIN prodimage 
+    ON product.prodId = prodimage.productId
+    LEFT JOIN inventory 
+    ON inventory.prodCode = product.prodId
+    LEFT JOIN sales 
+    ON sales.code = product.prodId';
+    $sql_cart= 'SELECT  order_items.ProductID, order_items.orderID, order_items.OrderItemID, order_items.Quantity,order_items.subtotal
+    FROM order_items';
     $all_cart = $conn->query($sql_cart);
 ?>
+
 
 
 <!DOCTYPE html>
@@ -12,9 +21,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">   
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="OrderPage.css">
     
-    <title>ORDERING PAGE</title>
+    <title>CART PAGE</title>
     <link rel="icon" type="image/x-icon" href="tdf.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/lib/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -91,18 +99,20 @@
     }
 
     main .detail-card .detail-desc button{
-        position: absolute;
+        position:relative;
         bottom: 10px;
-        right: 10px;
+        align-items:center;
         border: none;
         background-color: var(--primaryColor);
         color: var(--whiteColor);
-        padding: 10px 20px;
+        padding: 10px;
+        margin: 5px;
         border-radius: 5px;
         cursor: pointer;
+        top: 10px;
     }
     
-</style>
+</style> 
 
 <body>
     <br>
@@ -122,54 +132,50 @@
         
     </div>    
     <main>
-        
-    <h1><?php echo mysqli_num_rows($all_cart);?>Items</h1>
-    <hr class="divider">
-    <?php
-        while($row_cart = mysqli_fetch_assoc($all_cart)){ 
-            $sql = "SELECT * FROM product WHERE prodId =" .$row_cart[ 'ProductID'];
-            $all_product = $conn->query($sql);
-            while($row = mysqli_fetch_assoc($all_product)) {
-                
-      ?>  
-    <div class="detail-card">
-        <img class="detail-img" <?php echo $row [$prodimage]; ?> >
-        
-        <div class="detail-desc">
-            <h4 class="d-name"><?php echo $row[$name]; ?> </h4> 
-            <p class="d-desc"><?php echo $row[$description];?></p>
-            <div class="detail-price">
-                <p class="price">Php <?php echo $row[$price];?></p>
-            </div>
-            <button class="remove"> Remove from Cart</button>
 
+        <h1><?php echo mysqli_num_rows($all_cart);?><tr> Items</h1>
+        <hr class="divider">
+        <?php
+            while($row_cart = mysqli_fetch_assoc($all_cart)){ 
+                $sql = "SELECT * FROM product WHERE prodId =" .$row_cart[ 'ProductID'];
+                $all_product = $conn->query($sql);
+                while($row = $all_product->fetch_assoc()) {
+                    $id = $row['prodId'];
+                    $name = $row['prodName'];
+                    $price = $row['prodPrice'];
+                    $description = $row['prodDescription'];
+                    $category = $row['prodCategory'];  
+        ?>  
+        <div class="detail-card">
+            <div class="detail-desc">
+                <h4 class="d-name"><?php echo $row['prodName']; ?> </h4> 
+                <p class="d-desc"><?php echo $row['prodDescription'];?></p>
+                <div class="detail-price">
+                    <p class="price">Php <?php echo $row['prodPrice'];?></p>
+                    
+                </div>
+                <form action="" method="POST" class="d-inline">
+                    <button class="remove"  name="delete_rec"> Remove from Cart</button>
+                </form>
+            </div>
+            
         </div>
-        
-    </div>
-    <?php
+
+        <div class="confirmOrder">
+            
+    
+        </div>
+
+        <?php
+                    
+                }
             }
-        }
-    ?>
+        ?>
     </main>
     
-    <script>
-        var remove = document.getElementsByClassName("remove");
-        for (var i = 0; i < remove.length; i++) {
-            remove[i].addEventListener("click",function(event){
-                var target = event.target;
-                var oOrderID = target.getAttribute("data-id");
-                var xml = new XMLHttpRequest();
-                xml.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        target.innerHTML = this.responseText;
-                        target.style.opacity= .3;
-                    }
-            }
-                xml.open("GET","server.php?id=" + OrderID, true);
-                xml.send(); 
-            })           
-        }
-    </script>
+    
+
+    
 
 </body>
 </html>

@@ -12,59 +12,49 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-if(isset( $_GET["id"])){
+
+$query = 'SELECT oi.OrderID, oi.OrderItemID, oi.ProductID, oi.Quantity, oi.Subtotal
+    FROM order_items oi
+    INNER JOIN product p ON oi.ProductID = p.prodId
+    WHERE p.prodId = ?';
+
+
+if (isset($_GET["id"])) {
     $prodId = $_GET["id"];
-    $sql = "SELECT * FROM order_items WHERE ProductID = $prodId";
-    $result = $conn->query($sql);
-    $totalCart = "SELECT * FROM order_items";
-    $totalResult = $conn->query($totalCart);
-    $cartNum = mysqli_num_rows($totalResult);
+    // Use a prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("INSERT INTO order_items (ProductID) VALUES (?)");
+    $stmt->bind_param("i", $prodId);
 
-    if (mysqli_num_rows($result)> 0) {
-        // output data of each row
-        $in_cart = "already in cart";//supposedly if the button is clicked lalabas to instead of add to cart
-
-        echo json_encode(["numCart" => $cartNum, "in_cart" => $in_cart]);
-    }else{
-        $insert = "INSERT INTO cart(ProductID) VALUES($ProductID)"; //possible error in here
-        if ($conn->query($insert) === TRUE) {
-            $in_cart = "added into cart"; // same here
-            echo json_encode(["numCart" => $cartNum, "in_cart" => $in_cart]);
-        } else {
-            echo "<script>alert(It doesn't insert)</script>";
-        }
+    if ($stmt->execute()) {
+        // Item was added to the cart
+        $cartNum = getCartItemCount(); // Implement a function to get the cart item count
+        $in_cart = "added into cart";
+    } else {
+        // Error occurred
+        $in_cart = "Error adding to cart";
     }
-    
+
+    echo json_encode(["numCart" => $cartNum, "in_cart" => $in_cart]);
 }
 
-if(isset( $_GET["orderId"])){
-    $prodId = $_GET["orderId"];
-    $sql = "DELETE FROM order_items WHERE ProductID = $ProductID";
-    
-
-    if ($conn->query($sql)=== TRUE) {
-        echo "REMOVED FROM CART";
-    }else{
-        $insert = "INSERT INTO cart(prodId) VALUES($prodId)";
-        if ($conn->query($insert) === TRUE) {
-            $in_cart = "added into cart"; // same here
-            echo json_encode(["numCart" => $cartNum, "in_cart" => $in_cart]);
-        } else {
-            echo "<script>alert(It doesn't insert)</script>";
-        }
-    }
+function getCartItemCount() {
+    // Implement a function to retrieve and return the item count in the cart (e.g., by querying the 'cart' table)
+    // Return the actual cart item count here
     
 }
-if(isset( $_GET["OrderID"])){
-    $prodId = $_GET["OrderID"];
-    $sql = "DELETE FROM order_items WHERE productID = $productID";
-    
+//DELETE RECORD
 
-    if ($conn->query($sql)=== TRUE) {
-        echo "REMOVED FROM CART";
+
+
+if (isset($_POST['delete_rec'])) {
+    $ProductID = mysqli_real_escape_string($conn, $_POST['delete_rec']);
+
+    $query = "DELETE FROM `order_items` WHERE `order_items`.`ProductID` = '$ProductID'";
+    $query_run = mysqli_query($conn, $query);
+
+    if ($query_run) {
+        echo '<script>alert("You successfully deleted a Record ' .  $ProductID. '");</script>';
+    } else {
+        echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
     }
-    
 }
-
-
-?>
