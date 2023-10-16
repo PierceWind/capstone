@@ -42,7 +42,7 @@
             <!-- icon on the upper right side of navbar-->
             <div class="shopping">
                 <a href="cart.php" ><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
-                <span id="quantity">0</span>
+                <span id="quantity" ></span>
             </div>
         </div>
         <!-- menu recommendation-->
@@ -164,17 +164,16 @@
                                 <div class="detail-price">
                                     <p class="price">Php <?php echo $price;?></p>
                                 </div>
-                                        <img class="addtoc"src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"/
-                                        title="Add to cart">
-                                    </a>
-                            </div>
+                                    <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>">
+                                </div>
                         </div>
                         <?php
                              }
                         ?>
                     </div>
                     <script>
-                        var prodId = document.getElementsByClassName("addtoc");
+                        
+                        var prodId= document.getElementsByClassName("addtoc");
 
                         for (var i = 0; i < prodId.length; i++) {
                             prodId[i].addEventListener("click", function(event) {
@@ -193,7 +192,7 @@
                                 xml.open("GET", "server.php?id=" + id, true);
                                 xml.send(); 
                                 
-                            })
+                            })  
                         }
                     </script>
                 </div>
