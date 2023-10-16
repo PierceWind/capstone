@@ -113,7 +113,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                             $orderID = $row['orderID'];
                             $isProcessing = ($currentlyProcessingOrder && $queueNumber == $currentlyProcessingOrderQueueNumber);
                     ?>
-                        <button class="btn btn-primary queue-button" data-queue-number="<?php echo $queueNumber; ?>" data-order-id="<?php echo $orderID; ?>"  style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-yellow); color: var(--bs-black); margin-bottom: 15px;">
+                        <button class="btn btn-primary queue-button" data-queue-number="<?php echo $queueNumber; ?>" data-order-id="<?php echo $orderID; ?>"  style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-yellow); color: var(--bs-black); margin-bottom: 15px;" onclick="loadOrderDetails('<?php echo $queueNumber; ?>')">
                             <strong>#<?php echo $queueNumber; ?></strong>
                         </button>
                     <?php
@@ -199,67 +199,35 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     </div>
 
     <?php include ('includes/discModal.php');?>
-        
-    <script type="text/javascript">
-        var modal = document.getElementById("discountModal");
-        var btn = document.getElementById("applyDiscountBtn");
-
-        var span = document.getElementsByClassName("close")[0];
-
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Get references to the queue buttons and the order list table
         const queueButtons = document.querySelectorAll(".queue-button");
         const orderListTable = document.getElementById("order-list");
 
-        // Function to clear the order list table
         function clearOrderList() {
             const tbody = orderListTable.querySelector("tbody");
-            tbody.innerHTML = ''; // Clear existing rows
+            tbody.innerHTML = '';
         }
 
-        // Attach a click event handler to each queue button
         queueButtons.forEach(button => {
             button.addEventListener("click", function () {
-                // Get the queue number and order ID from the clicked button's data attributes
                 const queueNumber = button.getAttribute("data-queue-number");
                 const orderID = button.getAttribute("data-order-id");
 
-                // Clear the order list table before loading new order details
                 clearOrderList();
-
-                // Call a function to load order details based on queueNumber
                 loadOrderDetails(queueNumber);
             });
         });
 
-        // Function to load order details based on queueNumber
         function loadOrderDetails(queueNumber) {
-            // You can make an AJAX request to fetch order details from the server
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `fetch_order_details.php?queueNumber=${queueNumber}`, true);
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    // Parse the JSON response from the server
                     const orderDetails = JSON.parse(xhr.responseText);
 
-                    // Populate the order list table with the retrieved order details
                     orderDetails.forEach(item => {
                         const newRow = orderListTable.insertRow();
                         newRow.insertCell(0).textContent = item.productName;
@@ -272,8 +240,28 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
 
             xhr.send();
         }
+
+        var modal = document.getElementById("discountModal");
+        var btn = document.getElementById("applyDiscountBtn");
+
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     });
 </script>
+
 
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
