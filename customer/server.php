@@ -49,7 +49,7 @@ function getCartItemCount() {
 if (isset($_POST['delete_rec'])) {
     $ProductID = mysqli_real_escape_string($conn, $_POST['delete_rec']);
 
-    $query = "DELETE FROM `order_items` WHERE `order_items`.`ProductID` = '$ProductID'";
+    $query = "DELETE FROM `order_items` WHERE `ProductID` = '$ProductID'";
     $query_run = mysqli_query($conn, $query);
 
     if ($query_run) {
