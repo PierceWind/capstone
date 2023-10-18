@@ -22,7 +22,7 @@
                         </select> <br>
 
                         <label for="discPercent">Discount Percentage</label> <br>
-                        <input type="number" id="discPercent" name="discPercent" placeholder="20" value="0" min=1 max=90 required> <br>
+                        <input type="number" id="discPercent" name="discPercent" placeholder="20" value="20" min=1 max=90 required> <br>
                         <label for="customerID">Customer ID Number</label><br>
                         <input type="number" id="" name="customerID" placeholder="Just place 1 for a regular customer" required><br><br><br>
 

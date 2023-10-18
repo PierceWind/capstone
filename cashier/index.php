@@ -21,7 +21,7 @@ $indentation = str_repeat("&nbsp;", $indentationLevel);
 
 $discType = isset($_GET['discType']) ? $_GET['discType'] : '';
 $discPercent = isset($_GET['discPercent']) ? $_GET['discPercent'] : 0; // Default to 0 if not set
-$customerID = isset($_GET['customerID']) ? $_GET['customerID'] : 0; // Default to 0 if not set
+$customerID = isset($_GET['customerID']) ? $_GET['customerID'] : ''; // Default to 0 if not set
 
 // For getting discModal values
 if (isset($_POST['applyDiscountBtn'])) {
@@ -30,8 +30,6 @@ if (isset($_POST['applyDiscountBtn'])) {
     $customerID = isset($_POST['customerID']) ? (int)$_POST['customerID'] : 0;
 }
 ?>
-
-
 
 
 <?php
@@ -97,8 +95,8 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
 <body>
     <div class="topnav" id="myTopnav">
         <img class="logo" src="../files/icons/tdf.png" alt="GroupLogo" href="index.html">
-        <strong><h1> To Die For Foods </h1> 
-        <a href="index.php?logout='1'">Log Out</a>
+        <strong><h1> To Die For Foods </strong></h1> 
+            <strong><a href="index.php?logout='1'">Log Out</a>
         <a href="transacation.php">History</a>
         <a href="">POS</a></strong>
     </div>
@@ -143,7 +141,6 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
             <div class="col-md-8" style="padding: 30px; width: 80%;">
                 <?php 
                     $inProgressOrderId = null; // Initializing the variable with a default value
-
                     $fetchInProgressQuery = "SELECT orderID FROM orders WHERE orderStatus = 'In Progress'";
                     $fetchInProgressResult = mysqli_query($conn, $fetchInProgressQuery);
 
@@ -240,7 +237,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                                             <td><?php echo $formattedSubAmt; ?></td>
                                             <td> 
                                                 <form action="" method="POST" class="d-inline">
-                                                    <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../files/icons/delete.png" alt="delete"></button>   
+                                                    <button type="submit" style="background: none;" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../files/icons/delete.png" alt="delete"></button>   
                                                 </form>
                                             </td>
                                         </tr>
@@ -255,33 +252,43 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                                 ?>
                             </tbody>
                         </table>
-                    </div> <br>
-                    <p style="line-height: 80%;"><strong> Customer : <?php echo  $indentation . $indentation . $discType . $indentation . $customerIDs;?></strong></p>
-                    <p style="line-height: 80%;"><strong> Net Amount : <?php echo isset($formattedTotalSubTotal) ?  $indentation . $indentation . $indentation . $p . $formattedTotalSubTotal : '0.00'; ?></strong></p>
-                    <p style="line-height: 80%;"><strong> Sales Discount : <?php echo isset($formattedDiscPercent) ? $indentation . $indentation . $formattedDiscPercent . ' %' : '0 %'; ?></strong></p>
-                    <p style="line-height: 80%;"><strong> Discount Amount: <?php echo isset($formattedDiscAmt) ? $indentation . $p . $formattedDiscAmt : '0.00'; ?></strong></p>
-                    <p style="line-height: 80%;"><strong> VATable Sales : <?php echo isset($formattedVatSales) ? $indentation . $indentation . '   ' . $p . $formattedVatSales : '0.00'; ?></strong> </p>
-                    <p style="line-height: 80%;"><strong> VAT 12% Amount :  <?php echo isset($formattedVatAmt) ? $indentation . $p . $formattedVatAmt : '0.00'; ?></strong> </p>
-                    <p style="line-height: 80%;"><strong> Total Discount :  <?php echo isset($formattedTotalDisc) ? $indentation . $indentation . $p . $formattedTotalDisc : '0.00'; ?></strong> </p>
-                    <p style="font-weight: bold;font-size: 24px;font-style: italic;"><strong>TOTAL BILL:  <?php echo isset($formattedTotalBill) ? $p . $formattedTotalBill : '0.00'; ?></strong> </p>
-
+                    </div> <br> <br>
+                    <div class="row">
+                        <div class="col-md-6" style= "padding-left: 10%;">
+                            <p style="line-height: 80%;"><strong> Customer : <?php echo  $indentation . $indentation . $indentation . $indentation . $discType . $indentation . $customerID;?></strong></p>
+                            <p style="line-height: 80%;"><strong> Net Amount : <?php echo isset($formattedTotalSubTotal) ?  $indentation . $indentation . $indentation . $p . $formattedTotalSubTotal : '0.00'; ?></strong></p>
+                            <p style="line-height: 80%;"><strong> Sales Discount : <?php echo isset($formattedDiscPercent) ? $indentation . $indentation . $formattedDiscPercent . ' %' : '0 %'; ?></strong></p>
+                            <p style="line-height: 80%;"><strong> Discount Amount: <?php echo isset($formattedDiscAmt) ? $indentation . $p . $formattedDiscAmt : '0.00'; ?></strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="line-height: 80%;"><strong> VATable Sales : <?php echo isset($formattedVatSales) ? $indentation . $indentation . $indentation . '   ' . $p . $formattedVatSales : '0.00'; ?></strong> </p>
+                            <p style="line-height: 80%;"><strong> VAT 12% Amount :  <?php echo isset($formattedVatAmt) ? $indentation . $indentation . $p . $formattedVatAmt : '0.00'; ?></strong> </p>
+                            <p style="line-height: 80%;"><strong> Total Discount :  <?php echo isset($formattedTotalDisc) ? $indentation . $indentation . $indentation . $p . $formattedTotalDisc : '0.00'; ?></strong> </p>
+                            <p style="font-weight: bold;font-size: 24px;font-style: italic;"><strong>TOTAL BILL:  <?php echo isset($formattedTotalBill) ? $p . $formattedTotalBill : '0.00'; ?></strong> </p>
+                        </div>
+                    </div>
                 </section>
-            <section>
-                <div class="buttones1">
-                    <button class="confirm">CONFIRM</button>
-                    <button class="cancel">CANCEL</button>
+                <div class="buttons">
+                    <button type="button" style="background: blue; border: none;" class="btn btn-primary" id="paymentBtn" name="confirm_order">
+                        <strong>CONFIRM</strong>
+                    </button>
+                    <button type="button" style="background: red; border: none;" class="btn btn-primary" type="submit" name="cancel_order">
+                        <strong>CANCEL</strong>
+                    </button>
                 </div>
-            </section>
             </div>
         </div>
     </div>
 
-    <?php include ('includes/discModal.php');?>
+    <?php include ('includes/discModal.php');
+        include('includes/paymentModal.php');
+        include('includes/confirm.php'); 
+        include('includes/cancel.php');
+        /*include ('includes/editOrder.php');*/?>
 
     <script>
         var modal = document.getElementById("discountModal");
         var btn = document.getElementById("applyDiscountBtn");
-
         var span = document.getElementsByClassName("close")[0];
 
         btn.onclick = function () {
@@ -297,6 +304,45 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                 modal.style.display = "none";
             }
         }
+
+        var payModal = document.getElementById("paymentModal");
+        var payBtn = document.getElementById("paymentBtn");
+        var paySpan = document.getElementsByClassName("close")[1];
+
+        payBtn.onclick = function () {
+            payModal.style.display = "block";
+        }
+
+        span2.onclick = function () {
+            payModal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == payModal) {
+                payModal.style.display = "none";
+            }
+        }
+
+        //edit 
+        function editModal(prodId, prodName, Quantity, prodPrice) {
+            var modal1 = document.getElementById("editOrderModal");
+            var span1 = document.getElementsByClassName("close")[1];
+            modal1.style.display = "block";
+            span1.onclick = function() {
+                modal1.style.display = "none";s
+            }
+            document.getElementById('edit_prodId').value = prodId;
+            document.getElementById('edit_prodName').value = prodName;
+            document.getElementById('edit_Quantity').value = prodCategory;
+            document.getElementById('edit_prodPrice').value = prodPrice;
+
+            window.onclick = function() {
+                if (event.target == modal1) {
+                    modal1.style.display = "none";
+                }
+            }
+        }
+
     </script>
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

@@ -1,3 +1,42 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['acc_name'])) {
+    $_SESSION['msg'] = "You must log in first";
+    header('location:../login/log.php');
+}
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    unset($_SESSION['acc_name']);
+    header('location:../login/log.php');
+}
+
+include('server.php');
+
+date_default_timezone_set('Asia/Manila');
+
+// Check if an order is currently being processed (you need to retrieve this information from your system)
+$currentlyProcessingOrder = true; // Change this based on your system logic
+$currentlyProcessingOrderQueueNumber = "0001"; // Replace with the actual queue number of the processing order
+
+// Get the next queue number
+$nextQueueNumber = getNextQueueNumber($conn, $currentlyProcessingOrderQueueNumber);
+
+function getNextQueueNumber($conn, $currentQueueNumber) {
+    $query = "SELECT MIN(queueNumber) AS NextQueueNumber FROM orders WHERE queueNumber > '$currentQueueNumber'";
+    $result = mysqli_query($conn, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['NextQueueNumber'];
+    } else {
+        return null; // No next queue found
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,14 +53,38 @@
 </head>
 
 <body>
+    <a href="index.php?logout='1'" class="logout">
+        <img src="../files/icons/logout.png" alt="" class="fas" style="width:30px; float: right; margin: 20px;">
+    </a>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4 col-xl-4 d-md-flex flex-column justify-content-xl-center">
-                <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center"><img src="assets/img/tdfLogo.png" style="width: 300px;">
+                <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center"><img src="../files/icons/tdfLogo.png" style="width: 300px;">
                     <h1 style="color: #7c2128;">KITCHEN STATION</h1>
                 </section>
                 <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center">
-                    <h2 class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center" style="margin-top: 20px;">QUEUE ORDERS</h2><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-yellow);color: var(--bs-black);margin-bottom: 15px;"><strong>#0001</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-white);color: var(--bs-black);margin-bottom: 15px;"><strong>#0002</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-active-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0003</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-disabled-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0004</strong></button><button class="btn btn-primary" type="button" style="padding-right: 20px;padding-left: 20px;border-color: var(--bs-black);background: var(--bs-btn-disabled-color);color: var(--bs-black);margin-bottom: 15px;"><strong>#0005</strong></button>
+                    <h2 class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center" style="margin-bottom: 50px;">Waiting List</h2>
+                    <?php
+                    // Fetch the first 100 queue numbers from your database
+                    $query = "SELECT orderID, queueNumber, orderDateTime FROM orders ORDER BY orderDateTime ASC LIMIT 5";
+                    $query_run = mysqli_query($conn, $query);
+
+                    if (mysqli_num_rows($query_run) > 0) {
+                        $changeStat = "UPDATE `orders` SET `orderStatus` = 'In Progress' ORDER BY orderDateTime ASC LIMIT 1";
+                        $firstRecordQueryResult = mysqli_query($conn, $changeStat);
+
+                        while ($row = mysqli_fetch_assoc($query_run)) {
+                            $queueNumber = sprintf("%04d", $row['queueNumber']); // Format as 4 digits
+                            $orderID = $row['orderID'];
+                            $isProcessing = ($currentlyProcessingOrder && $queueNumber == $currentlyProcessingOrderQueueNumber);
+                    ?>
+                        <button class="btn btn-primary queue-button" data-queue-number="<?php echo $queueNumber; ?>" data-order-id="<?php echo $orderID; ?>"  style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-yellow); color: var(--bs-black); margin-bottom: 15px;" onclick="loadOrderDetails('<?php echo $queueNumber; ?>')">
+                            <strong>#<?php echo $queueNumber; ?></strong>
+                        </button>
+                    <?php
+                        }
+                    }
+                    ?>
                 </section>
             </div>
             <div class="col-md-8" style="margin-top: 100px;">
