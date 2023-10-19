@@ -14,15 +14,32 @@
                 <br>    
                 <div class="sec1">
                     <form method="post" id="users" class="input-group" enctype="multipart/form-data" action="">
-                        <label for="cash" style="float:center;"><strong>Cash Payment</strong></label><br>
-                        <input type="number" id="" name="cash" placeholder="" required><br><br><br>
+                        <label for="cash" style="float:center;"><strong>Receive Cash Payment</strong></label><br>
+                        <input type="number" id="cashInput" name="cash" placeholder="" required><br><br><br>
 
                         <div class="footer">
-                            <button type="button" class="submit-btn" id="confirmBtn">Confirm Payment</button>
+                            <button type="button" class="submit-btn" id="confirmBtn" onclick="calculateChange()">Confirm Payment</button>
                         </div>
                     </form> 
+                    <p id="changeDisplay"></p>
+                    <button onclick="refreshPage()">Next Customer</button>
                 </div>
             </div>
         </div>
+
+        <script>
+            function calculateChange() {
+                var cashInput = document.getElementById('cashInput').value;
+                var totalBill = <?php echo isset($formattedTotalBill) ? $totalBill : 0; ?>;
+                var change = cashInput - totalBill;
+                var formattedChange = change.toFixed(2); // Format to 2 decimal places
+                var changeDisplay = document.getElementById('changeDisplay');
+                changeDisplay.innerHTML = "Change: " + formattedChange;
+            }
+
+            function refreshPage() {
+                location.reload();
+            }
+        </script>
     </body>
 </html>

@@ -286,64 +286,65 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         include('includes/cancel.php');
         /*include ('includes/editOrder.php');*/?>
 
-    <script>
-        var modal = document.getElementById("discountModal");
-        var btn = document.getElementById("applyDiscountBtn");
-        var span = document.getElementsByClassName("close")[0];
+<script>
+    var modal = document.getElementById("discountModal");
+    var btn = document.getElementById("applyDiscountBtn");
+    var span = document.getElementsByClassName("close")[0];
 
-        btn.onclick = function () {
-            modal.style.display = "block";
-        }
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
 
-        span.onclick = function () {
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
             modal.style.display = "none";
         }
+    }
 
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
+    var payModal = document.getElementById("paymentModal");
+    var payBtn = document.getElementById("paymentBtn");
+    var paySpan = document.getElementsByClassName("close")[1];
 
-        var payModal = document.getElementById("paymentModal");
-        var payBtn = document.getElementById("paymentBtn");
-        var paySpan = document.getElementsByClassName("close")[1];
+    payBtn.onclick = function () {
+        payModal.style.display = "block";
+    }
 
-        payBtn.onclick = function () {
-            payModal.style.display = "block";
-        }
+    paySpan.onclick = function () {
+        payModal.style.display = "none";
+    }
 
-        span2.onclick = function () {
+    window.onclick = function (event) {
+        if (event.target == payModal) {
             payModal.style.display = "none";
         }
+    }
 
-        window.onclick = function (event) {
-            if (event.target == payModal) {
-                payModal.style.display = "none";
+    //edit 
+    function editModal(prodId, prodName, Quantity, prodPrice) {
+        var modal1 = document.getElementById("editOrderModal");
+        var span1 = document.getElementsByClassName("close")[1];
+        modal1.style.display = "block";
+        span1.onclick = function() {
+            modal1.style.display = "none";
+        }
+        document.getElementById('edit_prodId').value = prodId;
+        document.getElementById('edit_prodName').value = prodName;
+        document.getElementById('edit_Quantity').value = prodCategory;
+        document.getElementById('edit_prodPrice').value = prodPrice;
+
+        window.onclick = function() {
+            if (event.target == modal1) {
+                modal1.style.display = "none";
             }
         }
+    }
 
-        //edit 
-        function editModal(prodId, prodName, Quantity, prodPrice) {
-            var modal1 = document.getElementById("editOrderModal");
-            var span1 = document.getElementsByClassName("close")[1];
-            modal1.style.display = "block";
-            span1.onclick = function() {
-                modal1.style.display = "none";s
-            }
-            document.getElementById('edit_prodId').value = prodId;
-            document.getElementById('edit_prodName').value = prodName;
-            document.getElementById('edit_Quantity').value = prodCategory;
-            document.getElementById('edit_prodPrice').value = prodPrice;
+</script>
 
-            window.onclick = function() {
-                if (event.target == modal1) {
-                    modal1.style.display = "none";
-                }
-            }
-        }
-
-    </script>
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
