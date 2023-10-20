@@ -97,7 +97,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         <img class="logo" src="../files/icons/tdf.png" alt="GroupLogo" href="index.html">
         <strong><h1> To Die For Foods </strong></h1> 
             <strong><a href="index.php?logout='1'">Log Out</a>
-        <a href="transacation.php">History</a>
+        <a href="history.php">History</a>
         <a href="">POS</a></strong>
     </div>
     <script>
@@ -113,35 +113,56 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 col-xl-3 d-md-flex flex-column justify-content-xl-center" style="background: #fceca7; width: 20%; height: 100vh">
-                <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center">
-                    <h2 class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center" style="margin-bottom: 50px;">Waiting List</h2>
-                    <?php
-                    // Fetch the first 100 queue numbers from your database
-                    $query = "SELECT orderID, queueNumber, orderDateTime FROM orders ORDER BY orderDateTime ASC LIMIT 5";
-                    $query_run = mysqli_query($conn, $query);
+            <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center">
+                <h2 class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center" style="margin-bottom: 50px;">Waiting List</h2>
+                <?php
+                // Fetch the first 100 queue numbers from your database
+                $query = "SELECT orderID, queueNumber, orderStatus, orderDateTime FROM orders WHERE orderStatus IN ('Queued', 'In Progress') ORDER BY orderStatus DESC, orderDateTime ASC LIMIT 5";
+                $query_run = mysqli_query($conn, $query);
 
-                    if (mysqli_num_rows($query_run) > 0) {
-                        $changeStat = "UPDATE `orders` SET `orderStatus` = 'In Progress' ORDER BY orderDateTime ASC LIMIT 1";
-                        $firstRecordQueryResult = mysqli_query($conn, $changeStat);
+                $inProgressExist = false;
 
-                        while ($row = mysqli_fetch_assoc($query_run)) {
-                            $queueNumber = sprintf("%04d", $row['queueNumber']); // Format as 4 digits
-                            $orderID = $row['orderID'];
-                            $isProcessing = ($currentlyProcessingOrder && $queueNumber == $currentlyProcessingOrderQueueNumber);
-                    ?>
-                        <button class="btn btn-primary queue-button" data-queue-number="<?php echo $queueNumber; ?>" data-order-id="<?php echo $orderID; ?>"  style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-yellow); color: var(--bs-black); margin-bottom: 15px;" onclick="loadOrderDetails('<?php echo $queueNumber; ?>')">
-                            <strong>#<?php echo $queueNumber; ?></strong>
-                        </button>
-                    <?php
+                if (mysqli_num_rows($query_run) > 0) {
+                    while ($row = mysqli_fetch_assoc($query_run)) {
+                        $queueNumber = sprintf("%04d", $row['queueNumber']); 
+                        $orderID = $row['orderID'];
+                        $orderStatus = $row['orderStatus'];
+
+                        if ($orderStatus === "In Progress") {
+                            $inProgressExist = true;
+                            ?>
+                            <button class="btn btn-primary queue-button" data-queue-number="<?php echo $queueNumber; ?>" data-order-id="<?php echo $orderID; ?>" style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-yellow); color: var(--bs-black); margin-bottom: 15px;" onclick="loadOrderDetails('<?php echo $queueNumber; ?>')">
+                                <strong>#<?php echo $queueNumber; ?> - In Progress</strong>
+                            </button>
+                            <?php
+                        } else {
+                            ?>
+                            <button class="btn btn-primary queue-button" data-queue-number="<?php echo $queueNumber; ?>" data-order-id="<?php echo $orderID; ?>" style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-white); color: var(--bs-black); margin-bottom: 15px;" onclick="loadOrderDetails('<?php echo $queueNumber; ?>')">
+                                <strong>#<?php echo $queueNumber; ?> - Queued</strong>
+                            </button>
+                            <?php
                         }
                     }
-                    ?>
-                </section>
+                }
+
+                // Check if an order is currently in progress
+                if (!$inProgressExist) {
+                    $changeStat = "UPDATE `orders` SET `orderStatus` = 'In Progress' WHERE orderStatus = 'Queued' ORDER BY orderDateTime ASC LIMIT 1";
+                    $firstRecordQueryResult = mysqli_query($conn, $changeStat);
+                    
+                    if (!$firstRecordQueryResult) {
+                        echo '<script>alert("Failed to update the order status to In Progress");</script>';
+                    }
+                }
+                ?>
+            </section>
+
+
             </div>
             <div class="col-md-8" style="padding: 30px; width: 80%;">
                 <?php 
                     $inProgressOrderId = null; // Initializing the variable with a default value
-                    $fetchInProgressQuery = "SELECT orderID FROM orders WHERE orderStatus = 'In Progress'";
+                    $fetchInProgressQuery = "SELECT orderID FROM orders WHERE orderStatus IN ('In Progress', 'Queued')";
                     $fetchInProgressResult = mysqli_query($conn, $fetchInProgressQuery);
 
                     // Fetching the orderId if there is any In Progress Order
@@ -282,8 +303,6 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
 
     <?php include ('includes/discModal.php');
         include('includes/paymentModal.php');
-        include('includes/confirm.php'); 
-        include('includes/cancel.php');
         /*include ('includes/editOrder.php');*/?>
 
 <script>
