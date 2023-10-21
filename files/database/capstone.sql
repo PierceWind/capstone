@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 12, 2023 at 04:28 PM
+-- Generation Time: Oct 21, 2023 at 07:23 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -69,7 +69,7 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`acc_id`, `acc_name`, `acc_pass`, `acc_type`, `date_created`, `date_modified`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2023-06-13 00:00:00', '2023-10-05 03:23:50'),
 (2, 'lbm', '827ccb0eea8a706c4c34a16891f84e7b', 'cashier', '2023-07-11 21:57:51', '0000-00-00 00:00:00'),
-(3, 'jerusa', '958cb5c8879a9b1610b0f97abf760124', 'kitchen', '2023-07-11 23:42:34', '2023-09-24 20:29:08');
+(3, 'jerusa', '827ccb0eea8a706c4c34a16891f84e7b', 'kitchen', '2023-07-11 23:42:34', '2023-09-24 20:29:08');
 
 -- --------------------------------------------------------
 
@@ -194,7 +194,7 @@ CREATE TABLE `loginlogs` (
 CREATE TABLE `orders` (
   `orderID` int(11) NOT NULL,
   `orderDateTime` timestamp NULL DEFAULT current_timestamp(),
-  `orderStatus` enum('Queued','In Progress','Completed') NOT NULL DEFAULT 'Queued',
+  `orderStatus` enum('Queued','In Progress','Paid','Preparing','Completed') NOT NULL DEFAULT 'Queued',
   `queueNumber` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -203,8 +203,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`orderID`, `orderDateTime`, `orderStatus`, `queueNumber`) VALUES
-(1, '2023-10-12 11:28:51', 'Queued', 1),
-(2, '2023-10-12 14:11:32', 'Queued', 2);
+(1, '2023-10-12 11:28:51', 'Preparing', 1),
+(2, '2023-10-12 14:11:32', 'In Progress', 2),
+(3, '2023-10-12 15:35:38', 'In Progress', 3);
 
 -- --------------------------------------------------------
 
@@ -225,11 +226,8 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Subtotal`) VALUES
-(1, 1, 12, 5, '1500.00'),
-(2, 1, 1, 5, '1500.00'),
-(3, 2, 6, 10, '1000.00'),
-(4, 2, 7, 10, '1500.00'),
-(5, 2, 9, 10, '1000.00');
+(3, 1, 6, 10, '1000.00'),
+(4, 1, 7, 10, '1500.00');
 
 -- --------------------------------------------------------
 
@@ -264,7 +262,6 @@ CREATE TABLE `prodimage` (
 
 INSERT INTO `prodimage` (`productId`, `productImg`, `dateCreated`, `dateModified`) VALUES
 ('1', 'includes/uploads/1695571687.jpg', '2023-09-25 00:08:07', '2023-09-25 00:08:07'),
-('10', 'includes/uploads/1695572510.jpg', '2023-09-25 00:21:50', '2023-09-25 00:21:50'),
 ('11', 'includes/uploads/1695572556.jpg', '2023-09-25 00:22:36', '2023-09-25 00:22:36'),
 ('12', 'includes/uploads/1695572602.jpg', '2023-09-25 00:23:22', '2023-09-25 00:23:22'),
 ('13', 'includes/uploads/1695572718.jpg', '2023-09-25 00:25:18', '2023-09-25 00:25:18'),
@@ -302,7 +299,6 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`prodId`, `prodDescription`, `prodName`, `netWeight`, `prodPrice`, `minReq`, `prodCategory`, `dateCreated`, `dateModified`) VALUES
 ('1', 'olive oil and tomato ', 'Puttanesca', 300, '300.00', 5, 'Heritage', '2023-09-25 00:08:07', '2023-09-25 00:08:07'),
-('10', 'Olive Oil ', 'Beef Mechado', 400, '400.00', 5, 'Heritage', '2023-09-25 00:21:50', '2023-09-25 00:21:50'),
 ('11', '..', 'Bopis', 220, '250.00', 5, 'Specialties', '2023-09-25 00:22:36', '2023-09-25 00:22:36'),
 ('12', 'Tomato', 'Bolognese', 400, '300.00', 5, 'Pasta', '2023-09-25 00:23:22', '2023-09-25 00:23:22'),
 ('13', 'Fish Egg', 'Bottarga', 400, '200.00', 2, 'Heritage', '2023-09-25 00:25:18', '2023-09-25 00:25:18'),
@@ -351,6 +347,31 @@ CREATE TABLE `sales` (
 INSERT INTO `sales` (`id`, `code`, `sales`, `date`) VALUES
 (1, 1, 2, '2023-10-01 21:52:29'),
 (2, 1, 5, '2023-10-01 04:00:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transac`
+--
+
+CREATE TABLE `transac` (
+  `transaction_id` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
+  `orderID` int(11) DEFAULT NULL,
+  `customer_ID` varchar(255) DEFAULT NULL,
+  `discount_type` varchar(50) DEFAULT NULL,
+  `discount_percent` float DEFAULT NULL,
+  `totalBill` decimal(10,2) DEFAULT NULL,
+  `cashPaid` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transactions`
+--
+-- Error reading structure for table capstone.transactions: #1932 - Table 'capstone.transactions' doesn't exist in engine
+-- Error reading data for table capstone.transactions: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `capstone`.`transactions`' at line 1
 
 --
 -- Indexes for dumped tables
@@ -430,6 +451,12 @@ ALTER TABLE `sales`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `transac`
+--
+ALTER TABLE `transac`
+  ADD PRIMARY KEY (`transaction_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -449,13 +476,13 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `OrderItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `OrderItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -474,6 +501,12 @@ ALTER TABLE `queue`
 --
 ALTER TABLE `sales`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `transac`
+--
+ALTER TABLE `transac`
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
