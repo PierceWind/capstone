@@ -136,7 +136,6 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
   float: left;
   position: relative;
   border: none;
-  color: white;
   width: 30px;
   margin: 4px 2px;
   cursor: pointer;
@@ -150,8 +149,7 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
   height: 30px;
   border-radius: 5px; 
 }
-s
-
+ 
 
 /* The Close Button */
 .close {
