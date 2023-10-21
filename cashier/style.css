@@ -1,4 +1,20 @@
 /* HEADER */
+
+*{
+  margin:0;
+  padding:0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+body{
+  background:#F8EEEE;
+}
+
+
 /*NAVIGATION BAR, LOGO,AND DROPDOWN fceca7*/
 
 .logo {
@@ -132,6 +148,11 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
   size: 20px; 
 }
 
+.buttons {
+  margin-left: 35%;  
+  padding: 20px; 
+}
+
 .button {
   float: left;
   position: relative;
@@ -149,6 +170,8 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
   height: 30px;
   border-radius: 5px; 
 }
+
+
  
 
 /* The Close Button */
@@ -166,4 +189,3 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
   text-decoration: none;
   cursor: pointer;
 }  
-

@@ -1,9 +1,3 @@
-<?php
-    include('server.php');
-?>
-
-<!-- Rest of your HTML content -->
-
 <div id="paymentModal" class="modal">
     <div class="modal-content" style="display: flex; justify-content: space-between; align-items: center;">
         <span class="close" style="margin-left: 90%;">&times;</span>
