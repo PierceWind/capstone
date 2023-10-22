@@ -44,8 +44,8 @@
 
     function refreshPage() {
         var xhr = new XMLHttpRequest();
-        var orderID = "<?php echo $inProgressOrderId; ?>";
-        xhr.open("GET", "updateOrderStatus.php?orderID=" + orderID, true);
+        var orderID = "<?php echo $inProgressOrderId; ?>"; // Added this line to assign the value to orderID
+        xhr.open("GET", "includes/updateOrderStatus.php?orderID=" + orderID, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {

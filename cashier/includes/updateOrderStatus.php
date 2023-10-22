@@ -1,5 +1,5 @@
 <?php
-    include('server.php');
+    include('../server.php');
 
     if (isset($_GET['orderID'])) {
         $orderID = $_GET['orderID'];
@@ -11,8 +11,10 @@
             http_response_code(200);
             echo "Order status updated to Paid";
         } else {
-            // If the query fails, send an error response
+            // If the query fails, send an error response and log the error
             http_response_code(500);
+            $error_message = "Error updating order status: " . mysqli_error($conn);
+            error_log($error_message);
             echo "Failed to update order status";
         }
     }
