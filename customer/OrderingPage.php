@@ -1,4 +1,3 @@
-
 <?php
         include_once 'server.php';
         
@@ -254,4 +253,4 @@
         <script src="app.js"></script>
         
         
-</html>
+    </html>
