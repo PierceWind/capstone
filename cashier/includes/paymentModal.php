@@ -42,6 +42,18 @@
         paymentResults.style.display = "block";
     }
 
+    //PASSING VALUE FROM index.phps
+    var orderID = "<?php echo $inProgressOrderId; ?>";
+    var queueNumber = "<?php echo $currentlyProcessingOrderQueueNumber; ?>";
+    var customerID = "<?php echo $customerID; ?>";
+    var discType = "<?php echo $discType; ?>";
+    var formattedDiscPercent = "<?php echo $formattedDiscPercent; ?>";
+    var formattedDiscAmt = "<?php echo $formattedDiscAmt; ?>";
+    var formattedVatSales = "<?php echo $formattedVatSales; ?>";
+    var formattedVatAmt = "<?php echo $formattedVatAmt; ?>";
+    var totalAmount = "<?php echo $totalBill; ?>";
+
+
     function refreshPage() {
         var xhr = new XMLHttpRequest();
         var orderID = "<?php echo $inProgressOrderId; ?>"; // Added this line to assign the value to orderID

@@ -305,25 +305,84 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         include('includes/paymentModal.php');
         /*include ('includes/editOrder.php');*/?>
 
+        <!-- Rest of your HTML content -->
+
+<script>
+    var inProgressOrderId = "<?php echo $inProgressOrderId; ?>";
+    var queueNumber = "<?php echo $currentlyProcessingOrderQueueNumber; ?>"; 
+    var customerID = "<?php echo $customerID; ?>"; 
+    var discType = "<?php echo $discType; ?>";
+    var formattedDiscPercent = "<?php echo $formattedDiscPercent; ?>"; 
+    var formattedDiscAmt = "<?php echo $formattedDiscAmt; ?>"; 
+    var formattedVatSales = "<?php echo $formattedVatSales; ?>"; 
+    var formattedVatAmt = "<?php echo $formattedVatAmt; ?>";
+    var totalAmount = "<?php echo $totalBill; ?>";
+    var cashInput = document.getElementById('cashInput').value;
+    var change = cashInput - totalAmount;
+    var orderItems = <?php echo json_encode($orderItems); ?>; 
+
+    function loadOrderDetails(queueNumber) {
+    // Make an AJAX request to fetch the order details from the server
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "fetchOrderDetails.php?queueNumber=" + queueNumber, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Update the HTML content with the fetched order details
+                var orderDetails = JSON.parse(xhr.responseText);
+
+                // Example: Update the HTML content with the fetched order details
+                document.getElementById('orderDetailsSection').innerHTML = `
+                    <p>Order ID: ${orderDetails.orderID}</p>
+                    <p>Customer Name: ${orderDetails.customerName}</p>
+                    <p>Total Amount: ${orderDetails.totalAmount}</p>
+                    <!-- Other details to display -->
+                `;
+            } else {
+                console.error("Failed to fetch order details");
+            }
+        }
+    };
+    xhr.send();
+}
+
+</script>
+
 <script>
     var modal = document.getElementById("discountModal");
     var btn = document.getElementById("applyDiscountBtn");
     var span = document.getElementsByClassName("close")[0];
 
+    // Existing modal functionality
+
+    var payModal = document.getElementById("paymentModal");
+    var payBtn = document.getElementById("paymentBtn");
+    var paySpan = document.getElementsByClassName("close")[1];
+
+    // Existing payment modal functionality
+
+    // Existing edit modal functionality
+</script>
+
+
+<script>    
+    //DISCOUNT MODAL
+    var modal = document.getElementById("discountModal");
+    var btn = document.getElementById("applyDiscountBtn");
+    var span = document.getElementsByClassName("close")[0];
     btn.onclick = function () {
         modal.style.display = "block";
     }
-
     span.onclick = function () {
         modal.style.display = "none";
     }
-
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
 
+    //PAYMENT MODAL
     var payModal = document.getElementById("paymentModal");
     var payBtn = document.getElementById("paymentBtn");
     var paySpan = document.getElementsByClassName("close")[1];
@@ -342,7 +401,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         }
     }
 
-    //edit 
+    //EDIT MODAL //still not use
     function editModal(prodId, prodName, Quantity, prodPrice) {
         var modal1 = document.getElementById("editOrderModal");
         var span1 = document.getElementsByClassName("close")[1];
