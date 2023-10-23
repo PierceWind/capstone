@@ -97,13 +97,14 @@
         
             <section class="view" id="view">
                 <div class="view-list"> <br>
-                    <h1 style="text-align: center;">Manage Stock Inventory Record</h1>  <br>       
+                    <h1 style="text-align: center;">Sales and Inventory Report</h1>  <br>       
                         <table class="table">
                             <thead>
                                 <tr class="head">
                                 <form method="post" action="includes/export.php">
-                                    <input type="submit" name="export" id="addBtn" class="btnExport" value="Export" />
+                                    <input type="submit" name="export" id="exportBtn" style="width:150px; color: white; background-color:#700202; float:left; padding:5px 20px; font-size:18px;"class="addrec" value="EXPORT" />
                                 </form>
+
                                     <a href="add.php" ><button id="addBtn" style="width: 250px;   " class="addrec"><img class="button" src = "../../files/icons/add4.png">RECEIVED STOCK</button></a>
                                 </tr>
                                 <tr>

@@ -3,7 +3,6 @@
 session_start();
 include ('../../server.php');
 
-
 $output = "";
 
 if(isset($_POST["export"])) {
@@ -18,29 +17,29 @@ if(isset($_POST["export"])) {
     $result = mysqli_query($conn, $query);
     if(mysqli_num_rows($result) > 0)
     {
-    $output .= '
-    <table class="table" bordered="1">  
+        $output .= '
+        <table class="table" bordered="1">  
             <tr>  
-            <th> Item Code </th>
-            <th> Description </th>
-            <th> Min Req </th>
-            <th> Unit Price </th>
-            <th> Available Stock  </th>
-            <th> Sold Qty </th>
-            <th> Status  </th>
+                <th> Item Code </th>
+                <th> Description </th>
+                <th> Min Req </th>
+                <th> Unit Price </th>
+                <th> Available Stock  </th>
+                <th> Sold Qty </th>
+                <th> Status  </th>
             </tr>
-    ';
-    while($row = mysqli_fetch_array($result))
-    {
-    // Determine the status based on your conditions
-    if ($row['stock'] <= $row['minReq']) {
-        $status = '<span class="attention-status">Needs Attention</span>';
-        } elseif ($row['stock'] == 0) {
-        $status = 'Out of Stock';
-        } else {
-        $status = 'Available';
-        }
-    $output .= '
+        ';
+        while($row = mysqli_fetch_array($result))
+        {
+            // Determine the status based on your conditions
+            if ($row['stock'] <= $row['minReq']) {
+                $status = 'Needs Attention';
+            } elseif ($row['stock'] == 0) {
+                $status = 'Out of Stock';
+            } else {
+                $status = 'Available';
+            }
+            $output .= '
             <tr>  
                 <td>'.$row["prodId"].'</td>  
                 <td>'.$row["prodName"].'</td>  
@@ -48,16 +47,14 @@ if(isset($_POST["export"])) {
                 <td>'.$row["prodPrice"].'</td>  
                 <td>'.$row["stock"].'</td> 
                 <td>'.$row["totalSales"].'</td>  
-                <td>'.$row["stock"].'</td>
-                <td?'.$status.'</td>
-                                        
+                <td>'.$status.'</td>
             </tr>
-    ';
-    }
-    $output .= '</table>';
-            header('Content-Type: application/xls');
-            header('Content-Disposition: attachment; filename=SalesAndInventoryReport.xls');
-            echo $output;
+            ';
         }
+        $output .= '</table>';
+        header('Content-Type: application/xls');
+        header('Content-Disposition: attachment; filename=SalesAndInventoryReport.xls');
+        echo $output;
     }
+}
 ?>

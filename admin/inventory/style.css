@@ -199,6 +199,7 @@ input[type=checkbox] {
   border-radius: 30px;
   size: 20px; 
 }
+
 /*--------------------------------------------------*/
 /*user.php*/
 
@@ -238,6 +239,24 @@ input[type=checkbox] {
   background-color: yellow;
 }
 
+
+.exportBtn {
+  width: 50px;
+  background-color: blue; /* Blue color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.exportBtn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
 
 .table{
   border-collapse: collapse;
