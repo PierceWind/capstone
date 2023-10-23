@@ -16,7 +16,6 @@ if (isset($_GET['orderID'])) {
         // Insert data into the database
         $queryTransac = "INSERT INTO transac (date, orderID, customer_ID, discount_type, discount_percent, totalBill, cashPaid) 
         VALUES (NOW(), '$orderID', '$customerID', '$discType', '$discPercent', '$totalAmount', '$cashInput')";
-
         if (mysqli_query($conn, $queryTransac)) {
             foreach ($orderItems as $item) {
                 $prodId = $item['prodId'];

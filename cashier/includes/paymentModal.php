@@ -1,3 +1,11 @@
+<script> 
+    $customerID = isset($_POST['customerID']) ? mysqli_real_escape_string($conn, $_POST['customerID']) : '';
+    $discType = isset($_POST['discType']) ? mysqli_real_escape_string($conn, $_POST['discType']) : '';
+    $discPercent = isset($_POST['discPercent']) ? (float)$_POST['discPercent'] : 0;
+    $totalAmount = isset($_POST['totalAmount']) ? (float)$_POST['totalAmount'] : 0;
+    $cashInput = isset($_POST['cashInput']) ? (float)$_POST['cashInput'] : 0;
+</script> 
+
 <div id="paymentModal" class="modal">
     <div class="modal-content" style="display: flex; justify-content: space-between; align-items: center;">
         <span class="close" style="margin-left: 90%;">&times;</span>

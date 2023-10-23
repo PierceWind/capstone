@@ -303,9 +303,8 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
 
     <?php include ('includes/discModal.php');
         include('includes/paymentModal.php');
-        /*include ('includes/editOrder.php');*/?>
+        include ('includes/generate_receipt.php');?>
 
-        <!-- Rest of your HTML content -->
 
 <script>
     var inProgressOrderId = "<?php echo $inProgressOrderId; ?>";

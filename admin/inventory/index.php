@@ -101,6 +101,9 @@
                         <table class="table">
                             <thead>
                                 <tr class="head">
+                                <form method="post" action="includes/export.php">
+                                    <input type="submit" name="export" id="addBtn" class="btnExport" value="Export" />
+                                </form>
                                     <a href="add.php" ><button id="addBtn" style="width: 250px;   " class="addrec"><img class="button" src = "../../files/icons/add4.png">RECEIVED STOCK</button></a>
                                 </tr>
                                 <tr>
@@ -143,14 +146,14 @@
                                     }
                                     ?>
                                     <tr>
-                                        <td style="text-align:center;"><?php echo $row['prodId']; ?></td>
-                                        <td style="text-align:center;"><?php echo $row['prodName']; ?></td>
-                                        <td style="text-align:center;"><?php echo $row['minReq']; ?></td>
-                                        <td style="text-align:center;"><?php echo $p, $row['prodPrice']; ?></td>
-                                        <td style="text-align:center;"><?php echo $p, $totalPrice; ?></td> <!-- Display the calculated total price -->
-                                        <td style="text-align:center;"><?php echo $row['stock']; ?></td>
-                                        <td style="text-align:center;"><?php echo $row['totalSales']; ?></td>
-                                        <td style="text-align:center;"><?php echo $status; ?></td> <!-- Display the calculated status -->
+                                        <td style="text-align:center;"><?= $row['prodId']; ?></td>
+                                        <td style="text-align:center;"><?= $row['prodName']; ?></td>
+                                        <td style="text-align:center;"><?= $row['minReq']; ?></td>
+                                        <td style="text-align:center;"><?= $p, $row['prodPrice']; ?></td>
+                                        <td style="text-align:center;"><?= $p, $totalPrice; ?></td> <!-- Display the calculated total price -->
+                                        <td style="text-align:center;"><?= $row['stock']; ?></td>
+                                        <td style="text-align:center;"><?= $row['totalSales']; ?></td>
+                                        <td style="text-align:center;"><?= $status; ?></td> <!-- Display the calculated status -->
                                     </tr>
                                 <?php
                                     }
