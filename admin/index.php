@@ -12,24 +12,6 @@
         header('location:../login/log.php');
     }
     include('server.php');
-?> 
-<?php
-//DELETE RECORD
-    if (isset($_POST['delete_rec'])) {
-        $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
-
-        $query = "DELETE FROM product WHERE prodId='$id'";
-        $query_run = mysqli_query($conn, $query);
-
-        if ($query_run) {
-            mysqli_rollback($conn);
-            echo '<script>alert("You successfully deleted a Record ' . $id . '");</script>';
-        } else {
-            echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
-        }
-        
-    }
-
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +23,9 @@
         <title>Dashboard</title>
         <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
         <link rel="stylesheet" type="text/css" href="style.css">
+        <!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+        <script src="../files/assets/js/chart.js"></script>
+        <script src="../files/assets/js/jquery.min.js"></script>
     </head>
     <body>
         <div class="container">
@@ -92,15 +77,176 @@
                 </ul>
             </nav>
         
-            <section class="view" id="view">
-                <div class="view-list"> <br>
-                    <h1 style="text-align: center;">ADMIN DASHBOARD</h1>  <br>       
-                        
+            <section class="main">
+               <div class="main-top">
+                    <h2> Admin Dashboard</h2>
+               </div>
+               <div class="top-box">
+                <?php 
+                    $query3 = "SELECT DISTINCT (acc_id) FROM account WHERE acc_id <> 1";
+                    $result3 = mysqli_query($conn, $query3);
+                    $row3 = mysqli_num_rows($result3);
+
+                    $query2 = "SELECT DISTINCT(prodId) FROM product";
+                    $result2 = mysqli_query($conn, $query2);
+                    $row2 = mysqli_num_rows($result2);
+
+                    $query1 = "SELECT DISTINCT(orderID) FROM orders";
+                    $result1 = mysqli_query($conn, $query1);
+                    $row1 = mysqli_num_rows($result1);
+                ?>
+                    <div class="boxes">
+                        <span>Number of User Accounts</span>  <br> <br>
+                        <b> <?php echo $row3; ?> Accounts</b> 
+                    </div>
+                    <div class="boxes">
+                        <span>Number of Products</span>  <br> <br>
+                        <b> <?php echo $row2; ?> Product</b> 
+                    </div>
+                    <div class="boxes">
+                        <span>Number of Orders</span>  <br> <br>
+                        <b> <?php echo $row3; ?> Orders</b>
+                    </div>
+                </div>   
+
+                <div class="graphcal">
+                    <div class="cal">
+                        <h3>Customer Type</h3><br>
+                        <div class="pie" style="width: 300px; height: 300px;">
+                            <canvas id="customerPieChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bar">
+                        <h3>Sales Performance Graph</h3> <br>
+                        <div class="line" style="width: 600px; height: 300px;">
+                            <canvas id="salesLineChart"></canvas>
+                        </div>
+                    </div>
+                    
                 </div>
+
+                <script>
+                    $(document).ready(function() {
+                        $.ajax({
+                            url: 'getChartData.php', // Replace with the file that fetches data from the database
+                            type: 'GET',
+                            success: function(response) {
+                                var data = JSON.parse(response);
+
+                                // Pie Chart for Customer Type
+                                var customerPieData = {
+                                    labels: data.customerLabels,
+                                    datasets: [
+                                        {
+                                            data: data.customerData,
+                                            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"],
+                                            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"]
+                                        }
+                                    ]
+                                };
+
+                                var customerPieCanvas = document.getElementById("customerPieChart");
+                                var customerPieChart = new Chart(customerPieCanvas, {
+                                    type: "pie",
+                                    data: customerPieData
+                                });
+
+                                // Line Chart for Sales Performance
+                                var salesLineData = {
+                                    labels: data.salesLabels,
+                                    datasets: [
+                                        {
+                                            label: "Sales Performance",
+                                            data: data.salesData,
+                                            fill: false,
+                                            borderColor: "#4BC0C0"
+                                        }
+                                    ]
+                                };
+
+                                var salesLineCanvas = document.getElementById("salesLineChart");
+                                var salesLineChart = new Chart(salesLineCanvas, {
+                                    type: "line",
+                                    data: salesLineData
+                                });
+                            }
+                        });
+                    });
+                </script>
+                
+                <div class="bottom-box">
+                    <?php   
+                    ?>
+
+                    <?php 
+                        $query3 = "SELECT inventory.prodCode, product.prodName, product.minReq 
+                        FROM inventory 
+                        INNER JOIN product ON product.prodId = inventory.prodCode 
+                        WHERE inventory.stock <= product.minReq OR inventory.stock = 0
+                        LIMIT 5;";
+                        $result3 = mysqli_query($conn, $query3);
+                        $row3 = mysqli_num_rows($result3); 
+
+                        $query2 = "SELECT product.*, SUM(sales.sales) AS total_sales
+                        FROM sales
+                        INNER JOIN product 
+                        ON product.prodId = sales.code
+                        GROUP BY product.prodId
+                        ORDER BY total_sales DESC
+                        LIMIT 5;
+                        ";
+                        $result2 = mysqli_query($conn, $query2);
+                        $row2 = mysqli_num_rows($result2);
+
+                        $query1 = "SELECT product.*, SUM(sales.sales) AS total_sales
+                        FROM product
+                        LEFT JOIN sales 
+                        ON product.prodId = sales.code
+                        GROUP BY product.prodId
+                        HAVING total_sales < (
+                            SELECT MIN(sub.total_sales) 
+                            FROM (
+                                SELECT SUM(sales.sales) AS total_sales 
+                                FROM sales 
+                                GROUP BY code
+                            ) AS sub
+                        )
+                        ORDER BY total_sales;";
+                        $result1 = mysqli_query($conn, $query1);
+                        $row1 = mysqli_num_rows($result1);
+                    ?>
+                    <div class="boxes">
+                        <h3>Critical Stock</h3> <br>
+                            <?php if($row3 > 0) {
+                                while ($res = mysqli_fetch_array($result3)) {
+                                    echo "<li>".$res['prodName']."</li>";
+                                    echo "<br>";
+                                }
+                            }
+                            ?>
+                    </div>
+                    <div class="boxes">
+                        <h3>Top-Selling Products </h3> <br>
+                            <?php if($row2 > 0) {
+                                while ($res = mysqli_fetch_array($result2)) {
+                                    echo "<li>".$res['prodName']."</li>";
+                                    echo "<br>";
+                                }
+                            }
+                            ?>
+                    </div>
+                    <div class="boxes">
+                        <h3>Underperforming Products</h3> <br>
+                            <?php if($row1 > 0) {
+                                while ($res = mysqli_fetch_array($result1)) {
+                                    echo "<li>".$res['prodName']."</li>";
+                                    echo "<br>";
+                                }
+                            }
+                            ?> 
+                    </div>
+                </div>   
             </section>
         </div>
-        
-        
-
     </body>
 </html>
