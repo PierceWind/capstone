@@ -112,67 +112,78 @@
                 <div class="graphcal">
                     <div class="cal">
                         <h3>Customer Type</h3><br>
-                        <div class="pie" style="width: 300px; height: 300px;">
+                        <div class="pie" style="width: 250px; height: 300px;">
                             <canvas id="customerPieChart"></canvas>
                         </div>
                     </div>
                     <div class="bar">
                         <h3>Sales Performance Graph</h3> <br>
-                        <div class="line" style="width: 600px; height: 300px;">
+                        <div class="line" style="max-width: 600px; height: 300px;">
                             <canvas id="salesLineChart"></canvas>
                         </div>
                     </div>
                     
                 </div>
 
-                <script>
-                    $(document).ready(function() {
-                        $.ajax({
-                            url: 'getChartData.php', // Replace with the file that fetches data from the database
-                            type: 'GET',
-                            success: function(response) {
-                                var data = JSON.parse(response);
+                <!-- ... (previous HTML code) ... -->
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: 'getChartData.php', // Replace with the file that fetches data from the database
+      type: 'GET',
+      success: function(response) {
+        var data = JSON.parse(response);
 
-                                // Pie Chart for Customer Type
-                                var customerPieData = {
-                                    labels: data.customerLabels,
-                                    datasets: [
-                                        {
-                                            data: data.customerData,
-                                            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"],
-                                            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"]
-                                        }
-                                    ]
-                                };
+        // Pie Chart for Customer Type
+        var customerPieData = {
+          labels: data.customerLabels,
+          datasets: [
+            {
+              data: data.customerData,
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"],
+              hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"]
+            }
+          ]
+        };
 
-                                var customerPieCanvas = document.getElementById("customerPieChart");
-                                var customerPieChart = new Chart(customerPieCanvas, {
-                                    type: "pie",
-                                    data: customerPieData
-                                });
+        var customerPieCanvas = document.getElementById("customerPieChart");
+        var customerPieChart = new Chart(customerPieCanvas, {
+          type: "pie",
+          data: customerPieData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
 
-                                // Line Chart for Sales Performance
-                                var salesLineData = {
-                                    labels: data.salesLabels,
-                                    datasets: [
-                                        {
-                                            label: "Sales Performance",
-                                            data: data.salesData,
-                                            fill: false,
-                                            borderColor: "#4BC0C0"
-                                        }
-                                    ]
-                                };
+        // Line Chart for Sales Performance
+        var salesLineData = {
+          labels: data.salesLabels,
+          datasets: [
+            {
+              label: "Sales Performance",
+              data: data.salesData,
+              fill: false,
+              borderColor: "#4BC0C0"
+            }
+          ]
+        };
 
-                                var salesLineCanvas = document.getElementById("salesLineChart");
-                                var salesLineChart = new Chart(salesLineCanvas, {
-                                    type: "line",
-                                    data: salesLineData
-                                });
-                            }
-                        });
-                    });
-                </script>
+        var salesLineCanvas = document.getElementById("salesLineChart");
+        var salesLineChart = new Chart(salesLineCanvas, {
+          type: "line",
+          data: salesLineData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+      }
+    });
+  });
+</script>
+<!-- ... (remaining HTML code) ... -->
+
                 
                 <div class="bottom-box">
                     <?php   

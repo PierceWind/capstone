@@ -169,6 +169,9 @@ nav:hover{
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
     --webkit-column-break-inside: avoid;
 }
+.cal {
+    width: 320px; 
+}
 
 .cal, 
 .bar h3{
