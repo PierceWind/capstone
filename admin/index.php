@@ -78,8 +78,8 @@
             </nav>
         
             <section class="main">
-               <div class="main-top">
-                    <h2> Admin Dashboard</h2>
+               <div class="main-top" >
+                    <h2 > Admin Dashboard</h2>
                </div>
                <div class="top-box">
                 <?php 
@@ -125,66 +125,63 @@
                     
                 </div>
 
-                <!-- ... (previous HTML code) ... -->
-<script>
-  $(document).ready(function() {
-    $.ajax({
-      url: 'getChartData.php', // Replace with the file that fetches data from the database
-      type: 'GET',
-      success: function(response) {
-        var data = JSON.parse(response);
+                <script>
+                $(document).ready(function() {
+                    $.ajax({
+                    url: 'getChartData.php', // Replace with the file that fetches data from the database
+                    type: 'GET',
+                    success: function(response) {
+                        var data = JSON.parse(response);
 
-        // Pie Chart for Customer Type
-        var customerPieData = {
-          labels: data.customerLabels,
-          datasets: [
-            {
-              data: data.customerData,
-              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"],
-              hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"]
-            }
-          ]
-        };
+                        // Pie Chart for Customer Type
+                        var customerPieData = {
+                        labels: data.customerLabels,
+                        datasets: [
+                            {
+                            data: data.customerData,
+                            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"],
+                            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#77dd77"]
+                            }
+                        ]
+                        };
 
-        var customerPieCanvas = document.getElementById("customerPieChart");
-        var customerPieChart = new Chart(customerPieCanvas, {
-          type: "pie",
-          data: customerPieData,
-          options: {
-            responsive: true,
-            maintainAspectRatio: false
-          }
-        });
+                        var customerPieCanvas = document.getElementById("customerPieChart");
+                        var customerPieChart = new Chart(customerPieCanvas, {
+                        type: "pie",
+                        data: customerPieData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                        });
 
-        // Line Chart for Sales Performance
-        var salesLineData = {
-          labels: data.salesLabels,
-          datasets: [
-            {
-              label: "Sales Performance",
-              data: data.salesData,
-              fill: false,
-              borderColor: "#4BC0C0"
-            }
-          ]
-        };
+                        // Line Chart for Sales Performance
+                        var salesLineData = {
+                        labels: data.salesLabels,
+                        datasets: [
+                            {
+                            label: "Sales Performance",
+                            data: data.salesData,
+                            fill: false,
+                            borderColor: "#4BC0C0"
+                            }
+                        ]
+                        };
 
-        var salesLineCanvas = document.getElementById("salesLineChart");
-        var salesLineChart = new Chart(salesLineCanvas, {
-          type: "line",
-          data: salesLineData,
-          options: {
-            responsive: true,
-            maintainAspectRatio: false
-          }
-        });
-      }
-    });
-  });
-</script>
-<!-- ... (remaining HTML code) ... -->
+                        var salesLineCanvas = document.getElementById("salesLineChart");
+                        var salesLineChart = new Chart(salesLineCanvas, {
+                        type: "line",
+                        data: salesLineData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                        });
+                    }
+                    });
+                });
+                </script>
 
-                
                 <div class="bottom-box">
                     <?php   
                     ?>

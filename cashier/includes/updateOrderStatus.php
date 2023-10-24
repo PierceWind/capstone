@@ -1,5 +1,7 @@
 <?php
 include('../server.php');
+include('paymentModal.php'); 
+include('index.php'); 
 
 if (isset($_GET['orderID'])) {
     $orderID = $_GET['orderID'];
