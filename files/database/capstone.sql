@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2023 at 07:23 PM
+-- Generation Time: Oct 24, 2023 at 09:50 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -203,8 +203,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`orderID`, `orderDateTime`, `orderStatus`, `queueNumber`) VALUES
-(1, '2023-10-12 11:28:51', 'Preparing', 1),
-(2, '2023-10-12 14:11:32', 'In Progress', 2),
+(1, '2023-10-12 11:28:51', 'Paid', 1),
+(2, '2023-10-12 14:11:32', 'Paid', 2),
 (3, '2023-10-12 15:35:38', 'In Progress', 3);
 
 -- --------------------------------------------------------
@@ -227,7 +227,8 @@ CREATE TABLE `order_items` (
 
 INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Subtotal`) VALUES
 (3, 1, 6, 10, '1000.00'),
-(4, 1, 7, 10, '1500.00');
+(4, 1, 7, 10, '1500.00'),
+(5, 2, 5, 50, '1500.00');
 
 -- --------------------------------------------------------
 
@@ -356,14 +357,29 @@ INSERT INTO `sales` (`id`, `code`, `sales`, `date`) VALUES
 
 CREATE TABLE `transac` (
   `transaction_id` int(11) NOT NULL,
-  `date` date DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   `orderID` int(11) DEFAULT NULL,
   `customer_ID` varchar(255) DEFAULT NULL,
-  `discount_type` varchar(50) DEFAULT NULL,
+  `discount_type` enum('regular','frequent','pwd','seniot') DEFAULT 'regular',
   `discount_percent` float DEFAULT NULL,
   `totalBill` decimal(10,2) DEFAULT NULL,
   `cashPaid` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `transac`
+--
+
+INSERT INTO `transac` (`transaction_id`, `date`, `orderID`, `customer_ID`, `discount_type`, `discount_percent`, `totalBill`, `cashPaid`) VALUES
+(4, '2023-10-23 00:00:00', 1, '', 'pwd', 0, '120.00', '120.00'),
+(5, '2023-10-23 00:00:00', 2, '', 'frequent', 0, '500.00', '200.00'),
+(6, '2023-10-23 00:00:00', 1, '', 'regular', 0, '1000.00', '50000.00'),
+(7, '2023-10-23 00:00:00', 1, '', 'frequent', 0, '5000.00', '6000.00'),
+(8, '2023-10-23 00:00:00', 1, '', 'regular', 0, '100000.00', '50000.00'),
+(9, '2023-10-24 12:38:21', 1, '', 'frequent', 0, '0.00', '0.00'),
+(10, '2023-10-24 15:42:54', 2, '', '', 0, '0.00', '0.00'),
+(11, '2023-10-24 15:45:36', 1, '', '', 0, '0.00', '0.00'),
+(12, '2023-10-24 15:46:39', 2, '', '', 0, '0.00', '0.00');
 
 -- --------------------------------------------------------
 
@@ -506,7 +522,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `transac`
 --
 ALTER TABLE `transac`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
