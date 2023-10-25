@@ -336,8 +336,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
             
     <?php include ('includes/discModal.php');
         include('includes/paymentModal.php');
-        include ('includes/generate_receipt.php');
-        include('includes/cancel_order.php');?>
+        include ('includes/generate_receipt.php');?>
 
 
     <script>

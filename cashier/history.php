@@ -80,7 +80,7 @@ if (isset($_POST['applyDiscountBtn'])) {
                 <tr>
                     <th>Transaction ID</th>
                     <th>Date</th>
-                    <th>Customer Name</th>
+                    <th>Customer ID</th>
                     <th>Discount Type</th>
                     <th>Discount Percent</th>
                     <th>Total Bill</th>
@@ -98,7 +98,7 @@ if (isset($_POST['applyDiscountBtn'])) {
                         echo "<tr>";
                         echo "<td>" . $row['transaction_id'] . "</td>";
                         echo "<td>" . $row['date'] . "</td>";
-                        echo "<td>" . $row['customer_name'] . "</td>";
+                        echo "<td>" . $row['customer_ID'] . "</td>";
                         echo "<td>" . $row['discount_type'] . "</td>";
                         echo "<td>" . $row['discount_percent'] . "</td>";
                         echo "<td>" . $row['totalBill'] . "</td>";
