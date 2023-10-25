@@ -149,7 +149,7 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
 }
 
 .buttons {
-  margin-left: 35%;  
+  text-align: center;  
   padding: 20px; 
 }
 
@@ -158,7 +158,6 @@ input[type=text], input[type=number], select, input[type=date], input[type=passw
   position: relative;
   border: none;
   width: 30px;
-  margin: 4px 2px;
   cursor: pointer;
   border-radius: 5px;
 }

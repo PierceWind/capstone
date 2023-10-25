@@ -19,6 +19,19 @@ date_default_timezone_set('Asia/Manila');
 $indentationLevel = 4; // Adjust the number of spaces for indentation
 $indentation = str_repeat("&nbsp;", $indentationLevel);
 
+if (isset($_GET['order_id'])) {
+    $orderId = $_GET['order_id']; // Change the variable name to order_id to match the URL parameter
+
+    $cancelOrderQuery = "UPDATE orders SET orderStatus='Cancelled' WHERE orderID='$orderId'"; // Use $orderId to match the URL parameter
+    $cancelOrderResult = mysqli_query($conn, $cancelOrderQuery);
+
+    if ($cancelOrderResult) {
+        echo '<script>alert("Order has been canceled successfully.");</script>';
+    } else {
+        echo '<script>alert("Failed to cancel the order. Please try again.");</script>';
+    }
+}
+
 $discType = isset($_GET['discType']) ? $_GET['discType'] : '';
 $discPercent = isset($_GET['discPercent']) ? $_GET['discPercent'] : 0; // Default to 0 if not set
 $customerID = isset($_GET['customerID']) ? $_GET['customerID'] : ''; // Default to 0 if not set
@@ -90,6 +103,22 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     <link rel="stylesheet" type="text/css" href="style.css" media="screen"/> 
     <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
     <script src="../files/assets/bootstrap/js/bootstrap.min.js"></script> 
+
+    <script>
+    function cancelOrder(orderId) {
+        var confirmation = confirm("Are you sure you want to cancel the order with ID: " + orderId + "?");
+        if (confirmation) {
+            var input = prompt("Please enter the access code to cancel the order:");
+            if (input === "12345") {
+                window.location.href = "index.php?order_id=" + orderId;
+            } else {
+                alert("Invalid access code. Order cancellation aborted.");
+            }
+        }
+    }
+    </script>
+
+
 </head>  
 
 <body>
@@ -289,138 +318,144 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                         </div>
                     </div>
                 </section>
-                <div class="buttons">
-                    <button type="button" style="background: blue; border: none;" class="btn btn-primary" id="paymentBtn" name="confirm_order">
+                <div class="buttons" style="display: flex; justify-content: center;">
+                    <button type="button" style="background: blue; border: none; margin-right: 10px;" class="btn btn-primary" id="paymentBtn" name="confirm_order">
                         <strong>CONFIRM</strong>
                     </button>
-                    <button type="button" style="background: red; border: none;" class="btn btn-primary" type="submit" name="cancel_order">
+                    <button type="button" style="background: red; border: none;" class="btn btn-primary" onclick="cancelOrder('<?php echo $inProgressOrderId; ?>')">
                         <strong>CANCEL</strong>
                     </button>
+
                 </div>
+
+
+
             </div>
         </div>
     </div>
-
+            
     <?php include ('includes/discModal.php');
         include('includes/paymentModal.php');
-        include ('includes/generate_receipt.php');?>
+        include ('includes/generate_receipt.php');
+        include('includes/cancel_order.php');?>
 
 
-<script>
-    var inProgressOrderId = "<?php echo $inProgressOrderId; ?>";
-    var queueNumber = "<?php echo $currentlyProcessingOrderQueueNumber; ?>"; 
-    var customerID = "<?php echo $customerID; ?>"; 
-    var discType = "<?php echo $discType; ?>";
-    var formattedDiscPercent = "<?php echo $formattedDiscPercent; ?>"; 
-    var formattedDiscAmt = "<?php echo $formattedDiscAmt; ?>"; 
-    var formattedVatSales = "<?php echo $formattedVatSales; ?>"; 
-    var formattedVatAmt = "<?php echo $formattedVatAmt; ?>";
-    var totalAmount = "<?php echo $totalBill; ?>";
-    var cashInput = document.getElementById('cashInput').value;
-    var change = cashInput - totalAmount;
-    var orderItems = <?php echo json_encode($orderItems); ?>; 
+    <script>
+        var inProgressOrderId = "<?php echo $inProgressOrderId; ?>";
+        var queueNumber = "<?php echo $currentlyProcessingOrderQueueNumber; ?>"; 
+        var customerID = "<?php echo $customerID; ?>"; 
+        var discType = "<?php echo $discType; ?>";
+        var formattedDiscPercent = "<?php echo $formattedDiscPercent; ?>"; 
+        var formattedDiscAmt = "<?php echo $formattedDiscAmt; ?>"; 
+        var formattedVatSales = "<?php echo $formattedVatSales; ?>"; 
+        var formattedVatAmt = "<?php echo $formattedVatAmt; ?>";
+        var totalAmount = "<?php echo $totalBill; ?>";
+        var cashInput = document.getElementById('cashInput').value;
+        var change = cashInput - totalAmount;
+        var orderItems = <?php echo json_encode($orderItems); ?>; 
 
-    function loadOrderDetails(queueNumber) {
-    // Make an AJAX request to fetch the order details from the server
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "fetchOrderDetails.php?queueNumber=" + queueNumber, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // Update the HTML content with the fetched order details
-                var orderDetails = JSON.parse(xhr.responseText);
 
-                // Example: Update the HTML content with the fetched order details
-                document.getElementById('orderDetailsSection').innerHTML = `
-                    <p>Order ID: ${orderDetails.orderID}</p>
-                    <p>Customer Name: ${orderDetails.customerName}</p>
-                    <p>Total Amount: ${orderDetails.totalAmount}</p>
-                    <!-- Other details to display -->
-                `;
-            } else {
-                console.error("Failed to fetch order details");
+        function loadOrderDetails(queueNumber) {
+        // Make an AJAX request to fetch the order details from the server
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "fetchOrderDetails.php?queueNumber=" + queueNumber, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Update the HTML content with the fetched order details
+                    var orderDetails = JSON.parse(xhr.responseText);
+
+                    // Example: Update the HTML content with the fetched order details
+                    document.getElementById('orderDetailsSection').innerHTML = `
+                        <p>Order ID: ${orderDetails.orderID}</p>
+                        <p>Customer Name: ${orderDetails.customerName}</p>
+                        <p>Total Amount: ${orderDetails.totalAmount}</p>
+                        <!-- Other details to display -->
+                    `;
+                } else {
+                    console.error("Failed to fetch order details");
+                }
             }
+        };
+        xhr.send();
+    }
+
+    </script>
+
+    <script>
+        var modal = document.getElementById("discountModal");
+        var btn = document.getElementById("applyDiscountBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        // Existing modal functionality
+
+        var payModal = document.getElementById("paymentModal");
+        var payBtn = document.getElementById("paymentBtn");
+        var paySpan = document.getElementsByClassName("close")[1];
+
+        // Existing payment modal functionality
+
+        // Existing edit modal functionality
+    </script>
+
+
+    <script>    
+        //DISCOUNT MODAL
+        var modal = document.getElementById("discountModal");
+        var btn = document.getElementById("applyDiscountBtn");
+        var span = document.getElementsByClassName("close")[0];
+        btn.onclick = function () {
+            modal.style.display = "block";
         }
-    };
-    xhr.send();
-}
-
-</script>
-
-<script>
-    var modal = document.getElementById("discountModal");
-    var btn = document.getElementById("applyDiscountBtn");
-    var span = document.getElementsByClassName("close")[0];
-
-    // Existing modal functionality
-
-    var payModal = document.getElementById("paymentModal");
-    var payBtn = document.getElementById("paymentBtn");
-    var paySpan = document.getElementsByClassName("close")[1];
-
-    // Existing payment modal functionality
-
-    // Existing edit modal functionality
-</script>
-
-
-<script>    
-    //DISCOUNT MODAL
-    var modal = document.getElementById("discountModal");
-    var btn = document.getElementById("applyDiscountBtn");
-    var span = document.getElementsByClassName("close")[0];
-    btn.onclick = function () {
-        modal.style.display = "block";
-    }
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-    window.onclick = function (event) {
-        if (event.target == modal) {
+        span.onclick = function () {
             modal.style.display = "none";
         }
-    }
-
-    //PAYMENT MODAL
-    var payModal = document.getElementById("paymentModal");
-    var payBtn = document.getElementById("paymentBtn");
-    var paySpan = document.getElementsByClassName("close")[1];
-
-    payBtn.onclick = function () {
-        payModal.style.display = "block";
-    }
-
-    paySpan.onclick = function () {
-        payModal.style.display = "none";
-    }
-
-    window.onclick = function (event) {
-        if (event.target == payModal) {
-            payModal.style.display = "none";
-        }
-    }
-
-    //EDIT MODAL //still not use
-    function editModal(prodId, prodName, Quantity, prodPrice) {
-        var modal1 = document.getElementById("editOrderModal");
-        var span1 = document.getElementsByClassName("close")[1];
-        modal1.style.display = "block";
-        span1.onclick = function() {
-            modal1.style.display = "none";
-        }
-        document.getElementById('edit_prodId').value = prodId;
-        document.getElementById('edit_prodName').value = prodName;
-        document.getElementById('edit_Quantity').value = prodCategory;
-        document.getElementById('edit_prodPrice').value = prodPrice;
-
-        window.onclick = function() {
-            if (event.target == modal1) {
-                modal1.style.display = "none";
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
             }
         }
-    }
 
-</script>
+        //PAYMENT MODAL
+        var payModal = document.getElementById("paymentModal");
+        var payBtn = document.getElementById("paymentBtn");
+        var paySpan = document.getElementsByClassName("close")[1];
+
+        payBtn.onclick = function () {
+            payModal.style.display = "block";
+        }
+
+        paySpan.onclick = function () {
+            payModal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == payModal) {
+                payModal.style.display = "none";
+            }
+        }
+
+        //EDIT MODAL //still not use
+        function editModal(prodId, prodName, Quantity, prodPrice) {
+            var modal1 = document.getElementById("editOrderModal");
+            var span1 = document.getElementsByClassName("close")[1];
+            modal1.style.display = "block";
+            span1.onclick = function() {
+                modal1.style.display = "none";
+            }
+            document.getElementById('edit_prodId').value = prodId;
+            document.getElementById('edit_prodName').value = prodName;
+            document.getElementById('edit_Quantity').value = prodCategory;
+            document.getElementById('edit_prodPrice').value = prodPrice;
+
+            window.onclick = function() {
+                if (event.target == modal1) {
+                    modal1.style.display = "none";
+                }
+            }
+        }
+
+    </script>
 
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
