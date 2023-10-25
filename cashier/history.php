@@ -101,7 +101,7 @@ if (isset($_POST['applyDiscountBtn'])) {
                         echo "<td>" . $row['customer_ID'] . "</td>";
                         echo "<td>" . $row['discount_type'] . "</td>";
                         echo "<td>" . $row['discount_percent'] . "</td>";
-                        echo "<td>" . $row['totalBill'] . "</td>";
+                        echo "<td>" . $row['netAmt'] . "</td>";
                         echo "<td>" . $row['cashPaid'] . "</td>";
                         echo "</tr>";
                     }

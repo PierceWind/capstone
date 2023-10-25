@@ -5,16 +5,10 @@ include('index.php');
 
 if (isset($_GET['orderID'])) {
     $orderID = $_GET['orderID'];
+    $change = $_GET['change'];
 
     $updateQuery = "UPDATE orders SET orderStatus='Paid' WHERE orderID='$orderID'";
     if (mysqli_query($conn, $updateQuery)) {
-        // Retrieve and sanitize other necessary variables
-        $customerID = isset($_POST['customerID']) ? mysqli_real_escape_string($conn, $_POST['customerID']) : '';
-        $discType = isset($_POST['discType']) ? mysqli_real_escape_string($conn, $_POST['discType']) : '';
-        $discPercent = isset($_POST['discPercent']) ? (float)$_POST['discPercent'] : 0;
-        $totalAmount = isset($_POST['totalAmount']) ? (float)$_POST['totalAmount'] : 0;
-        $cashInput = isset($_POST['cashInput']) ? (float)$_POST['cashInput'] : 0;
-
         // Insert data into the database
         $queryTransac = "INSERT INTO transac (date, orderID, customer_ID, discount_type, discount_percent, totalBill, cashPaid) 
         VALUES (NOW(), '$orderID', '$customerID', '$discType', '$discPercent', '$totalAmount', '$cashInput')";

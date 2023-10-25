@@ -19,6 +19,7 @@ date_default_timezone_set('Asia/Manila');
 $indentationLevel = 4; // Adjust the number of spaces for indentation
 $indentation = str_repeat("&nbsp;", $indentationLevel);
 
+//CANCEL ORDER SQL SRIPT
 if (isset($_GET['order_id'])) {
     $orderId = $_GET['order_id']; // Change the variable name to order_id to match the URL parameter
 
@@ -32,9 +33,10 @@ if (isset($_GET['order_id'])) {
     }
 }
 
-$discType = isset($_GET['discType']) ? $_GET['discType'] : '';
+//defaulr discoModal values
+$discType = isset($_GET['discType']) ? $_GET['discType'] : 'regular';
 $discPercent = isset($_GET['discPercent']) ? $_GET['discPercent'] : 0; // Default to 0 if not set
-$customerID = isset($_GET['customerID']) ? $_GET['customerID'] : ''; // Default to 0 if not set
+$customerID = isset($_GET['customerID']) ? $_GET['customerID'] : '0'; // Default to regular if not set
 
 // For getting discModal values
 if (isset($_POST['applyDiscountBtn'])) {
@@ -42,6 +44,7 @@ if (isset($_POST['applyDiscountBtn'])) {
     $discPercent = isset($_POST['discPercent']) ? (float)$_POST['discPercent'] : 0;
     $customerID = isset($_POST['customerID']) ? (int)$_POST['customerID'] : 0;
 }
+
 ?>
 
 
@@ -66,9 +69,8 @@ if (isset($_POST['delete_rec'])) {
 
 <?php
 
-// Check if an order is currently being processed (you need to retrieve this information from your system)
-$currentlyProcessingOrder = true; // Change this based on your system logic
-$currentlyProcessingOrderQueueNumber = "0001"; // Replace with the actual queue number of the processing order
+$currentlyProcessingOrder = true; 
+$currentlyProcessingOrderQueueNumber = "0001"; //tobereplace/update/init
 
 // Get the next queue number
 $nextQueueNumber = getNextQueueNumber($conn, $currentlyProcessingOrderQueueNumber);
@@ -314,7 +316,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                             <p style="line-height: 80%;"><strong> VATable Sales : <?php echo isset($formattedVatSales) ? $indentation . $indentation . $indentation . '   ' . $p . $formattedVatSales : '0.00'; ?></strong> </p>
                             <p style="line-height: 80%;"><strong> VAT 12% Amount :  <?php echo isset($formattedVatAmt) ? $indentation . $indentation . $p . $formattedVatAmt : '0.00'; ?></strong> </p>
                             <p style="line-height: 80%;"><strong> Total Discount :  <?php echo isset($formattedTotalDisc) ? $indentation . $indentation . $indentation . $p . $formattedTotalDisc : '0.00'; ?></strong> </p>
-                            <p style="font-weight: bold;font-size: 24px;font-style: italic;"><strong>TOTAL BILL:  <?php echo isset($formattedTotalBill) ? $p . $formattedTotalBill : '0.00'; ?></strong> </p>
+                            <p style="font-weight: bold;font-size: 24px;font-style: italic;"><strong>TOTAL BILL :  <?php echo isset($formattedTotalBill) ? $p . $formattedTotalBill : '0.00'; ?></strong> </p>
                         </div>
                     </div>
                 </section>
@@ -333,27 +335,65 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
             </div>
         </div>
     </div>
-            
-    <?php include ('includes/discModal.php');
+
+    
+     
+    
+    <?php 
+        include ('includes/discModal.php');
         include('includes/paymentModal.php');
-        include ('includes/generate_receipt.php');?>
+        include ('includes/generate_receipt.php');
+
+        echo $discType; 
+        echo $customerID; 
+        echo $discPercent;
+        echo $totalSubtotal;
+        echo $totalBill;  
 
 
+        //UPDATE ORDER STATUS SQL SCRIPT
+    if (isset($_GET['orderID'])) {
+        $orderID = $_GET['orderID'];
+
+        $updateQuery = "UPDATE orders SET orderStatus='Paid' WHERE orderID='$orderID'";
+        if (mysqli_query($conn, $updateQuery)) {
+            // Insert data into the database
+            $queryTransac = "INSERT INTO transac (date, orderID, customer_ID, discount_type, discount_percent, netAmt, cashPaid) 
+            VALUES (NOW(), '$orderID', '$customerID', '$discType', '$discPercent', '$totalSubtotal', '$totalBill')";
+            if (mysqli_query($conn, $queryTransac)) {
+                foreach ($orderItems as $item) {
+                    $prodId = $item['prodId'];
+                    $querySale = "INSERT INTO sales (code, sales, date) VALUES ('$prodId', '$orderID', NOW())";
+                    // If the query is successful, send a success response
+                    if (mysqli_query($conn, $querySale)) {
+                        http_response_code(200);
+                        echo "Order Saved";
+                    } else {
+                        // If the query fails, send an error response and log the error
+                        http_response_code(500);
+                        $error_message = "Error saving order details: " . mysqli_error($conn);
+                        error_log($error_message);
+                        echo "Failed to save order details";
+                    }
+                }
+            } else {
+                // If the query fails, send an error response and log the error
+                http_response_code(500);
+                $error_message = "Error updating transaction details: " . mysqli_error($conn);
+                error_log($error_message);
+                echo "Failed to update transaction details";
+            }
+        } else {
+            // If the query fails, send an error response and log the error
+            http_response_code(500);
+            $error_message = "Error updating order status: " . mysqli_error($conn);
+            error_log($error_message);
+            echo "Failed to update order status";
+        }
+    }
+
+    ?>
     <script>
-        var inProgressOrderId = "<?php echo $inProgressOrderId; ?>";
-        var queueNumber = "<?php echo $currentlyProcessingOrderQueueNumber; ?>"; 
-        var customerID = "<?php echo $customerID; ?>"; 
-        var discType = "<?php echo $discType; ?>";
-        var formattedDiscPercent = "<?php echo $formattedDiscPercent; ?>"; 
-        var formattedDiscAmt = "<?php echo $formattedDiscAmt; ?>"; 
-        var formattedVatSales = "<?php echo $formattedVatSales; ?>"; 
-        var formattedVatAmt = "<?php echo $formattedVatAmt; ?>";
-        var totalAmount = "<?php echo $totalBill; ?>";
-        var cashInput = document.getElementById('cashInput').value;
-        var change = cashInput - totalAmount;
-        var orderItems = <?php echo json_encode($orderItems); ?>; 
-
-
         function loadOrderDetails(queueNumber) {
         // Make an AJAX request to fetch the order details from the server
         var xhr = new XMLHttpRequest();
@@ -385,16 +425,12 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         var modal = document.getElementById("discountModal");
         var btn = document.getElementById("applyDiscountBtn");
         var span = document.getElementsByClassName("close")[0];
-
-        // Existing modal functionality
-
+        </script>
+    <script>
         var payModal = document.getElementById("paymentModal");
         var payBtn = document.getElementById("paymentBtn");
         var paySpan = document.getElementsByClassName("close")[1];
 
-        // Existing payment modal functionality
-
-        // Existing edit modal functionality
     </script>
 
 

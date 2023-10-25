@@ -1,16 +1,51 @@
 <?php
         include_once 'server.php';
         
-        $sql = 'SELECT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+        $sql = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
         LEFT JOIN inventory ON inventory.prodCode = product.prodId
-        LEFT JOIN sales ON sales.code = product.prodId' ;
+        LEFT JOIN sales ON sales.code = product.prodId LIMIT 8';
+        $all_product = $conn->query($sql);
+
+        $heritage = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+        FROM product 
+        LEFT JOIN prodimage ON product.prodId = prodimage.productId
+        WHERE product.prodCategory = "Heritage"' ;
+        $her = $conn->query($heritage);
+
+
+        $specialties = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+        FROM product 
+        LEFT JOIN prodimage ON product.prodId = prodimage.productId
+        WHERE product.prodCategory = "Specialties"' ;
+        $spe = $conn->query($specialties);
+
+        $pasta = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+        FROM product 
+        LEFT JOIN prodimage ON product.prodId = prodimage.productId
+        WHERE product.prodCategory = "Specialties"' ;
+        $pas = $conn->query($pasta);
+
+        $sweets = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+        FROM product 
+        LEFT JOIN prodimage ON product.prodId = prodimage.productId
+        WHERE product.prodCategory = "Specialties"' ;
+        $swe = $conn->query($sweets);
+
+        $beverages = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+        FROM product 
+        LEFT JOIN prodimage ON product.prodId = prodimage.productId
+        WHERE product.prodCategory = "Specialties"' ;
+        $bev = $conn->query($beverages);
+
         $sql_cart = 'SELECT order_items.ProductID, order_items.orderID, order_items.OrderItemID, order_items.Quantity, order_items.subtotal, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory
         FROM order_items
         LEFT JOIN product ON order_items.ProductID = product.prodId';
+        
         $order_items = $conn->query($sql_cart);
-        $all_product = $conn->query($sql);
+        
+        
     
     ?>
 
@@ -119,59 +154,198 @@
                     </div>
                     <div class="filter-wrapper">
                         <div class="filter-card">
-                            <p class="category">All Menu</p>
+                            <a button class="category" href="#TopSelling">Top-Selling</a>
                         </div>
                         <div class="filter-card">
-                            <p class="category">Heritage</p>
+                            <a button class="category" href="#Heritage">Heritage</p>
                         </div>
                         <div class="filter-card">
-                            <p class="category">Pasta</p>
+                            <a button class="category" href="#Specialties">Specialties</p>
                         </div>
                         <div class="filter-card">
-                            <p class="category">Sweets</p>
+                            <a button class="category" href="#Pasta">Pasta</p>
                         </div>
                         <div class="filter-card">
-                            <p class="category">Sweets</p>
+                            <a button class="category" href="#Sweets">Sweets</p>
                         </div>
                         <div class="filter-card">
-                            <p class="category">Sweets</p>
-                        </div>
-                        <div class="filter-card">
-                            <p class="category">Sweets</p>
+                            <a button class="category" href="#Beverages">Beverages</p>
                         </div>
                     </div>
 
                     <hr class="divider">
                     <div class="list-header">
-                    <!--list of food section-->
-                    <div class="main-detail">
-                        <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
-                        <h2 class="main-title">Choose Order</h2>
-                        <div class="detail-wrapper">
-                        <?php
-                            while($row = $all_product->fetch_assoc()) {
-                                $id = $row['prodId'];
-                                $image = $row['productImg'];
-                                $name = $row['prodName'];
-                                $price = $row['prodPrice'];
-                                $description = $row['prodDescription'];
-                                $category = $row['prodCategory'];
-                                $extension = "../admin/menu/";
-                        ?>
-                            <div class="detail-card">
-                                <img class="detail-img" src="<?php echo $extension, $image; ?>" >
-                                <div class="detail-desc">
-                                    <h4 class="d-name"><?php echo $name; ?> </h4> 
-                                    <p class="d-desc"><?php echo $description;?></p>
-                                    <div class="detail-price">
-                                        <p class="price">Php <?php echo $price;?></p>
-                                    </div>
+                        <!--list of food section-->
+                        <div class="main-detail"> 
+                            <div> 
+                                <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
+                                <h2 id="TopSelling" class="main-title">Top- Selling Products</h2>
+                                <div class="detail-wrapper">
+                                <?php
+                                    while($row = $all_product->fetch_assoc()) {
+                                        $id = $row['prodId'];
+                                        $image = $row['productImg'];
+                                        $name = $row['prodName'];
+                                        $price = $row['prodPrice'];
+                                        $description = $row['prodDescription'];
+                                        $category = $row['prodCategory'];
+                                        $extension = "../admin/menu/";
+                                ?>
+                                <div class="detail-card">
+                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+                                    <div class="detail-desc">
+                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
+                                        <p class="d-desc"><?php echo $description;?></p>
+                                        <div class="detail-price">
+                                            <p class="price">Php <?php echo $price;?></p>
+                                        </div>
                                         <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
                                     </div>
+                                </div>
+                                <?php
+                                    }
+                                ?>
+                            </div> <br><br><hr><br>
+                            <div>                                 
+                                <h2 id="Heritage" class="main-title">Heritage</h2>
+                                <div class="detail-wrapper">
+                                <?php
+                                    while($row1 = $her->fetch_assoc()) {
+                                        $id = $row1['prodId'];
+                                        $image = $row1['productImg'];
+                                        $name = $row1['prodName'];
+                                        $price = $row1['prodPrice'];
+                                        $description = $row1['prodDescription'];
+                                        $category = $row1['prodCategory'];
+                                        $extension = "../admin/menu/";
+                                ?>
+                                <div class="detail-card">
+                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+                                    <div class="detail-desc">
+                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
+                                        <p class="d-desc"><?php echo $description;?></p>
+                                        <div class="detail-price">
+                                            <p class="price">Php <?php echo $price;?></p>
+                                        </div>
+                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
+                                    </div>
+                                </div>
+                                <?php
+                                    }
+                                ?>
+                            </div> <br><br><hr><br>
+                            <div>                                 
+                                <h2 id="Specialties" class="main-title">Specialties</h2>
+                                <div class="detail-wrapper">
+                                <?php
+                                    while($row2 = $spe->fetch_assoc()) {
+                                        $id = $row2['prodId'];
+                                        $image = $row2['productImg'];
+                                        $name = $row2['prodName'];
+                                        $price = $row2['prodPrice'];
+                                        $description = $row2['prodDescription'];
+                                        $category = $row2['prodCategory'];
+                                        $extension = "../admin/menu/";
+                                ?>
+                                <div class="detail-card">
+                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+                                    <div class="detail-desc">
+                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
+                                        <p class="d-desc"><?php echo $description;?></p>
+                                        <div class="detail-price">
+                                            <p class="price">Php <?php echo $price;?></p>
+                                        </div>
+                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
+                                    </div>
+                                </div>
+                                <?php
+                                    }
+                                ?>
+                            </div> <br><br><hr><br>
+                            <div>                                 
+                                <h2 id="Heritage" class="main-title">Pasta</h2>
+                                <div class="detail-wrapper">
+                                <?php
+                                    while($row3 = $pas->fetch_assoc()) {
+                                        $id = $row3['prodId'];
+                                        $image = $row3['productImg'];
+                                        $name = $row3['prodName'];
+                                        $price = $row3['prodPrice'];
+                                        $description = $row3['prodDescription'];
+                                        $category = $row3['prodCategory'];
+                                        $extension = "../admin/menu/";
+                                ?>
+                                <div class="detail-card">
+                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+                                    <div class="detail-desc">
+                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
+                                        <p class="d-desc"><?php echo $description;?></p>
+                                        <div class="detail-price">
+                                            <p class="price">Php <?php echo $price;?></p>
+                                        </div>
+                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
+                                    </div>
+                                </div>
+                                <?php
+                                    }
+                                ?>
+                            </div> <br><br><hr><br>
+                            <div>                                 
+                                <h2 id="Sweets" class="main-title">Sweets</h2>
+                                <div class="detail-wrapper">
+                                <?php
+                                    while($row4 = $swe->fetch_assoc()) {
+                                        $id = $row4['prodId'];
+                                        $image = $row4['productImg'];
+                                        $name = $row4['prodName'];
+                                        $price = $row4['prodPrice'];
+                                        $description = $row4['prodDescription'];
+                                        $category = $row4['prodCategory'];
+                                        $extension = "../admin/menu/";
+                                ?>
+                                <div class="detail-card">
+                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+                                    <div class="detail-desc">
+                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
+                                        <p class="d-desc"><?php echo $description;?></p>
+                                        <div class="detail-price">
+                                            <p class="price">Php <?php echo $price;?></p>
+                                        </div>
+                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
+                                    </div>
+                                </div>
+                                <?php
+                                    }
+                                ?>
+                            </div> <br><br><hr><br>
+                            <div>                                 
+                                <h2 id="Beverages" class="main-title">Beverages</h2>
+                                <div class="detail-wrapper">
+                                <?php
+                                    while($row5 = $her->fetch_assoc()) {
+                                        $id = $row5['prodId'];
+                                        $image = $row5['productImg'];
+                                        $name = $row5['prodName'];
+                                        $price = $row5['prodPrice'];
+                                        $description = $row5['prodDescription'];
+                                        $category = $row5['prodCategory'];
+                                        $extension = "../admin/menu/";
+                                ?>
+                                <div class="detail-card">
+                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
+                                    <div class="detail-desc">
+                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
+                                        <p class="d-desc"><?php echo $description;?></p>
+                                        <div class="detail-price">
+                                            <p class="price">Php <?php echo $price;?></p>
+                                        </div>
+                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
+                                    </div>
+                                </div>
+                                <?php
+                                    }
+                                ?>
                             </div>
-                            <?php
-                                }
-                            ?>
                         </div>
                     </div>
                 </div>               

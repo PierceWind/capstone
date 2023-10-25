@@ -1,10 +1,3 @@
-<script> 
-    $customerID = isset($_POST['customerID']) ? mysqli_real_escape_string($conn, $_POST['customerID']) : '';
-    $discType = isset($_POST['discType']) ? mysqli_real_escape_string($conn, $_POST['discType']) : '';
-    $discPercent = isset($_POST['discPercent']) ? (float)$_POST['discPercent'] : 0;
-    $totalAmount = isset($_POST['totalAmount']) ? (float)$_POST['totalAmount'] : 0;
-    $cashInput = isset($_POST['cashInput']) ? (float)$_POST['cashInput'] : 0;
-</script> 
 
 <div id="paymentModal" class="modal">
     <div class="modal-content" style="display: flex; justify-content: space-between; align-items: center;">
@@ -33,7 +26,6 @@
         var cashInput = document.getElementById('cashInput').value;
         var totalBill = <?php echo isset($formattedTotalBill) ? $totalBill : 0; ?>;
         var change = cashInput - totalBill;
-
         if (cashInput < totalBill) {
             alert("Insufficient payment. Please provide the complete amount.");
             return;
@@ -49,23 +41,15 @@
         paymentForm.style.display = "none";
         paymentResults.style.display = "block";
     }
-
-    //PASSING VALUE FROM index.phps
-    var orderID = "<?php echo $inProgressOrderId; ?>";
-    var queueNumber = "<?php echo $currentlyProcessingOrderQueueNumber; ?>";
-    var customerID = "<?php echo $customerID; ?>";
-    var discType = "<?php echo $discType; ?>";
-    var formattedDiscPercent = "<?php echo $formattedDiscPercent; ?>";
-    var formattedDiscAmt = "<?php echo $formattedDiscAmt; ?>";
-    var formattedVatSales = "<?php echo $formattedVatSales; ?>";
-    var formattedVatAmt = "<?php echo $formattedVatAmt; ?>";
-    var totalAmount = "<?php echo $totalBill; ?>";
-
-
+    
     function refreshPage() {
         var xhr = new XMLHttpRequest();
         var orderID = "<?php echo $inProgressOrderId; ?>"; // Added this line to assign the value to orderID
-        xhr.open("GET", "includes/updateOrderStatus.php?orderID=" + orderID, true);
+        var change = document.getElementById('changeDisplay').innerText;
+        change = change.replace('Change: ', ''); // Remove the 'Change: ' text
+
+        var url = "index.php?orderID=" + orderID + "&change=" + change;
+        xhr.open("GET", url, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {

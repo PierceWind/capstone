@@ -181,7 +181,8 @@ body{
   flex-direction: column;
   align-items: center;
   justify-content:space-between;
-  min-width: 80px;
+  min-width: 100px;
+  padding: 10px;
   height: 100%;
   background-color: pink;
   color: var(--blackColor);
@@ -189,6 +190,11 @@ body{
   border: 1px solid --softgreenColor;
   font-size: 15px;
   cursor: pointer;
+}
+
+.category {
+  text-decoration: none;
+  color: black;  
 }
 .highlight-wrapper{
   width: 100%;
