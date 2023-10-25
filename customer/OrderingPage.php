@@ -24,19 +24,19 @@
         $pasta = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        WHERE product.prodCategory = "Specialties"' ;
+        WHERE product.prodCategory = "Pasta"' ;
         $pas = $conn->query($pasta);
 
         $sweets = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        WHERE product.prodCategory = "Specialties"' ;
+        WHERE product.prodCategory = "Sweets"' ;
         $swe = $conn->query($sweets);
 
         $beverages = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        WHERE product.prodCategory = "Specialties"' ;
+        WHERE product.prodCategory = "Beverages"' ;
         $bev = $conn->query($beverages);
 
         $sql_cart = 'SELECT order_items.ProductID, order_items.orderID, order_items.OrderItemID, order_items.Quantity, order_items.subtotal, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory
