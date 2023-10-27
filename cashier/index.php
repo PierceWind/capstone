@@ -276,7 +276,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                                         $formattedVatAmt = number_format($vatAmt, 2);
                                         $formattedVatSales = number_format($vatSales, 2);
 
-                                        
+                                        $discountPercent = $totalDisc;
 
                                         $totalBill = $totalSubtotal - $totalDisc; 
                                         $formattedTotalBill = number_format($totalBill, 2);
@@ -344,22 +344,21 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         include('includes/paymentModal.php');
         include ('includes/generate_receipt.php');
 
-        echo $discType; 
-        echo $customerID; 
-        echo $discPercent;
-        echo $totalSubtotal;
-        echo $totalBill;  
-
 
         //UPDATE ORDER STATUS SQL SCRIPT
     if (isset($_GET['orderID'])) {
         $orderID = $_GET['orderID'];
+        $customerID = $_GET['customerID'];
+        $discType = $_GET['discType'];
+        $discountPercent = $_GET['discountPercent'];
+        $totalSubtotal = $_GET['totalSubtotal'];
+        $totalBill = $_GET['totalBill'];
 
         $updateQuery = "UPDATE orders SET orderStatus='Paid' WHERE orderID='$orderID'";
         if (mysqli_query($conn, $updateQuery)) {
-            // Insert data into the database
-            $queryTransac = "INSERT INTO transac (date, orderID, customer_ID, discount_type, discount_percent, netAmt, cashPaid) 
-            VALUES (NOW(), '$orderID', '$customerID', '$discType', '$discPercent', '$totalSubtotal', '$totalBill')";
+            // Transac Query INSERT 
+            $queryTransac = "INSERT INTO transac (date, orderID, customer_ID, discount_type, discount_amount, netAmt, cashPaid) 
+            VALUES (NOW(), '$orderID', '$customerID', '$discType', '$discountPercent', '$totalSubtotal', '$totalBill')";
             if (mysqli_query($conn, $queryTransac)) {
                 foreach ($orderItems as $item) {
                     $prodId = $item['prodId'];
