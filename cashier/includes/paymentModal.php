@@ -1,3 +1,11 @@
+<script>
+    var customerID = "<?php echo $customerID?>";
+    var discType = "<?php echo $discType?>";
+    var discountPercent = "<?php echo $discountPercent?>";
+    var totalSubtotal = "<?php echo $totalSubtotal?>";
+    var totalBill = "<?php echo $totalBill?>";
+</script> 
+
 
 <div id="paymentModal" class="modal">
     <div class="modal-content" style="display: flex; justify-content: space-between; align-items: center;">
@@ -48,7 +56,7 @@
         var change = document.getElementById('changeDisplay').innerText;
         change = change.replace('Change: ', ''); // Remove the 'Change: ' text
 
-        var url = "index.php?orderID=" + orderID + "&change=" + change;
+        var url = "index.php?orderID=" + orderID + "&change=" + change + "&customerID=" + customerID + "&discType=" + discType + "&discountPercent=" + discountPercent + "&totalSubtotal=" + totalSubtotal + "&totalBill=" + totalBill;
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
