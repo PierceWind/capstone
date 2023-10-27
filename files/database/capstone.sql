@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2023 at 09:50 AM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 7.4.30
+-- Generation Time: Oct 27, 2023 at 09:08 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,7 +36,7 @@ CREATE TABLE `accinfo` (
   `DOB` date NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp(),
   `date_modified` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `accinfo`
@@ -60,7 +60,7 @@ CREATE TABLE `account` (
   `acc_type` varchar(100) NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp(),
   `date_modified` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `account`
@@ -84,7 +84,7 @@ CREATE TABLE `delivery` (
   `drRName` varchar(255) NOT NULL,
   `dateCreated` datetime NOT NULL,
   `dateModified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `delivery`
@@ -127,7 +127,7 @@ CREATE TABLE `delivery_products` (
   `quantity` int(11) NOT NULL,
   `dateCreated` datetime NOT NULL,
   `dateModified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `delivery_products`
@@ -155,7 +155,7 @@ CREATE TABLE `inventory` (
   `id` int(11) NOT NULL,
   `prodCode` varchar(20) NOT NULL,
   `stock` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inventory`
@@ -183,7 +183,7 @@ CREATE TABLE `loginlogs` (
   `IpAddress` varbinary(16) NOT NULL,
   `TryTime` bigint(20) NOT NULL,
   `datelog` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -196,7 +196,7 @@ CREATE TABLE `orders` (
   `orderDateTime` timestamp NULL DEFAULT current_timestamp(),
   `orderStatus` enum('Queued','In Progress','Paid','Preparing','Completed') NOT NULL DEFAULT 'Queued',
   `queueNumber` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
@@ -205,7 +205,7 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`orderID`, `orderDateTime`, `orderStatus`, `queueNumber`) VALUES
 (1, '2023-10-12 11:28:51', 'Paid', 1),
 (2, '2023-10-12 14:11:32', 'Paid', 2),
-(3, '2023-10-12 15:35:38', 'In Progress', 3);
+(3, '2023-10-12 15:35:38', 'Paid', 3);
 
 -- --------------------------------------------------------
 
@@ -219,16 +219,16 @@ CREATE TABLE `order_items` (
   `ProductID` int(11) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `Subtotal` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `order_items`
 --
 
 INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Subtotal`) VALUES
-(3, 1, 6, 10, '1000.00'),
-(4, 1, 7, 10, '1500.00'),
-(5, 2, 5, 50, '1500.00');
+(3, 1, 6, 10, 1000.00),
+(4, 1, 7, 10, 1500.00),
+(5, 2, 5, 50, 1500.00);
 
 -- --------------------------------------------------------
 
@@ -242,7 +242,7 @@ CREATE TABLE `payments` (
   `PaymentAmount` decimal(10,2) NOT NULL,
   `PaymentStatus` enum('Pending','Paid','Failed') NOT NULL,
   `PaymentDateTime` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -255,7 +255,7 @@ CREATE TABLE `prodimage` (
   `productImg` varchar(255) NOT NULL,
   `dateCreated` datetime NOT NULL DEFAULT current_timestamp(),
   `dateModified` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `prodimage`
@@ -292,26 +292,26 @@ CREATE TABLE `product` (
   `prodCategory` varchar(20) NOT NULL,
   `dateCreated` datetime NOT NULL DEFAULT current_timestamp(),
   `dateModified` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`prodId`, `prodDescription`, `prodName`, `netWeight`, `prodPrice`, `minReq`, `prodCategory`, `dateCreated`, `dateModified`) VALUES
-('1', 'olive oil and tomato ', 'Puttanesca', 300, '300.00', 5, 'Heritage', '2023-09-25 00:08:07', '2023-09-25 00:08:07'),
-('11', '..', 'Bopis', 220, '250.00', 5, 'Specialties', '2023-09-25 00:22:36', '2023-09-25 00:22:36'),
-('12', 'Tomato', 'Bolognese', 400, '300.00', 5, 'Pasta', '2023-09-25 00:23:22', '2023-09-25 00:23:22'),
-('13', 'Fish Egg', 'Bottarga', 400, '200.00', 2, 'Heritage', '2023-09-25 00:25:18', '2023-09-25 00:25:18'),
-('14', 'goat ', 'Goat Caldereta', 400, '401.00', 10, 'Heritage', '2023-10-11 01:38:17', '2023-09-28 23:19:48'),
-('2', 'Orange', 'Marmalade', 300, '120.00', 10, 'Sweets', '2023-09-25 00:09:20', '2023-09-25 00:09:20'),
-('3', 'sample here', 'Baby Back Ribs', 100, '90.00', 5, 'Heritage', '2023-09-25 00:02:51', '2023-09-24 20:57:13'),
-('4', 'Bread, Celery, and Spice', 'Roast Turkey', 1000, '1000.00', 0, 'Specialties', '2023-09-25 00:11:49', '2023-09-25 00:11:49'),
-('5', 'Coconut Milk ', 'Suman Sa Lihiya', 100, '30.00', 10, 'Sweets', '2023-09-25 00:12:59', '2023-09-25 00:12:59'),
-('6', 'Papaya, Onion, Carrots', 'Atsarang Papaya', 350, '100.00', 10, 'Specialties', '2023-09-25 00:13:56', '2023-09-25 00:13:56'),
-('7', 'Onion, Garlic, Vinegar', 'Shallot', 400, '150.00', 10, 'Specialties', '2023-09-25 00:18:05', '2023-09-25 00:17:45'),
-('8', 'Radish', 'Pinoy Salad', 100, '100.00', 0, 'Salad', '2023-09-25 00:19:10', '2023-09-25 00:19:10'),
-('9', 'Ubod ', 'Atsarang Ubod', 350, '100.00', 10, 'Specialties', '2023-09-25 00:20:03', '2023-09-25 00:20:03');
+('1', 'olive oil and tomato ', 'Puttanesca', 300, 300.00, 5, 'Heritage', '2023-09-25 00:08:07', '2023-09-25 00:08:07'),
+('11', '..', 'Bopis', 220, 250.00, 5, 'Specialties', '2023-09-25 00:22:36', '2023-09-25 00:22:36'),
+('12', 'Tomato', 'Bolognese', 400, 300.00, 5, 'Pasta', '2023-09-25 00:23:22', '2023-09-25 00:23:22'),
+('13', 'Fish Egg', 'Bottarga', 400, 200.00, 2, 'Heritage', '2023-09-25 00:25:18', '2023-09-25 00:25:18'),
+('14', 'goat ', 'Goat Caldereta', 400, 401.00, 10, 'Heritage', '2023-10-11 01:38:17', '2023-09-28 23:19:48'),
+('2', 'Orange', 'Marmalade', 300, 120.00, 10, 'Sweets', '2023-09-25 00:09:20', '2023-09-25 00:09:20'),
+('3', 'sample here', 'Baby Back Ribs', 100, 90.00, 5, 'Heritage', '2023-09-25 00:02:51', '2023-09-24 20:57:13'),
+('4', 'Bread, Celery, and Spice', 'Roast Turkey', 1000, 1000.00, 0, 'Specialties', '2023-09-25 00:11:49', '2023-09-25 00:11:49'),
+('5', 'Coconut Milk ', 'Suman Sa Lihiya', 100, 30.00, 10, 'Sweets', '2023-09-25 00:12:59', '2023-09-25 00:12:59'),
+('6', 'Papaya, Onion, Carrots', 'Atsarang Papaya', 350, 100.00, 10, 'Specialties', '2023-09-25 00:13:56', '2023-09-25 00:13:56'),
+('7', 'Onion, Garlic, Vinegar', 'Shallot', 400, 150.00, 10, 'Specialties', '2023-09-25 00:18:05', '2023-09-25 00:17:45'),
+('8', 'Radish', 'Pinoy Salad', 100, 100.00, 0, 'Salad', '2023-09-25 00:19:10', '2023-09-25 00:19:10'),
+('9', 'Ubod ', 'Atsarang Ubod', 350, 100.00, 10, 'Specialties', '2023-09-25 00:20:03', '2023-09-25 00:20:03');
 
 -- --------------------------------------------------------
 
@@ -326,7 +326,7 @@ CREATE TABLE `queue` (
   `queueDateTime` datetime NOT NULL,
   `servedDateTime` datetime DEFAULT NULL,
   `notes` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -339,7 +339,7 @@ CREATE TABLE `sales` (
   `code` int(11) NOT NULL,
   `sales` int(11) NOT NULL,
   `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sales`
@@ -360,34 +360,32 @@ CREATE TABLE `transac` (
   `date` datetime DEFAULT NULL,
   `orderID` int(11) DEFAULT NULL,
   `customer_ID` varchar(255) DEFAULT NULL,
-  `discount_type` enum('regular','frequent','pwd','seniot') DEFAULT 'regular',
-  `discount_percent` float DEFAULT NULL,
-  `totalBill` decimal(10,2) DEFAULT NULL,
+  `discount_type` enum('regular','frequent','pwd','senior') DEFAULT 'regular',
+  `discount_amount` decimal(10,2) DEFAULT NULL,
+  `netAmt` decimal(10,2) DEFAULT NULL,
   `cashPaid` decimal(10,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `transac`
 --
 
-INSERT INTO `transac` (`transaction_id`, `date`, `orderID`, `customer_ID`, `discount_type`, `discount_percent`, `totalBill`, `cashPaid`) VALUES
-(4, '2023-10-23 00:00:00', 1, '', 'pwd', 0, '120.00', '120.00'),
-(5, '2023-10-23 00:00:00', 2, '', 'frequent', 0, '500.00', '200.00'),
-(6, '2023-10-23 00:00:00', 1, '', 'regular', 0, '1000.00', '50000.00'),
-(7, '2023-10-23 00:00:00', 1, '', 'frequent', 0, '5000.00', '6000.00'),
-(8, '2023-10-23 00:00:00', 1, '', 'regular', 0, '100000.00', '50000.00'),
-(9, '2023-10-24 12:38:21', 1, '', 'frequent', 0, '0.00', '0.00'),
-(10, '2023-10-24 15:42:54', 2, '', '', 0, '0.00', '0.00'),
-(11, '2023-10-24 15:45:36', 1, '', '', 0, '0.00', '0.00'),
-(12, '2023-10-24 15:46:39', 2, '', '', 0, '0.00', '0.00');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `transactions`
---
--- Error reading structure for table capstone.transactions: #1932 - Table 'capstone.transactions' doesn't exist in engine
--- Error reading data for table capstone.transactions: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `capstone`.`transactions`' at line 1
+INSERT INTO `transac` (`transaction_id`, `date`, `orderID`, `customer_ID`, `discount_type`, `discount_amount`, `netAmt`, `cashPaid`) VALUES
+(4, '2023-10-23 00:00:00', 1, '', 'pwd', 0.00, 120.00, 120.00),
+(5, '2023-10-23 00:00:00', 2, '', 'frequent', 0.00, 500.00, 200.00),
+(6, '2023-10-23 00:00:00', 1, '', 'regular', 0.00, 1000.00, 50000.00),
+(7, '2023-10-23 00:00:00', 1, '', 'frequent', 0.00, 5000.00, 6000.00),
+(8, '2023-10-23 00:00:00', 1, '', 'regular', 0.00, 100000.00, 50000.00),
+(9, '2023-10-24 12:38:21', 1, '', 'frequent', 0.00, 0.00, 0.00),
+(10, '2023-10-24 15:42:54', 2, '', '', 0.00, 0.00, 0.00),
+(11, '2023-10-24 15:45:36', 1, '', '', 0.00, 0.00, 0.00),
+(12, '2023-10-24 15:46:39', 2, '', '', 0.00, 0.00, 0.00),
+(13, '2023-10-27 13:24:40', 1, '0', 'regular', 0.00, 2500.00, 2500.00),
+(14, '2023-10-27 13:28:05', 1, '1312412341', 'pwd', 0.00, 2500.00, 1700.00),
+(15, '2023-10-27 13:36:06', 1, '1312412341', 'pwd', 0.00, 2500.00, 1700.00),
+(16, '2023-10-27 13:40:13', 1, '1312412341', 'pwd', 0.00, 2500.00, 1700.00),
+(17, '2023-10-27 13:41:40', 1, '1312412341', 'pwd', 0.00, 2500.00, 1700.00),
+(18, '2023-10-27 13:43:23', 1, '1312412341', 'pwd', 800.00, 2500.00, 1700.00);
 
 --
 -- Indexes for dumped tables
@@ -522,7 +520,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `transac`
 --
 ALTER TABLE `transac`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
