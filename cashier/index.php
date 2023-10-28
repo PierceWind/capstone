@@ -376,10 +376,19 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
 
                         // Insert into sales table
                         $querySale = "INSERT INTO sales (orderID, prodCode, sales, date) VALUES ('$orderID', '$prodID', '$quantity', NOW())";
-                        // If the query is successful, send a success response
+                        // If the query is successful, update the inventory table
                         if (mysqli_query($conn, $querySale)) {
-                            http_response_code(200);
-                            echo "Order Saved";
+                            $updateInventoryQuery = "UPDATE inventory SET stock = stock - $quantity WHERE prodCode = '$prodID'";
+                            if (mysqli_query($conn, $updateInventoryQuery)) {
+                                http_response_code(200);
+                                echo "Order Saved";
+                            } else {
+                                // If the query fails, send an error response and log the error
+                                http_response_code(500);
+                                $error_message = "Error updating inventory details: " . mysqli_error($conn);
+                                error_log($error_message);
+                                echo "Failed to update inventory details";
+                            }
                         } else {
                             // If the query fails, send an error response and log the error
                             http_response_code(500);
