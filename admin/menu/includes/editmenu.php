@@ -116,6 +116,7 @@ if (isset($_POST['edit_prod'])) {
         
         if ($query_run) {
             echo '<script>alert("Product updated successfully");</script>';
+            echo '<script>window.location.href="index.php";</script>'; // Reload index page
         } else {
             echo '<script>alert("Failed to add product to the database: ' . mysqli_error($conn) . '");</script>';
         }
@@ -132,7 +133,7 @@ if (isset($_POST['edit_prod'])) {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Add User</title>
+        <title>Edit Product</title>
         <link rel="stylesheet" type="text/css" href="../../style.css">
     </head>
     <body>
@@ -188,7 +189,6 @@ if (isset($_POST['edit_prod'])) {
                         <br><br>
                         <button style="color:white; background-color:#7002022;" type="submit" class="submit-btn" name="edit_prod" >Submit</button>
                     </form> 
-
                     <?php 
                         function resizeImage1($resourceType, $image_width, $image_height) {
                             $resizeWidth = 700;

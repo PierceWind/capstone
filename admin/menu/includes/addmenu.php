@@ -94,9 +94,9 @@ function uploadImage()
 if (isset($_POST['add_prod'])) {
     // Get form data 
     $prodId = mysqli_real_escape_string($conn, $_POST['prod_id']);
-    $prodName = mysqli_real_escape_string($conn, $_POST['prod_name']);
     $prodCategory = mysqli_real_escape_string($conn, $_POST['category']);
     $minReq = mysqli_real_escape_string($conn, $_POST['min_req']);
+    $prodName = mysqli_real_escape_string($conn, $_POST['prod_name']);
     $netWeight = mysqli_real_escape_string($conn, $_POST['netWeight']);
     $prodPrice = mysqli_real_escape_string($conn, $_POST['prod_price']);
     $prodDesc = mysqli_real_escape_string($conn, $_POST['prod_desc']);
@@ -115,18 +115,20 @@ if (isset($_POST['add_prod'])) {
 
     if ($uploadResult) {
         // Insert data into the database
-        $query = "INSERT INTO product (prodId, prodDescription, minReq, prodName, netWeight, prodPrice, prodCategory, dateCreated)
+        $query = "INSERT INTO product (prodId, prodDescription, prodName, minReq,  netWeight, prodPrice, prodCategory, dateCreated)
                   VALUES ('$prodId', '$prodDesc', '$prodName', '$minReq', '$netWeight', '$prodPrice', '$prodCategory', NOW())";
         $query_run = mysqli_query($conn, $query);
 
         if ($query_run) {
             echo '<script>alert("Product added successfully");</script>';
+            echo '<script>window.location.href="index.php";</script>'; // Reload index page
         } else {
             echo '<script>alert("Failed to add product to the database: ' . mysqli_error($conn) . '");</script>';
         }
     } else {
         echo '<script>alert("' . $uploadResult . '");</script>';
     }
+
 }
 
 ?>
@@ -137,7 +139,7 @@ if (isset($_POST['add_prod'])) {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Add User</title>
+        <title>Add Product</title>
         <link rel="stylesheet" type="text/css" href="../../style.css">
     </head>
     <body>
