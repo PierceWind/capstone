@@ -142,7 +142,7 @@
                                     <td><?php echo $row['minReq']; ?></td>
                                     <td> 
                                         <button onclick="editModal('<?php echo $row['prodId']; ?>', '<?php echo $row['productImg']; ?>', '<?php echo $row['prodName']; ?>', '<?php echo $row['prodDescription']; ?>', '<?php echo $row['prodPrice']; ?>', '<?php echo $row['netWeight']; ?>','<?php echo $row['minReq']; ?>','<?php echo $row['prodCategory']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
-                                        <form action="" method="POST" class="d-inline">
+                                        <form action="" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this record?');">
                                             <button type="submit" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
                                         </form>
                                     </td>

@@ -138,7 +138,7 @@ if (isset($_POST['delete_rec'])) {
                                         ?>
                                         <td> 
                                             <button onclick="editModal('<?php echo $row['acc_id']?>', '<?php echo $row['acc_name']?>', '<?php echo $row['acc_type']?>', '<?php echo $row['acc_pass']?>', '<?php echo $row['fname']?>', '<?php echo $row['mname']?>', '<?php echo $row['lname']?>','<?php echo $row['email']?>', '<?php echo $row['DOB']?>', '<?php echo $row['date_modified']?>')" style="margin: 0px 2px;" class="button"><img class="button" src="../../files/icons/edit.png" alt="edit"></button>
-                                            <form action="" method="POST" class="d-inline">
+                                            <form action="" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this record?');">
                                                 <button type="submit" value="<?=$row['acc_id'];?>" class="button" name="delete_rec"><img src="../../files/icons/delete.png" alt="delete"></a>   
                                             </form>
                                         </td>
