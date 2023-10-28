@@ -124,7 +124,7 @@
                                     COALESCE(inventory.stock, 0) AS stock, COALESCE(SUM(sales.sales), 0) AS totalSales
                                     FROM product
                                     LEFT JOIN inventory ON product.prodId = inventory.prodCode
-                                    LEFT JOIN sales ON product.prodId = sales.code
+                                    LEFT JOIN sales ON product.prodId = sales.prodCode
                                     GROUP BY product.prodId, product.minReq, product.prodName, product.prodPrice
                                     ORDER BY stock ASC;";
 
@@ -138,10 +138,10 @@
                                     $totalPrice = $row['prodPrice'] * $row['stock']; // Calculate total price
 
                                     // Determine the status based on your conditions
-                                    if ($row['stock'] <= $row['minReq']) {
+                                    if ($row['stock'] <= $row['minReq'] && $row['stock'] != 0)  {
                                     $status = '<span class="attention-status">Needs Attention</span>';
-                                    } elseif ($row['stock'] == 0) {
-                                    $status = 'Out of Stock';
+                                    } else if ($row['stock'] == 0) {
+                                    $status = '<span class="attention-status">Out of Stock</span>';
                                     } else {
                                     $status = 'Available';
                                     }
