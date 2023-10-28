@@ -47,6 +47,11 @@ function uploadImage()
         $sourceImageWidth = $sourceProperties[0];
         $sourceImageHeight = $sourceProperties[1];
         switch ($uploadImageType) {
+            case IMAGETYPE_JPG:
+                $resourceType = imagecreatefromjpeg($fileName);
+                $imageLayer = resizeImage($resourceType, $sourceImageWidth, $sourceImageHeight);
+                imagejpeg($imageLayer, $uploadPath . $resizeFileName . '.' . $fileExt);
+                break;
             case IMAGETYPE_JPEG:
                 $resourceType = imagecreatefromjpeg($fileName);
                 $imageLayer = resizeImage($resourceType, $sourceImageWidth, $sourceImageHeight);
@@ -76,7 +81,11 @@ function uploadImage()
             }
         }
     } else {
-        return "Image upload failed"; // Return an error message when the image upload fails
+        ?>
+        <script>
+            alert("Invalid Image. The form only accepts .jpeg, .jpg, and .png file");
+        </script>
+        <?php
     }
     
     return "Image upload failed"; // Return an error message if the code reaches this point
@@ -91,6 +100,15 @@ if (isset($_POST['add_prod'])) {
     $netWeight = mysqli_real_escape_string($conn, $_POST['netWeight']);
     $prodPrice = mysqli_real_escape_string($conn, $_POST['prod_price']);
     $prodDesc = mysqli_real_escape_string($conn, $_POST['prod_desc']);
+    
+    // Validate the image file
+    $fileType = $_FILES['prod_img']['type'];
+    $allowed = array('image/jpeg', 'image/jpg', 'image/png');
+    if (!in_array($fileType, $allowed)) {
+        echo '<script>alert("Invalid Image. The form only accepts .jpeg, .jpg, and .png file");</script>';
+        exit;
+    }
+
 
     // Upload image and check if successful
     $uploadResult = uploadImage();
