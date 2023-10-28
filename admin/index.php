@@ -83,6 +83,10 @@
                </div>
                <div class="top-box">
                 <?php 
+                    $query4 = "SELECT DISTINCT(orderID) FROM orders WHERE orderStatus = 'Canceled'";
+                    $result4 = mysqli_query($conn, $query4);
+                    $row4 = mysqli_num_rows($result4);
+
                     $query3 = "SELECT DISTINCT (acc_id) FROM account WHERE acc_id <> 1";
                     $result3 = mysqli_query($conn, $query3);
                     $row3 = mysqli_num_rows($result3);
@@ -91,7 +95,7 @@
                     $result2 = mysqli_query($conn, $query2);
                     $row2 = mysqli_num_rows($result2);
 
-                    $query1 = "SELECT DISTINCT(orderID) FROM orders";
+                    $query1 = "SELECT DISTINCT(orderID) FROM orders WHERE orderStatus = 'Completed'";
                     $result1 = mysqli_query($conn, $query1);
                     $row1 = mysqli_num_rows($result1);
                 ?>
@@ -104,8 +108,12 @@
                         <b> <?php echo $row2; ?> Product</b> 
                     </div>
                     <div class="boxes">
-                        <span>Number of Orders</span>  <br> <br>
-                        <b> <?php echo $row3; ?> Orders</b>
+                        <span>Completed Orders</span>  <br> <br>
+                        <b> <?php echo $row1; ?> Orders</b>
+                    </div>
+                    <div class="boxes">
+                        <span>Canceled Orders</span>  <br> <br>
+                        <b> <?php echo $row4; ?> Orders</b>
                     </div>
                 </div>   
 
@@ -198,7 +206,7 @@
                         $query2 = "SELECT product.*, SUM(sales.sales) AS total_sales
                         FROM sales
                         INNER JOIN product 
-                        ON product.prodId = sales.code
+                        ON product.prodId = sales.prodCode
                         GROUP BY product.prodId
                         ORDER BY total_sales DESC
                         LIMIT 5;
@@ -209,14 +217,14 @@
                         $query1 = "SELECT product.*, SUM(sales.sales) AS total_sales
                         FROM product
                         LEFT JOIN sales 
-                        ON product.prodId = sales.code
+                        ON product.prodId = sales.prodCode
                         GROUP BY product.prodId
                         HAVING total_sales < (
                             SELECT MIN(sub.total_sales) 
                             FROM (
                                 SELECT SUM(sales.sales) AS total_sales 
                                 FROM sales 
-                                GROUP BY code
+                                GROUP BY prodCode
                             ) AS sub
                         )
                         ORDER BY total_sales;";
@@ -227,7 +235,7 @@
                         <h3>Critical Stock</h3> <br>
                             <?php if($row3 > 0) {
                                 while ($res = mysqli_fetch_array($result3)) {
-                                    echo "<li>".$res['prodName']."</li>";
+                                    echo $res['prodName'];
                                     echo "<br>";
                                 }
                             }
@@ -237,7 +245,7 @@
                         <h3>Top-Selling Products </h3> <br>
                             <?php if($row2 > 0) {
                                 while ($res = mysqli_fetch_array($result2)) {
-                                    echo "<li>".$res['prodName']."</li>";
+                                    echo $res['prodName'];
                                     echo "<br>";
                                 }
                             }

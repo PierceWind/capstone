@@ -131,16 +131,16 @@ nav:hover{
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 40px;
 }
-.top-box{
+.top-box {
     position: relative;
     width: 100%;
     padding: 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
     grid-gap: 40px;
 }
 
-.boxes{
+.boxes {
     border-top: 5px solid #700202;
     position: relative;
     background: #fff;
@@ -148,7 +148,6 @@ nav:hover{
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
-  
 }
 .graphcal{
     position: relative;
