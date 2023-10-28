@@ -52,11 +52,29 @@
     
     function refreshPage() {
         var xhr = new XMLHttpRequest();
-        var orderID = "<?php echo $inProgressOrderId; ?>"; // Added this line to assign the value to orderID
+        var orderID = "<?php echo $inProgressOrderId; ?>"; 
         var change = document.getElementById('changeDisplay').innerText;
-        change = change.replace('Change: ', ''); // Remove the 'Change: ' text
+        change = change.replace('Change: ', ''); 
 
-        var url = "index.php?orderID=" + orderID + "&change=" + change + "&customerID=" + customerID + "&discType=" + discType + "&discountPercent=" + discountPercent + "&totalSubtotal=" + totalSubtotal + "&totalBill=" + totalBill;
+        var rows = document.getElementById('order-list').getElementsByTagName('tr'); 
+        var products = [];
+
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName('td');
+            if (cells.length > 0) {
+                var product = {
+                    description: cells[0].innerText,
+                    quantity: cells[1].innerText,
+                    unitPrice: cells[2].innerText,
+                    subtotal: cells[3].innerText
+                };
+                products.push(product);
+            }
+        }
+
+        var encodedProducts = encodeURIComponent(JSON.stringify(products));
+
+        var url = "index.php?orderID=" + orderID + "&change=" + change + "&customerID=" + customerID + "&discType=" + discType + "&discountPercent=" + discountPercent + "&totalSubtotal=" + totalSubtotal + "&totalBill=" + totalBill + "&products=" + encodedProducts;
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {

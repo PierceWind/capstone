@@ -23,7 +23,7 @@ $indentation = str_repeat("&nbsp;", $indentationLevel);
 if (isset($_GET['order_id'])) {
     $orderId = $_GET['order_id']; // Change the variable name to order_id to match the URL parameter
 
-    $cancelOrderQuery = "UPDATE orders SET orderStatus='Cancelled' WHERE orderID='$orderId'"; // Use $orderId to match the URL parameter
+    $cancelOrderQuery = "UPDATE orders SET orderStatus='Canceled' WHERE orderID='$orderId'"; // Use $orderId to match the URL parameter
     $cancelOrderResult = mysqli_query($conn, $cancelOrderQuery);
 
     if ($cancelOrderResult) {
@@ -345,7 +345,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         include ('includes/generate_receipt.php');
 
 
-        //UPDATE ORDER STATUS SQL SCRIPT
+    //UPDATE ORDER STATUS & INSERT TRANSAC AND SALES SQL SCRIPT
     if (isset($_GET['orderID'])) {
         $orderID = $_GET['orderID'];
         $customerID = $_GET['customerID'];
@@ -353,26 +353,46 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         $discountPercent = $_GET['discountPercent'];
         $totalSubtotal = $_GET['totalSubtotal'];
         $totalBill = $_GET['totalBill'];
-
+        $products = json_decode($_GET['products'], true);
+    
         $updateQuery = "UPDATE orders SET orderStatus='Paid' WHERE orderID='$orderID'";
         if (mysqli_query($conn, $updateQuery)) {
             // Transac Query INSERT 
             $queryTransac = "INSERT INTO transac (date, orderID, customer_ID, discount_type, discount_amount, netAmt, cashPaid) 
             VALUES (NOW(), '$orderID', '$customerID', '$discType', '$discountPercent', '$totalSubtotal', '$totalBill')";
             if (mysqli_query($conn, $queryTransac)) {
-                foreach ($orderItems as $item) {
-                    $prodId = $item['prodId'];
-                    $querySale = "INSERT INTO sales (code, sales, date) VALUES ('$prodId', '$orderID', NOW())";
-                    // If the query is successful, send a success response
-                    if (mysqli_query($conn, $querySale)) {
-                        http_response_code(200);
-                        echo "Order Saved";
+                foreach ($products as $product) {
+                    $description = $product['description'];
+                    $quantity = $product['quantity'];
+                    $unitPrice = $product['unitPrice'];
+                    $subtotal = $product['subtotal'];
+    
+                    // Retrieve prodID from the product table based on the description
+                    $queryProduct = "SELECT prodId FROM product WHERE prodName = '$description'";
+                    $resultProduct = mysqli_query($conn, $queryProduct);
+                    if ($resultProduct && mysqli_num_rows($resultProduct) > 0) {
+                        $row = mysqli_fetch_assoc($resultProduct);
+                        $prodID = $row['prodId'];
+
+                        // Insert into sales table
+                        $querySale = "INSERT INTO sales (orderID, prodCode, sales, date) VALUES ('$orderID', '$prodID', '$quantity', NOW())";
+                        // If the query is successful, send a success response
+                        if (mysqli_query($conn, $querySale)) {
+                            http_response_code(200);
+                            echo "Order Saved";
+                        } else {
+                            // If the query fails, send an error response and log the error
+                            http_response_code(500);
+                            $error_message = "Error saving order details: " . mysqli_error($conn);
+                            error_log($error_message);
+                            echo "Failed to save order details";
+                        }
                     } else {
                         // If the query fails, send an error response and log the error
                         http_response_code(500);
-                        $error_message = "Error saving order details: " . mysqli_error($conn);
+                        $error_message = "Error retrieving product details: " . mysqli_error($conn);
                         error_log($error_message);
-                        echo "Failed to save order details";
+                        echo "Failed to retrieve product details";
                     }
                 }
             } else {
@@ -390,6 +410,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
             echo "Failed to update order status";
         }
     }
+    
 
     ?>
     <script>

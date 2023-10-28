@@ -82,7 +82,7 @@ if (isset($_POST['applyDiscountBtn'])) {
                     <th>Date</th>
                     <th>Customer ID</th>
                     <th>Discount Type</th>
-                    <th>Discount Percent</th>
+                    <th>Total Discount Amt</th>
                     <th>Total Bill</th>
                     <th>Cash Paid</th>
                 </tr>
@@ -100,7 +100,7 @@ if (isset($_POST['applyDiscountBtn'])) {
                         echo "<td>" . $row['date'] . "</td>";
                         echo "<td>" . $row['customer_ID'] . "</td>";
                         echo "<td>" . $row['discount_type'] . "</td>";
-                        echo "<td>" . $row['discount_percent'] . "</td>";
+                        echo "<td>" . $row['discount_amount'] . "</td>";
                         echo "<td>" . $row['netAmt'] . "</td>";
                         echo "<td>" . $row['cashPaid'] . "</td>";
                         echo "</tr>";
