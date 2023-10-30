@@ -353,26 +353,27 @@
             
         </div>  <!--end of div main--> 
         <script>
-        var prodId= document.getElementsByClassName("addtoc");
-
-        for (var i = 0; i < prodId.length; i++) {
-            prodId[i].addEventListener("click", function(event) {
-                var target = event.target;
-                var id = target.getAttribute("data-id");
-                var xml = new XMLHttpRequest();
-
-                xml.onreadystatechange = function() {
-                    if (xml.readyState == 4 && xml.status == 200) {
-                        var data = JSON.parse(xml.responseText);
-                        target.innerHTML = data.in_cart;
-                        document.getElementById("quantity").innerHTML = data.num_cart + 1; 
-                    }
-                };
-                xml.open("GET", "server.php?id=" + id, true);
-                xml.send(); 
-                
-            })  
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+            var prodId = document.getElementsByClassName("addtoc");
+        
+            for (var i = 0; i < prodId.length; i++) {
+                prodId[i].addEventListener("click", function(event) {
+                    var target = event.target;
+                    var id = target.getAttribute("data-id");
+                    var xml = new XMLHttpRequest();
+        
+                    xml.onreadystatechange = function() {
+                        if (xml.readyState == 4 && xml.status == 200) {
+                            var data = JSON.parse(xml.responseText);
+                            target.innerHTML = data.in_cart;
+                            document.getElementById("quantity").innerHTML = data.num_cart + 1;
+                        }
+                    };
+                    xml.open("GET", "server.php?id=" + id, true);
+                    xml.send();
+                });
+            }
+        });
         <?php
         if (isset($_GET["id"])) {
             // Sanitize and validate the input
