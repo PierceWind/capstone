@@ -380,6 +380,9 @@
             $prodId = filter_var($_GET["id"], FILTER_VALIDATE_INT);
         
             if ($prodId !== false) {
+                //Debug: Log the received "id" value
+                error_log("Received id: ", $prodId);
+
                 $in_cart = "added into cart"; // Initialize in_cart variable
         
                 // Use a prepared statement to safely query the database
@@ -411,6 +414,9 @@
                 // Close the prepared statements and the database connection
                 $stmt->close();
                 $conn->close();
+
+                // Debug: Log the response data
+                error_log("Response data: " . json_encode(["num_cart" => $cartNum, "in_cart" => $in_cart]));
         
                 // Return the response as JSON
                 echo json_encode(["num_cart" => $cartNum, "in_cart" => $in_cart]);
