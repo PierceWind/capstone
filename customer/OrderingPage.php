@@ -353,32 +353,36 @@
             
         </div>  <!--end of div main--> 
         <script>
-        var prodId= document.getElementsByClassName("addtoc");
-
-        for (var i = 0; i < prodId.length; i++) {
-            prodId[i].addEventListener("click", function(event) {
-                var target = event.target;
-                var id = target.getAttribute("data-id");
-                var xml = new XMLHttpRequest();
-
-                xml.onreadystatechange = function() {
-                    if (xml.readyState == 4 && xml.status == 200) {
-                        var data = JSON.parse(xml.responseText);
-                        target.innerHTML = data.in_cart;
-                        document.getElementById("quantity").innerHTML = data.num_cart + 1; 
-                    }
-                };
-                xml.open("GET", "server.php?id=" + id, true);
-                xml.send(); 
-                
-            })  
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+            var prodId = document.getElementsByClassName("addtoc");
+        
+            for (var i = 0; i < prodId.length; i++) {
+                prodId[i].addEventListener("click", function(event) {
+                    var target = event.target;
+                    var id = target.getAttribute("data-id");
+                    var xml = new XMLHttpRequest();
+        
+                    xml.onreadystatechange = function() {
+                        if (xml.readyState == 4 && xml.status == 200) {
+                            var data = JSON.parse(xml.responseText);
+                            target.innerHTML = data.in_cart;
+                            document.getElementById("quantity").innerHTML = data.num_cart + 1;
+                        }
+                    };
+                    xml.open("GET", "server.php?id=" + id, true);
+                    xml.send();
+                });
+            }
+        });
         <?php
         if (isset($_GET["id"])) {
             // Sanitize and validate the input
             $prodId = filter_var($_GET["id"], FILTER_VALIDATE_INT);
         
             if ($prodId !== false) {
+                //Debug: Log the received "id" value
+                error_log("Received id: ", $prodId);
+
                 $in_cart = "added into cart"; // Initialize in_cart variable
         
                 // Use a prepared statement to safely query the database
@@ -410,6 +414,9 @@
                 // Close the prepared statements and the database connection
                 $stmt->close();
                 $conn->close();
+
+                // Debug: Log the response data
+                error_log("Response data: " . json_encode(["num_cart" => $cartNum, "in_cart" => $in_cart]));
         
                 // Return the response as JSON
                 echo json_encode(["num_cart" => $cartNum, "in_cart" => $in_cart]);
