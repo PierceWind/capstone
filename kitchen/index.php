@@ -74,7 +74,8 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                         WHERE orders.orderStatus IN ('Preparing', 'Paid', 'In Progress') 
                         ORDER BY CASE 
                             WHEN orders.orderStatus = 'Preparing' THEN 1 
-                            ELSE 2 
+                            WHEN orders.orderStatus = 'Paid' THEN 2 
+                            ELSE 3 
                         END, 
                         orders.orderDateTime ASC 
                         LIMIT 4";
@@ -93,7 +94,11 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                             }
                         }
                     } else {
-                        echo "Error updating record: " . mysqli_error($conn);
+                        ?>
+                            <div class="col" style="text-align: center;">
+                                <h3 style="color: red;">No orders in the queue</h3>
+                            </div>
+                        <?php
                     }
                     ?>
                 </section>
@@ -101,110 +106,90 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
             </div>
             
             <div class="col-md-8" style="margin-top: 100px;">
-                <div class="row" style="margin-bottom: 15px;">
-                    <?php
-                    $query = "SELECT DISTINCT orders.queueNumber 
-                    FROM orders 
-                    WHERE orders.orderStatus IN ('Preparing', 'Paid', 'In Progress') 
-                    ORDER BY CASE 
-                            WHEN orders.orderStatus = 'Preparing' THEN 1 
-                            ELSE 2 
-                            END, 
-                            orders.orderDateTime ASC 
-                    LIMIT 4"; 
-                    $query_run = mysqli_query($conn, $query);
+    <div class="row" style="margin-bottom: 15px;">
+        <?php
+        $query = "SELECT DISTINCT orders.queueNumber 
+        FROM orders 
+        WHERE orders.orderStatus IN ('Preparing', 'Paid', 'In Progress') 
+        ORDER BY CASE 
+                WHEN orders.orderStatus = 'Preparing' THEN 1 
+                WHEN orders.orderStatus = 'Paid' THEN 2 
+                ELSE 3 
+                END, 
+                orders.orderDateTime ASC 
+        LIMIT 4"; 
+        $query_run = mysqli_query($conn, $query);
 
-                    if (mysqli_num_rows($query_run) > 0) {
-                        $counter = 0;
-                        while ($row = mysqli_fetch_assoc($query_run)) {
-                            $queueNumber = sprintf("%04d", $row['queueNumber']); // Format as 4 digits
-                            $orderItemsQuery = "SELECT order_items.Quantity, product.prodName 
-                            FROM orders 
-                            INNER JOIN order_items ON orders.orderID = order_items.OrderID 
-                            INNER JOIN product ON order_items.ProductID = product.prodId 
-                            WHERE (orders.orderStatus = 'Preparing' OR orders.orderStatus = 'Paid' OR orders.orderStatus = 'In Progress') 
-                            AND orders.queueNumber = '$queueNumber'
-                            ORDER BY CASE WHEN orders.orderStatus = 'Preparing' THEN 1 ELSE 2 END, orders.orderDateTime ASC
-                            LIMIT 4";
-                            $orderItemsResult = mysqli_query($conn, $orderItemsQuery);
-                    ?>
-                            <div class="col" style="width: 300px; height: 300px; overflow-y: auto;">
-                                <div class="card" style="width: 100%; height: 100%;">
-                                    <div class="card-body d-xl-flex flex-column justify-content-xl-center">
-                                        <h5>Order #<?php echo $queueNumber; ?></h5>
-                                        <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Qty</th>
-                                                        <th>Product</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    if (mysqli_num_rows($orderItemsResult) > 0) {
-                                                        while ($item = mysqli_fetch_assoc($orderItemsResult)) {
-                                                            $quantity = $item['Quantity'];
-                                                            $product = $item['prodName'];
-                                                    ?>
-                                                            <tr>
-                                                                <td><?php echo $quantity; ?></td>
-                                                                <td><?php echo $product; ?></td>
-                                                            </tr>
-                                                    <?php
-                                                        }
-                                                    } else {
-                                                        echo "<tr><td colspan='2'>No items in the order</td></tr>";
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <button class="btn btn-primary" type="button" style="background: #7c2128;border-style: none;" onclick="updateOrderStatus('<?php echo $queueNumber; ?>')">
-                                            <strong>SERVED TO #<?php echo $queueNumber; ?></strong>
-                                        </button>
-                                    </div>
-                                </div>
+        if (mysqli_num_rows($query_run) > 0) {
+            $counter = 0;
+            while ($row = mysqli_fetch_assoc($query_run)) {
+                $queueNumber = sprintf("%04d", $row['queueNumber']); // Format as 4 digits
+                $orderItemsQuery = "SELECT order_items.Quantity, product.prodName 
+                FROM orders 
+                INNER JOIN order_items ON orders.orderID = order_items.OrderID 
+                INNER JOIN product ON order_items.ProductID = product.prodId 
+                WHERE (orders.orderStatus = 'Preparing' OR orders.orderStatus = 'Paid' OR orders.orderStatus = 'In Progress') 
+                AND orders.queueNumber = '$queueNumber'
+                ORDER BY CASE WHEN orders.orderStatus = 'Preparing' THEN 1 WHEN orders.orderStatus = 'Paid' THEN 2 
+                ELSE 3 END, orders.orderDateTime ASC
+                LIMIT 4";
+                $orderItemsResult = mysqli_query($conn, $orderItemsQuery);
+        ?>
+                <div class="col" style="width: 300px; height: 300px; overflow-y: auto;">
+                    <div class="card" style="width: 100%; height: 100%;">
+                        <div class="card-body d-xl-flex flex-column justify-content-xl-center">
+                            <h5>Order #<?php echo $queueNumber; ?></h5>
+                            <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Qty</th>
+                                            <th>Product</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        if (mysqli_num_rows($orderItemsResult) > 0) {
+                                            while ($item = mysqli_fetch_assoc($orderItemsResult)) {
+                                                $quantity = $item['Quantity'];
+                                                $product = $item['prodName'];
+                                        ?>
+                                                <tr>
+                                                    <td><?php echo $quantity; ?></td>
+                                                    <td><?php echo $product; ?></td>
+                                                </tr>
+                                        <?php
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='2'>No items in the order</td></tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
                             </div>
-                    <?php
-                            $counter++;
-                            if ($counter == 2) {
-                                echo '</div><div class="row" style="margin-bottom: 15px;">';
-                            }
-                        }
-                    } else {
-                    ?>
-                            <div class="col" style="width: 300px; height: 300px; overflow-y: auto;">
-                                <div class="card" style="width: 100%; height: 100%;">
-                                    <div class="card-body d-xl-flex flex-column justify-content-xl-center">
-                                        <h5>Order #<?php echo sprintf("%04d", $queueNumber); ?></h5>
-                                        <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Qty</th>
-                                                        <th>Product</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan='2'>No items in the order</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <button class="btn btn-primary" type="button" style="background: #7c2128;border-style: none;"><strong>SERVED TO #<?php echo sprintf("%04d", $i); ?></strong></button>
-                                    </div>
-                                </div>
-                            </div>
-                    <?php
-                            if ($i == 2) {
-                                echo '</div><div class="row" style="margin-bottom: 15px;">';
-                            }
-                        }
-                    ?>
+                            <button class="btn btn-primary" type="button" style="background: #7c2128;border-style: none;" onclick="updateOrderStatus('<?php echo $queueNumber; ?>')">
+                                <strong>SERVED TO #<?php echo $queueNumber; ?></strong>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+        <?php
+                $counter++;
+                if ($counter == 2) {
+                    echo '</div><div class="row" style="margin-bottom: 15px;">';
+                }
+            }
+        } else {
+            ?>
+                <div class="col" style="text-align: center;">
+                    <br><br><br><br><br><br><br><br><h3 style="color: red;">No orders in the queue</h3>
+                </div>
+            <?php
+            }
+            ?>
+    </div>
+</div>
+
 
         </div>
     </div>
