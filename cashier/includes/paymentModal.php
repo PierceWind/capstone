@@ -1,3 +1,4 @@
+
 <script>
     var customerID = "<?php echo $customerID?>";
     var discType = "<?php echo $discType?>";
@@ -5,7 +6,6 @@
     var totalSubtotal = "<?php echo $totalSubtotal?>";
     var totalBill = "<?php echo $totalBill?>";
 </script> 
-
 
 <div id="paymentModal" class="modal">
     <div class="modal-content" style="display: flex; justify-content: space-between; align-items: center;">
@@ -28,6 +28,10 @@
         </div>
     </div>
 </div>
+<?php 
+include ('generate_receipt.php');
+generateReceiptPDF($inProgressOrderId, $currentlyProcessingOrderQueueNumber, $customerID, $discType, $discountPercent, $formattedDiscAmt, $formattedVatSales, $formattedVatAmt, $inProgressOrderId, $totalBill, $cashInput, $change, $products);
+?>
 
 <script>
     function calculateChange() {
@@ -79,6 +83,9 @@
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
+                    <?php 
+                        echo "generateReceiptPDF(" . $inProgressOrderId . ", " . $currentlyProcessingOrderQueueNumber . ", " . $customerID . ", '" . $discType . "', " . $discountPercent . ", '" . $formattedDiscAmt . "', '" . $formattedVatSales . "', '" . $formattedVatAmt . "', " . $inProgressOrderId . ", " . $totalBill . ", " . $cashInput . ", " . $change . ", " . "products);";
+                    ?>
                     alert("Order status updated to Paid");
                 } else {
                     alert("Failed to update order status");

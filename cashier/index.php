@@ -342,9 +342,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     <?php 
         include ('includes/discModal.php');
         include('includes/paymentModal.php');
-        include ('includes/generate_receipt.php');
-
-
+        
     //UPDATE ORDER STATUS & INSERT TRANSAC AND SALES SQL SCRIPT
     if (isset($_GET['orderID'])) {
         $orderID = $_GET['orderID'];
@@ -418,10 +416,10 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
             error_log($error_message);
             echo "Failed to update order status";
         }
+        
     }
-    
-
     ?>
+
     <script>
         function loadOrderDetails(queueNumber) {
         // Make an AJAX request to fetch the order details from the server
@@ -526,6 +524,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/Off-Canvas-Sidebar-Drawer-Navbar-swipe.js"></script>
     <script src="assets/js/Off-Canvas-Sidebar-Drawer-Navbar-off-canvas-sidebar.js"></script>
+
 </body>
 
 </html>
