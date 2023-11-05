@@ -362,15 +362,10 @@ body{
   margin-right: 10px;
 }
 
-.show-cart {
-  background-color: #007BFF;
-  color: #fff;
-  border-radius: 50%;
+.show-cart { 
+  color:black;
   padding: 6px 12px;
   font-weight: bold;
-  position: absolute;
-  top: -10px;
-  right: -10px;
 }
 
 /* Modal styles */
@@ -384,6 +379,7 @@ body{
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
+  overflow-y: hidden;
 }
 
 .modal-dialog {
@@ -406,12 +402,12 @@ body{
 
 .modal-body {
   padding: 20px;
+  max-height: 60vh; /* Allow modal content to scroll if needed */
+  overflow-y: auto;
 }
 
 table.show-cart {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
 }
 
 table.show-cart td {
@@ -424,12 +420,61 @@ table.show-cart td {
   margin-top: 20px;
 }
 
+.btn-secondary,
+.btn-primary,
+.btn-danger {
+  padding: 5px 10px;
+  border: none;
+  color: black;
+  cursor: pointer;
+  width: 100%; /* Ensure buttons span full width */
+  text-align: center; /* Center button text */
+}
+
 .btn-secondary {
   background-color: #ccc;
-  color: #fff;
+}
+.btn-secondary:hover {
+  background-color: #700202;
+  color:#fff;
+  font-weight:bold;
 }
 
 .btn-primary {
   background-color: #007BFF;
-  color: #fff;
+}
+
+.btn-danger {
+  background-color: #DC3545;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.cart-table th, .cart-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.cart-table th {
+  background-color: #f2f2f2;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.item-count {
+  width: 40px;
+  text-align: center;
+  align-content:center;
 }

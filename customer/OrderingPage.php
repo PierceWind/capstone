@@ -66,7 +66,7 @@ function generateProductCards($products) {
                 <div class="detail-price">
                     <p class="price">Php <?php echo $price; ?></p>
                 </div>
-                <img class="addtoc add-to-cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>" data-name="<?php echo $row["prodName"]; ?>" data-price="<?php echo $row["prodPrice"]; ?>">
+                <img class="addtoc" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>" data-name="<?php echo $row["prodName"]; ?>" data-price="<?php echo $row["prodPrice"]; ?>">
             </div>
         </div>
     <?php
@@ -108,7 +108,7 @@ function generateProductCards($products) {
             <!-- icon on the upper right side of navbar-->
             <div class="shopping">
                 <img class="cart" src="../files/icons/shopping-cart.png" alt=""  data-toggle="modal" data-target="#cart" >
-                <span class="show-cart total-count" ></span>
+                <span class="total-count show-cart" ></span>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -122,8 +122,8 @@ function generateProductCards($products) {
                             <div>Total price: ₱<span class="total-cart"></span></div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Order now</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -275,7 +275,7 @@ function generateProductCards($products) {
     </div>
 
 <script>
-    // Shopping Cart JavaScript code
+    //Shopping Cart JavaScript code
     var shoppingCart = (function() {
         // Private methods and properties
         var cart = [];
@@ -285,11 +285,11 @@ function generateProductCards($products) {
             this.price = price;
             this.count = count;
         }
-
+        //save cart
         function saveCart() {
             sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
         }
-
+        //load cart
         function loadCart() {
             cart = JSON.parse(sessionStorage.getItem('shoppingCart')) || [];
         }
@@ -301,6 +301,7 @@ function generateProductCards($products) {
         // Public methods and properties
         var obj = {};
 
+        //add to cart
         obj.addItemToCart = function(name, price, count) {
             for (var item in cart) {
                 if (cart[item].name === name) {
@@ -323,6 +324,7 @@ function generateProductCards($products) {
             }
         };
 
+        //remove item from cart
         obj.removeItemFromCart = function(name) {
             for (var item in cart) {
                 if (cart[item].name === name) {
@@ -385,7 +387,7 @@ function generateProductCards($products) {
     })();
 
     // Event handling
-    $('.add-to-cart').click(function(event) {
+    $('.addtoc').click(function(event) {
         event.preventDefault();
         var name = $(this).data('name');
         var price = Number($(this).data('price'));
@@ -398,7 +400,31 @@ function generateProductCards($products) {
         displayCart();
     });
 
-    // Rest of your event handlers here
+    // Delete item button
+
+   
+
+
+    // -1
+    $('#cart').on("click", ".minus-item", function(event) {
+    var name = $(this).data('name')
+    shoppingCart.removeItemFromCart(name);
+    displayCart();
+    })
+    // +1
+    $('#cart').on("click", ".plus-item", function(event) {
+    var name = $(this).data('name')
+    shoppingCart.addItemToCart(name);
+    displayCart();
+    })
+
+    // Item count input
+    $('#cart').on("change", ".item-count", function(event) {
+    var name = $(this).data('name');
+    var count = Number($(this).val());
+    shoppingCart.setCountForItem(name, count);
+    displayCart();
+    });
 
     function displayCart() {
             var cartArray = shoppingCart.listCart();
@@ -406,9 +432,9 @@ function generateProductCards($products) {
             for (var i in cartArray) {
                 output += "<tr>"
                     + "<td>" + cartArray[i].name + "</td>"
-                    + "<td>(" + cartArray[i].price + ")</td>"
+                    + "<td>(" + cartArray[i].price +")</td>"
                     + "<td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-name='" + cartArray[i].name + "'>-</button>"
-                    + "<input type='number' class='item-count form-control' data-name='" + cartArray[i].name + "' value='" + cartArray[i].count + "'>"
+                    + "<input type='number' class='item-count form-control' value='" + cartArray[i].count + "'>"
                     + "<button class='plus-item btn btn-primary input-group-addon' data-name='" + cartArray[i].name + "'>+</button></div></td>"
                     + "<td><button class='delete-item btn btn-danger' data-name='" + cartArray[i].name + "'>X</button></td>"
                     + " = "
@@ -418,11 +444,19 @@ function generateProductCards($products) {
             $('.show-cart').html(output);
             $('.total-cart').html(shoppingCart.totalCart());
             $('.total-count').html(shoppingCart.totalCount());
-        }
+        } 
 
 
     // Rest of your JavaScript code
-
+    $('#cart').on('shown.bs.modal', function () {
+    displayCart();
+    });
+    $('#cart').on("click", ".delete-item", function(event) {
+    var name = $(this).data('name');
+    console.log("Delete item clicked for: " + name);
+    shoppingCart.removeItemFromCartAll(name);
+    displayCart();
+});
 </script>
 
 
