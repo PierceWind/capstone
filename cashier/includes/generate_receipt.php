@@ -1,6 +1,6 @@
 <?php
 
-var_dump($_GET);
+//var_dump($_GET);
 
 
 $customerID = $_GET['customerID']; 
@@ -20,13 +20,14 @@ $cashInput = $_GET['cashInput'];
 $encodedProducts = $_GET['products'];
 
 
-
 $items = json_decode(urldecode($encodedProducts), true);
 
 // Calculate total
+$numItems = 0;
 $total = 0;
 foreach ($items as $item) {
     $total += $item['quantity'] * $item['unitPrice'];
+    $numItems += $item['quantity'];
 }
 
 ?>
@@ -37,8 +38,22 @@ foreach ($items as $item) {
     <meta name="viewport" content="width=device-width">
     <title>Receipt</title>
     <style>
+        body {
+            position: relative;
+            margin: 5px;
+            padding-bottom: 100px; /* Height of the footer */
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f1f1f1;
+            text-align: center;
+        }
         .print-btn {
-            background-color: #4CAF50;
+            background-color: #700202;
+            border-radius: 20px; 
             border: none;
             color: white;
             padding: 15px 32px;
@@ -48,6 +63,18 @@ foreach ($items as $item) {
             font-size: 16px;
             margin: 4px 2px;
             cursor: pointer;
+        }
+        @media print {
+            @page {
+                size: 80mm auto; /* 80mm width and auto height */
+            }
+            body {
+                width: 80mm;
+                margin: 0; /* Reset default margin */
+            }
+            .footer {
+                display: none; /* Hide the footer in print view */
+            }
         }
     </style>
 </head>
@@ -109,7 +136,9 @@ foreach ($items as $item) {
     <p>Your Cravings Satisfied Here at TDF Foods</p>
     <p>BON APPETITE</p>
     <br>
-    <button class="print-btn" onclick="window.print()">Print Receipt</button>
+    <div class="footer">
+        <button class="print-btn" onclick="window.print()">Print Receipt</button>
+    </div>
 
 </body>
 </html>

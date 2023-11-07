@@ -18,7 +18,10 @@ if (isset($_POST['confirmPaymentBtn'])) {
     header("Location: includes/generate_receipt.php?orderID=$orderID&customerID=$customerID&discType=$discType&discountPercent=$discPercent&totalSubtotal=$totalSubtotal&totalBill=$totalBill&products=" . urlencode(json_encode($products)));
     exit();
 }
+
 ?>
+
+
 
 
 
@@ -27,7 +30,7 @@ if (isset($_POST['confirmPaymentBtn'])) {
         <span class="close" style="margin-left: 90%;">&times;</span>
         <br>    
         <div class="sec1" id="paymentContent" style="text-align: center;">
-            <h2 id="inProgressOrderId" >Order ID: <?php echo $inProgressOrderId;?></h2>
+            <h2 id="inProgressOrderId" >Order ID: <?php echo $inProgressOrderId; ?></h2>
             <form method="post" id="paymentForm" class="input-group" enctype="multipart/form-data" action="">
                 <label for="cash"><strong>Receive Cash Payment</strong></label><br>
                 <input type="hidden" id="inProgressOrderId" name="inProgressOrderId" placeholder="" required>
@@ -52,25 +55,21 @@ if (isset($_POST['confirmPaymentBtn'])) {
 
 
 
-<script>
-    var orderID =  <?php echo isset($inProgressOrderId) ? $totalBill : 0; ?>;
-    var queueNum = "<?php echo $inProgressQueueNum; ?>"; 
-    var discType = "<?php echo $discType?>";
-    var discountPercent = <?php echo isset($formattedDiscPercent) ? $formattedDiscPercent : 0; ?>;
-    var discAmt = <?php echo isset($formattedDiscAmt) ? $formattedDiscAmt : 0; ?>;
-    var vatSales = <?php echo isset($formattedVatSales) ? $formattedVatSales : 0; ?>;
-    var vatAmt = <?php echo isset($formattedVatAmt) ? $formattedVatAmt : 0; ?>;
-    var totalDiscAmt = <?php echo isset($formattedTotalDisc) ? $formattedTotalDisc : 0; ?>;
-    var totalSubtotal = <?php echo isset($formattedTotalSubTotal) ? $formattedTotalSubTotal : 0; ?>;
-    var totalBill = <?php echo isset($formattedTotalBill) ? $formattedTotalBill : 0; ?>;
-    var encodedProducts = ""; 
-</script> 
 
 <script> 
    function printReceipt(orderID, queueNum, customerID, discType, discountPercent, discAmt, vatSales, vatAmt, totalDiscAmt, totalSubtotal, totalBill, encodedProducts) {
     var xhr = new XMLHttpRequest();
+    var orderID = <?php echo isset($inProgressOrderId) ? $inProgressOrderId : 0; ?>;
+    var customerID = <?php echo isset($customerID) ? $customerID : 0; ?>;
+    var queueNum = <?php echo isset($inProgressQueueNum) ? $inProgressQueueNum : 0; ?>;
+    var discType = "<?php echo isset($discType) ? $discType : 'regular'; ?>";
+    var discountPercent = <?php echo isset($discountPercent) ? $discountPercent : 0.00; ?>;
+    var discAmt = <?php echo isset($discAmt) ? $discAmt : 0.00; ?>;
+    var vatSales = <?php echo isset($vatSales) ? $vatSales : 0.00; ?>;
+    var vatAmt = <?php echo isset($vatAmt) ? $vatAmt : 0.00; ?>;
+    var totalSubtotal = <?php echo isset($totalSubtotal) ? $totalSubtotal : 0.00; ?>;
     var cashInput = document.getElementById('cashInput').value;
-    var totalBill = <?php echo isset($formattedTotalBill) ? $totalBill : 0; ?>;
+    var totalBill = <?php echo isset($formattedTotalBill) ? $totalBill : 0.00; ?>;
     var change = cashInput - totalBill;
     var changeDisplay = document.getElementById('changeDisplay').innerText;
     changeDisplay = changeDisplay.replace('Change: ', '');
@@ -92,6 +91,7 @@ if (isset($_POST['confirmPaymentBtn'])) {
     }
 
     encodedProducts = encodeURIComponent(JSON.stringify(products));
+
 
     var url = "includes/generate_receipt.php?customerID=" + customerID + "&orderID=" + orderID + "&queueNum=" + queueNum + "&discType=" + discType + "&discountPercent=" + discountPercent + "&discAmt=" + discAmt + "&vatSales=" + vatSales + "&vatAmt=" + vatAmt + "&totalDiscAmt=" + totalDiscAmt + "&totalSubtotal=" + totalSubtotal + "&totalBill=" + totalBill + "&products=" + encodedProducts + "&cashInput=" + cashInput + "&change=" + change;
     xhr.open("GET", url, true);
