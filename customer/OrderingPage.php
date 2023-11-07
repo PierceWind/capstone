@@ -1,7 +1,7 @@
 <?php
 // Include server.php and establish the database connection
-    include_once 'server.php';
-
+    include ('server.php');
+    
     $sql = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
@@ -9,42 +9,43 @@
         LEFT JOIN sales ON sales.code = product.prodId LIMIT 8';
         $all_product = $conn->query($sql);
 
-        $heritage = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+    $heritage = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
         WHERE product.prodCategory = "Heritage"' ;
         $her = $conn->query($heritage);
 
 
-        $specialties = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+    $specialties = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
         WHERE product.prodCategory = "Specialties"' ;
         $spe = $conn->query($specialties);
 
-        $pasta = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+    $pasta = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
         WHERE product.prodCategory = "Pasta"' ;
         $pas = $conn->query($pasta);
 
-        $sweets = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+    $sweets = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
         WHERE product.prodCategory = "Sweets"' ;
         $swe = $conn->query($sweets);
 
-        $beverages = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+    $beverages = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
         WHERE product.prodCategory = "Beverages"' ;
         $bev = $conn->query($beverages);
 
-        $sql_cart = 'SELECT order_items.ProductID, order_items.orderID, order_items.OrderItemID, order_items.Quantity, order_items.subtotal, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory
+    $sql_cart = 'SELECT order_items.ProductID, order_items.orderID, order_items.OrderItemID, order_items.Quantity, order_items.subtotal, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory
         FROM order_items
         LEFT JOIN product ON order_items.ProductID = product.prodId';
         
-        $order_items = $conn->query($sql_cart);
+    $order_items = $conn->query($sql_cart);
+    
 
 // Function to generate product cards
 function generateProductCards($products) {
@@ -80,8 +81,8 @@ function generateProductCards($products) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../files/assets/bootstrap/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="../files/assets/bootstrap/js/bootstrap/3.6.0.min.js"></script>
     <script src="../files/assets/bootstrap/js/bootstrap/4.5.2.min.js"></script>
     <script src="../files/assets/bootstrap/js/popper.min.js"></script>
     <script src="app.js"></script>    
@@ -108,23 +109,29 @@ function generateProductCards($products) {
             <!-- icon on the upper right side of navbar-->
             <div class="shopping">
                 <img class="cart" src="../files/icons/shopping-cart.png" alt=""  data-toggle="modal" data-target="#cart" >
-                <span class="total-count show-cart" ></span>
+                <span class="total-count show-cart" >0</span>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
+
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
                         </div>
-                        <div class="modal-body">
-                            <table class="show-cart table"></table>
-                            <div>Total price: ₱<span class="total-cart"></span></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Order now</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
+                        
+                            <div class="modal-body">
+                                <table class="show-cart table"></table>
+                                <div>Total price: ₱<span class="total-cart"></span></div>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <form action="process_order.php" method="POST">
+                                <button type="button" class="btn btn-primary" name="place_order" >Order now</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        
                     </div>
                 </div>
             </div>
@@ -279,6 +286,7 @@ function generateProductCards($products) {
     var shoppingCart = (function() {
         // Private methods and properties
         var cart = [];
+        
 
         function Item(name, price, count) {
             this.name = name;
@@ -401,10 +409,6 @@ function generateProductCards($products) {
     });
 
     // Delete item button
-
-   
-
-
     // -1
     $('#cart').on("click", ".minus-item", function(event) {
     var name = $(this).data('name')
@@ -424,27 +428,75 @@ function generateProductCards($products) {
     var count = Number($(this).val());
     shoppingCart.setCountForItem(name, count);
     displayCart();
-    });
+        });
 
     function displayCart() {
-            var cartArray = shoppingCart.listCart();
-            var output = "";
-            for (var i in cartArray) {
-                output += "<tr>"
-                    + "<td>" + cartArray[i].name + "</td>"
-                    + "<td>(" + cartArray[i].price +")</td>"
-                    + "<td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-name='" + cartArray[i].name + "'>-</button>"
-                    + "<input type='number' class='item-count form-control' value='" + cartArray[i].count + "'>"
-                    + "<button class='plus-item btn btn-primary input-group-addon' data-name='" + cartArray[i].name + "'>+</button></div></td>"
-                    + "<td><button class='delete-item btn btn-danger' data-name='" + cartArray[i].name + "'>X</button></td>"
-                    + " = "
-                    + "<td>" + cartArray[i].total + "</td>"
-                    + "</tr>";
+        var cartArray = shoppingCart.listCart();
+        var output = "";
+        for (var i in cartArray) {
+            output += "<tr>"
+                + "<td>" + cartArray[i].name + "</td>"
+                + "<td>(" + cartArray[i].price +")</td>"
+                + "<td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-name='" + cartArray[i].name + "'>-</button>"
+                + "<input type='number' class='item-count form-control' value='" + cartArray[i].count + "'>"
+                + "<button class='plus-item btn btn-primary input-group-addon' data-name='" + cartArray[i].name + "'>+</button></div></td>"
+                + "<td><button class='delete-item btn btn-danger' data-name='" + cartArray[i].name + "'>X</button></td>"
+                + " = "
+                + "<td>" + cartArray[i].total + "</td>"
+                + "</tr>";
+        }
+        $('.show-cart').html(output);
+        $('.total-cart').html(shoppingCart.totalCart());
+        $('.total-count').html(shoppingCart.totalCount());
+    } 
+    const cartArray = JSON.stringify(cart);
+
+    fetch('server.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cartArray: cartArray }),
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    var xhr = new XMLHttpRequest();
+        var url = 'server.php'; // Replace with the URL to your PHP processing script
+        var data = {
+            // Add more data fields as needed
+            cart: JSON.stringify(cartArray) // Convert the cart array to JSON
+        };
+
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Successful response from the server
+                var response = xhr.responseText;
+                if (response === 'success') {
+                    // Handle successful order placement, e.g., show a success message
+                    alert('Order placed successfully!');
+                    $('#cart').modal('hide'); // Close the modal
+                } else {
+                    // Handle errors
+                    alert('Error placing the order: ' + response);
+                }
+            } else {
+                // Handle network errors
+                alert('Network error occurred');
             }
-            $('.show-cart').html(output);
-            $('.total-cart').html(shoppingCart.totalCart());
-            $('.total-count').html(shoppingCart.totalCount());
-        } 
+        };
+
+        // Send the data to the server
+        xhr.send(JSON.stringify(data));
+    
 
 
     // Rest of your JavaScript code
@@ -456,9 +508,8 @@ function generateProductCards($products) {
     console.log("Delete item clicked for: " + name);
     shoppingCart.removeItemFromCartAll(name);
     displayCart();
-});
+    });
+
 </script>
-
-
 </body> 
 </html>
