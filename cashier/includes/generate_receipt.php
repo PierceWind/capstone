@@ -93,11 +93,11 @@ foreach ($items as $item) {
         }
         @media print {
             @page {
-                size: 80mm auto; /* 80mm width and auto height */
+                size: 80mm auto; 
             }
             body {
-                width: 80mm;
-                margin: 0; /* Reset default margin */
+                width: 57mm;
+                margin: 10px;
             }
             .footer {
                 display: none; /* Hide the footer in print view */

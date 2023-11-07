@@ -131,7 +131,6 @@ if (isset($_POST['confirmPaymentBtn'])) {
 </script>
 
 
-
 <script>
     function calculateChange() {
         var cashInput = document.getElementById('cashInput').value;
@@ -158,6 +157,6 @@ if (isset($_POST['confirmPaymentBtn'])) {
 </script> 
 
 
-<script>
-    
-</script>
+
+
+

@@ -194,26 +194,27 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         </div>
     </div>
     <script>
-        function updateOrderStatus(queueNumber) {
-            // Make an AJAX request
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // Response from the PHP script
+    function updateOrderStatus(queueNumber) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            console.log("Ready state: " + this.readyState + ", Status: " + this.status);
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    console.log("Response from PHP script: " + this.responseText);
                     if (this.responseText.trim() !== "success") {
                         window.alert("The customer has not paid yet.");
                     } else {
-                        // Reload the page after the update
                         location.reload();
                     }
+                } else {
+                    console.error("Error fetching data. Status: " + this.status);
                 }
-            };
-            xmlhttp.open("GET", "update_order_status.php?queueNumber=" + queueNumber, true);
-            xmlhttp.send();
-        }
-    </script>
-
-
+            }
+        };
+        xmlhttp.open("GET", "update_order_status.php?queueNumber=" + queueNumber, true);
+        xmlhttp.send();
+    }
+</script>
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

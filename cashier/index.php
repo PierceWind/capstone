@@ -319,6 +319,8 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     </div>
 
     
+
+    
     <?php
     //DELETE RECORD
     if (isset($_POST['delete_rec'])) {
@@ -415,8 +417,9 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         
     }
     ?>
-
+    <script src="includes/shortcut.js"></script>
     <script>
+        
         function loadOrderDetails(queueNumber) {
         // Make an AJAX request to fetch the order details from the server
         var xhr = new XMLHttpRequest();
@@ -435,24 +438,12 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                         <!-- Other details to display -->
                     `;
                 } else {
-                    console.error("Failed to fetch order details");
+                    console.error("Failed t o fetch order details");
                 }
             }
         };
         xhr.send();
     }
-
-    </script>
-
-    <script>
-        var modal = document.getElementById("discountModal");
-        var btn = document.getElementById("applyDiscountBtn");
-        var span = document.getElementsByClassName("close")[0];
-        </script>
-    <script>
-        var payModal = document.getElementById("paymentModal");
-        var payBtn = document.getElementById("paymentBtn");
-        var paySpan = document.getElementsByClassName("close")[1];
 
     </script>
 
@@ -481,6 +472,8 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
 
         payBtn.onclick = function () {
             payModal.style.display = "block";
+            var cashInput = document.getElementById('cashInput');
+            cashInput.focus(); 
         }
 
         paySpan.onclick = function () {
