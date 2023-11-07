@@ -27,7 +27,7 @@
                         <input type="number" id="" name="customerID" placeholder="Just place 1 for a regular customer" required><br><br><br>
 
                         <div class="footer">
-                            <button type="button" class="submit-btn" id="applyBtn">Apply Discount</button>
+                            <button type="button" class="submit-btn" id="applyBtn" style="margin-left:15px; width: 300px;" >Apply Discount</button>
                         </div>
                     </form> 
                 </div>

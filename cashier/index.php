@@ -48,24 +48,6 @@ if (isset($_POST['applyDiscountBtn'])) {
 ?>
 
 
-<?php
-//DELETE RECORD
-if (isset($_POST['delete_rec'])) {
-    $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
-
-    $query = "DELETE FROM order_items WHERE ProductID='$id' && OrderID = '$inProgressOrderId'";
-    $query_run = mysqli_query($conn, $query);
-
-    if ($query_run) {
-        echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
-    } else {
-    echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
-    }
-}
-
-?>
-
-
 
 <?php
 
@@ -97,11 +79,11 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     <title>TDF POS</title>
     <link rel="stylesheet" href="../files/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+Hebrew&amp;display=swap">
-    <link rel="stylesheet" href="../filesassets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="../filesassets/css/Articles-Badges-images.css">
-    <link rel="stylesheet" href="../filesassets/css/Navbar-Centered-Links-icons.css">
-    <link rel="stylesheet" href="../filesassets/css/Off-Canvas-Sidebar-Drawer-Navbar.css">
-    <link rel="stylesheet" href="../filesassets/css/project-card.css">
+    <link rel="stylesheet" href="../files/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../files/assets/css/Articles-Badges-images.css">
+    <link rel="stylesheet" href="../files/assets/css/Navbar-Centered-Links-icons.css">
+    <link rel="stylesheet" href="../files/assets/css/Off-Canvas-Sidebar-Drawer-Navbar.css">
+    <link rel="stylesheet" href="../files/assets/css/project-card.css">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen"/> 
     <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
     <script src="../files/assets/bootstrap/js/bootstrap.min.js"></script> 
@@ -119,8 +101,6 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         }
     }
     </script>
-
-
 </head>  
 
 <body>
@@ -143,8 +123,8 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     </script>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 col-xl-3 d-md-flex flex-column justify-content-xl-center" style="background: #fceca7; width: 20%; height: 100vh">
-            <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center">
+            <div class="col-md-3 col-xl-3 d-md-flex flex-column justify-content-xl-center" style="background: #fceca7; width: 20%; height: 100vh; overflow-y: auto;">
+                <section class="d-xl-flex flex-column justify-content-xl-center align-items-xl-; height: 100vh;">
                 <h2 class="d-xl-flex flex-column justify-content-xl-center align-items-xl-center" style="margin-bottom: 50px;">Waiting List</h2>
                 <?php
                 // Fetch the first 100 queue numbers from your database
@@ -193,13 +173,15 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
             <div class="col-md-8" style="padding: 30px; width: 80%;">
                 <?php 
                     $inProgressOrderId = null; // Initializing the variable with a default value
-                    $fetchInProgressQuery = "SELECT orderID FROM orders WHERE orderStatus IN ('In Progress', 'Queued')";
+                    $inProgressQueueNum = null; 
+                    $fetchInProgressQuery = "SELECT orderID, queueNumber FROM orders WHERE orderStatus IN ('In Progress', 'Queued')";
                     $fetchInProgressResult = mysqli_query($conn, $fetchInProgressQuery);
 
                     // Fetching the orderId if there is any In Progress Order
                     if (mysqli_num_rows($fetchInProgressResult) > 0) {
                         $row = mysqli_fetch_assoc($fetchInProgressResult);
                         $inProgressOrderId = $row['orderID'];
+                        $inProgressQueueNum = $row['queueNumber']; 
                     } else {
                         // Handle the case where no In Progress Order is found
                         echo '<script>alert("There is no In Progress Order Right Now");</script>';
@@ -210,7 +192,8 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                     <h2><strong>Order Details</strong></h2>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <p style="font-size: 17px; font-weight: bold; margin-bottom: 0px;">Order Number: <strong><?php echo $inProgressOrderId; ?></strong></p>
+                            <p style="font-size: 17px; font-weight: bold; margin-bottom: 0px;" id="inProgressOrderId">Order Number: <strong><?php echo $inProgressOrderId; ?></strong></p>
+                            <p style="font-size: 17px; font-weight: bold; margin-top: 0px; margin-bottom: 0px;">Queue Number: <strong><?php echo $inProgressQueueNum; ?></strong></p>
                             <p style="font-size: 17px; font-weight: bold; margin-top: 0px;">Date: <strong><?php echo date('F j, Y | g:i a'); ?></strong></p>
                         </div>
                         <button type="button" style="background: #700202; border: none;" id="applyDiscountBtn" class="btn btn-primary" data-toggle="modal" data-target="#applyDiscModal">
@@ -221,9 +204,9 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
 
                 <section class="tb" style="padding-bottom: 20px;border-bottom-style: solid;border-bottom-color: var(--bs-black);">
                     <div class="table-responsive" style="background: #fceca7; border-radius: 10px;">
-                        <table id="order-list" class="table">
+                        <table id="order-list" class="table" style="border-collapse: collapse; width: 100%;">
                             <thead>
-                                <tr>
+                                <tr style="height: 50px;">
                                     <th style="border-bottom-color: var(--bs-black);">DESCRIPTION</th>
                                     <th style="border-bottom-color: var(--bs-table-striped-color);">QTY</th>
                                     <th style="border-bottom-color: var(--bs-table-striped-color);">UNIT PRICE</th>
@@ -282,14 +265,14 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                                         $formattedTotalBill = number_format($totalBill, 2);
 
                                         ?>
-                                        <tr>
+                                        <tr style="height: 40px;">
                                             <td><?php echo $row['prodName']; ?></td>
                                             <td><?php echo $row['Quantity']; ?></td>
                                             <td><?php echo $row['prodPrice']; ?></td>
                                             <td><?php echo $formattedSubAmt; ?></td>
                                             <td> 
                                                 <form action="" method="POST" class="d-inline">
-                                                    <button type="submit" style="background: none;" value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../files/icons/delete.png" alt="delete"></button>   
+                                                    <button type="submit" style="background: none; padding: 0; border: none;"  value="<?php echo $row['prodId']; ?>" class="button" name="delete_rec"><img src="../files/icons/delete.png" alt="delete"></button>   
                                                 </form>
                                             </td>
                                         </tr>
@@ -321,9 +304,9 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                     </div>
                 </section>
                 <div class="buttons" style="display: flex; justify-content: center;">
-                    <button type="button" style="background: blue; border: none; margin-right: 10px;" class="btn btn-primary" id="paymentBtn" name="confirm_order">
-                        <strong>CONFIRM</strong>
-                    </button>
+                <button type="button" style="background: blue; border: none; margin-right: 10px;" class="btn btn-primary" id="paymentBtn" onclick="loadPaymentModalDetails()">
+                    <strong>CONFIRM</strong>
+                </button>
                     <button type="button" style="background: red; border: none;" class="btn btn-primary" onclick="cancelOrder('<?php echo $inProgressOrderId; ?>')">
                         <strong>CANCEL</strong>
                     </button>
@@ -331,13 +314,26 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                 </div>
 
 
-
             </div>
         </div>
     </div>
 
     
-     
+    <?php
+    //DELETE RECORD
+    if (isset($_POST['delete_rec'])) {
+        $id = mysqli_real_escape_string($conn, $_POST['delete_rec']);
+
+        $query = "DELETE FROM order_items WHERE ProductID='$id' && OrderID = '$inProgressOrderId'";
+        $query_run = mysqli_query($conn, $query);
+
+        if (!$query_run) {
+            echo '<script>alert("Sorry, Record is not Deleted. Please try Again");</script>';
+        } else {
+            echo '<script>alert("Record deleted successfully.");</script>';
+        }
+    }
+    ?>
     
     <?php 
         include ('includes/discModal.php');
@@ -518,12 +514,6 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
         }
 
     </script>
-
-
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="assets/js/Off-Canvas-Sidebar-Drawer-Navbar-swipe.js"></script>
-    <script src="assets/js/Off-Canvas-Sidebar-Drawer-Navbar-off-canvas-sidebar.js"></script>
 
 </body>
 
