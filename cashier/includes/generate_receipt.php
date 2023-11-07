@@ -2,23 +2,23 @@
 
 //var_dump($_GET);
 
+date_default_timezone_set('Asia/Manila');
 
-$customerID = $_GET['customerID']; 
-$orderNum = $_GET['orderID'];
+$customerID = $_GET['customerID'] ?? 0;
+$orderNum = $_GET['orderID'] ?? 0;
 $date = date("Y-m-d H:i:s");
-$queueNum = $_GET['queueNum'];
-$discType = $_GET['discType'];
-$discountPercent = $_GET['discountPercent'];
-$discAmt = $_GET['discAmt'];
-$vatSales = $_GET['vatSales'];
-$vatAmt = $_GET['vatAmt'];
-$totalDiscAmt = $_GET['totalDiscAmt'];
-$totalSubtotal = $_GET['totalSubtotal'];
-$totalBill = $_GET['totalBill'];
-$change = $_GET['change'];
-$cashInput = $_GET['cashInput'];
-$encodedProducts = $_GET['products'];
-
+$queueNum = $_GET['queueNum'] ?? 0;
+$discType = $_GET['discType'] ?? '';
+$discountPercent = (float)($_GET['discountPercent'] ?? 0.0);
+$discAmt = (float)($_GET['discAmt'] ?? 0.0);
+$vatSales = (float)($_GET['vatSales'] ?? 0.0);
+$vatAmt = (float)($_GET['vatAmt'] ?? 0.0);
+$totalDiscAmt = (float)($_GET['totalDisc'] ?? 0.0);
+$totalSubtotal = (float)($_GET['totalSubtotal'] ?? 0.0);
+$totalBill = (float)($_GET['totalBill'] ?? 0.0);
+$change = (float)($_GET['change'] ?? 0.0);
+$cashInput = (float)($_GET['cashInput'] ?? 0.0);
+$encodedProducts = $_GET['products'] ?? '[]';
 
 $items = json_decode(urldecode($encodedProducts), true);
 
@@ -42,6 +42,7 @@ foreach ($items as $item) {
             position: relative;
             margin: 5px;
             padding-bottom: 100px; /* Height of the footer */
+            line-height: normal; 
         }
         .footer {
             position: fixed;
@@ -64,6 +65,32 @@ foreach ($items as $item) {
             margin: 4px 2px;
             cursor: pointer;
         }
+        .header, .end {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .header img {
+            width: 20%;
+            float: left; /* Adjust the margin as needed */
+            margin-top: -5px; 
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            text-align: center;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
         @media print {
             @page {
                 size: 80mm auto; /* 80mm width and auto height */
@@ -79,22 +106,25 @@ foreach ($items as $item) {
     </style>
 </head>
 <body>
-    <h2>To Die for Foods - Manila</h2>
-    <p>1159 Zobel Roxas corner Espiritu St.</p>
-    <p>Barangay 757, Manila, 1009</p>
-    <p> Metro  Manila, NCR, Philippines</p>
-    <p>Contact No: 0920 230 9787</p>
+    <div class="header">
+        <img src="../files/icons/tdfLogo.png" >
+        <h2>To Die for Foods - Manila</h2>
+        <p>1159 Zobel Roxas corner Espiritu St. Brgy. 757</p>
+        <p> Metro Manila, 1009, NCR, Philippines</p>
+        <p>0920 230 9787 || @tdffoods</p>
+        <p><?php echo date('F j, Y | g:i a'); ?></p>
+    </div>
     <hr>
-    <h2>REFERENCE</h2>
-    <p>Date: <?php echo $date; ?></p>
-    <h3>Order Number: <?php echo $orderNum; ?></h3>
-    <h3>Queue Number: <?php echo $queueNum; ?></h3>
-    <p>Number of Items <?php echo $numItems ; ?></p>
+    <h3>REFERENCE</h3>
+    <h4>Order Number: <?php echo $orderNum; ?></h4>
+    <h4>Queue Number: <?php echo $queueNum; ?></h4>
+    <p>Number of Items:  <?php echo $numItems ; ?></p>
     <hr>
-    <h2>CUSTOMER</h2>
-    <p>Customer: <?php echo $customerID; ?></p>
+    <p>Customer: <?php echo "******" . substr($customerID, -4); ?></p>
     <p>Type: <?php echo $discType; ?></p>
-    <table border='1'>
+    <hr> 
+    <h3>ORDER DETAILS</h3>
+    <table border='2'>
         <tr>
             <th>Item</th>
             <th>Quantity</th>
@@ -118,26 +148,31 @@ foreach ($items as $item) {
         ?>
         <tr>
             <td colspan='3'><b>Total</b></td>
-            <td><?php echo $total; ?></td>
+            <td><?php echo number_format($total, 2, '.', ','); ?></td>
         </tr>
     </table>
     
     <hr>
-    <p>Sales Discount: <?php echo $discountPercent; ?></p>
-    <p>Discount Amount: <?php echo $discAmt; ?></p>
-    <p>VATabe Sales: <?php echo $vatSales; ?></p>
-    <p>VAT 12% Amount: <?php echo $vatAmt; ?></p>
+    <p>Sales Discount: <?php echo number_format($discountPercent, 2, '.', ',');  ?></p>
+    <p>Discount Amount: <?php echo number_format($discAmt, 2, '.', ','); ?></p>
+    <p>VATabe Sales: <?php echo number_format($vatSales, 2, '.', ','); ?></p>
+    <p>VAT 12% Amount: <?php echo number_format($vatAmt, 2, '.', ','); ?></p>
+    <p>TOTAL DISCOUNT AMOUNT: <?php echo number_format($totalDiscAmt, 2, '.', ',') ?>  
     <hr>
-    <p>Total Amount: <?php echo $total; ?></p>
-    <p>Amount Tendered (CASH): <?php echo $cashInput; ?></p>
-    <p>Change: <?php echo $change; ?></p>
+    <p>Gross Amount: <?php echo number_format($totalSubtotal, 2, '.', ','); ?></p>
+    <p><strong> NET AMOUNT: <?php echo  number_format($totalBill, 2, '.', ','); ?> </strong> </p>
+    <p>Amount Tendered (CASH): <?php echo number_format($cashInput, 2, '.', ','); ?></p>
+    <p>Change: <?php echo number_format($change, 2, '.', ','); ?></p>
+
     <hr>
-    <h2>THANK YOU FOR YOUR ORDER</h2>
-    <p>Your Cravings Satisfied Here at TDF Foods</p>
-    <p>BON APPETITE</p>
+    <div class="end">
+        <h3>THANK YOU FOR YOUR ORDER</h3>
+        <strong> <h4>Your Cravings Satisfied Here at TDF Foods</h4>
+        <h3>BON APPETITE</h3> </strong>
+    </div>
     <br>
     <div class="footer">
-        <button class="print-btn" onclick="window.print()">Print Receipt</button>
+        <button class="print-btn" onclick="window.print()"><strong>PRINT RECEIPT</strong></button>
     </div>
 
 </body>

@@ -22,9 +22,6 @@ if (isset($_POST['confirmPaymentBtn'])) {
 ?>
 
 
-
-
-
 <div id="paymentModal" class="modal">
     <div class="modal-content" style="display: flex; justify-content: space-between; align-items: center;">
         <span class="close" style="margin-left: 90%;">&times;</span>
@@ -44,19 +41,15 @@ if (isset($_POST['confirmPaymentBtn'])) {
                 <p id="changeDisplay" style="text-align: center;"></p>
             </div>
             <div id="printReceipt" style="display: none;">
-                <button class="submit-btn" style="margin-left:0px; width: 300px;" onclick="printReceipt()">Print Receipt</button>
-            </div>
-            <div id="nextCustomer" style="display: none;">
-                <button class="submit-btn" style="margin-left:0px; width: 300px;" onclick="refreshPage()">Next Customer</button>
+                <button class="submit-btn" style="margin-left:0px; width: 300px;" onclick="printReceipt()">View Receipt</button>
             </div>
         </div>
     </div>
 </div>
 
-
-
-
 <script> 
+   var refreshExecuted = false;
+
    function printReceipt(orderID, queueNum, customerID, discType, discountPercent, discAmt, vatSales, vatAmt, totalDiscAmt, totalSubtotal, totalBill, encodedProducts) {
     var xhr = new XMLHttpRequest();
     var orderID = <?php echo isset($inProgressOrderId) ? $inProgressOrderId : 0; ?>;
@@ -64,10 +57,11 @@ if (isset($_POST['confirmPaymentBtn'])) {
     var queueNum = <?php echo isset($inProgressQueueNum) ? $inProgressQueueNum : 0; ?>;
     var discType = "<?php echo isset($discType) ? $discType : 'regular'; ?>";
     var discountPercent = <?php echo isset($discountPercent) ? $discountPercent : 0.00; ?>;
-    var discAmt = <?php echo isset($discAmt) ? $discAmt : 0.00; ?>;
+    var discAmt = <?php echo isset($formattedDiscAmt) ? $formattedDiscAmt : 0.00; ?>;
     var vatSales = <?php echo isset($vatSales) ? $vatSales : 0.00; ?>;
     var vatAmt = <?php echo isset($vatAmt) ? $vatAmt : 0.00; ?>;
     var totalSubtotal = <?php echo isset($totalSubtotal) ? $totalSubtotal : 0.00; ?>;
+    var totalDisc = <?php echo isset($totalDisc) ? $totalDisc : 0.00; ?>;
     var cashInput = document.getElementById('cashInput').value;
     var totalBill = <?php echo isset($formattedTotalBill) ? $totalBill : 0.00; ?>;
     var change = cashInput - totalBill;
@@ -92,25 +86,51 @@ if (isset($_POST['confirmPaymentBtn'])) {
 
     encodedProducts = encodeURIComponent(JSON.stringify(products));
 
-
-    var url = "includes/generate_receipt.php?customerID=" + customerID + "&orderID=" + orderID + "&queueNum=" + queueNum + "&discType=" + discType + "&discountPercent=" + discountPercent + "&discAmt=" + discAmt + "&vatSales=" + vatSales + "&vatAmt=" + vatAmt + "&totalDiscAmt=" + totalDiscAmt + "&totalSubtotal=" + totalSubtotal + "&totalBill=" + totalBill + "&products=" + encodedProducts + "&cashInput=" + cashInput + "&change=" + change;
+    var url = "includes/generate_receipt.php?customerID=" + customerID + "&orderID=" + orderID + "&queueNum=" + queueNum + "&discType=" + discType + "&discountPercent=" + discountPercent + "&discAmt=" + discAmt + "&vatSales=" + vatSales + "&vatAmt=" + vatAmt + "&totalDisc=" + totalDisc + "&totalSubtotal=" + totalSubtotal + "&totalBill=" + totalBill + "&products=" + encodedProducts + "&cashInput=" + cashInput + "&change=" + change;
     xhr.open("GET", url, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                var receiptWindow = window.open("", "_blank", "width=600, height=600, top=200, left=200");
+                var receiptWindow = window.open("", "_blank", "width=400, height=600, top=200, left=200");
                 receiptWindow.document.write(xhr.responseText);
                 receiptWindow.document.close();
+                receiptWindow.onbeforeunload = function() {
+                    refreshPage();
+                };
             } else {
                 alert("Failed to update order status");
             }
-            refreshPage(); // Call the refreshPage function to update the order status
         }
     };
     xhr.send();
-}
 
+    function refreshPage() {
+        if (!refreshExecuted) {
+            var xhr = new XMLHttpRequest();
+
+            var url = "index.php?orderID=" + orderID + "&change=" + change + "&customerID=" + customerID + "&discType=" + discType + "&discountPercent=" + discountPercent + "&totalSubtotal=" + totalSubtotal + "&totalBill=" + totalBill + "&products=" + encodedProducts;
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert("Order status updated to Paid");
+                    } else {
+                        alert("Failed to update order status");
+                    }
+                    location.reload();
+                }
+            };
+            xhr.send();
+
+            document.getElementById('paymentModal').style.display = "none";
+            document.getElementById('printReceipt').style.display = "none";
+        }
+        refreshExecuted = true;
+    }
+}
 </script>
+
+
 
 <script>
     function calculateChange() {
@@ -139,24 +159,5 @@ if (isset($_POST['confirmPaymentBtn'])) {
 
 
 <script>
-
-
     
-    function refreshPage() {
-        // Your code to update order status goes here
-        var xhr = new XMLHttpRequest();
-        var url = "index.php?orderID=" + orderID + "&change=" + change + "&customerID=" + customerID + "&discType=" + discType + "&discountPercent=" + discountPercent + "&totalSubtotal=" + totalSubtotal + "&totalBill=" + totalBill + "&products=" + encodedProducts;
-        xhr.open("GET", url, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    alert("Order status updated to Paid");
-                } else {
-                    alert("Failed to update order status");
-                }
-                location.reload();
-            }
-        };
-        xhr.send();
-    }
 </script>
