@@ -1,7 +1,8 @@
 <?php
-        include_once 'server.php';
-        
-        $sql = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+// Include server.php and establish the database connection
+    include_once 'server.php';
+
+    $sql = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
         LEFT JOIN inventory ON inventory.prodCode = product.prodId
@@ -44,108 +45,156 @@
         LEFT JOIN product ON order_items.ProductID = product.prodId';
         
         $order_items = $conn->query($sql_cart);
-        
-        
-    
-    ?>
 
+// Function to generate product cards
+function generateProductCards($products) {
+    $extension = "../admin/menu/";
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="OrderPage.css">
-        
-        <title>ORDERING PAGE</title>
-        <link rel="icon" type="image/x-icon" href="tdf.png">
-    </head>
-
-    <body >
-        <!-- Main-->
-        <div class="main">
-            <!--Main navigation-->
-            <div class="main-navbar">
-                <a href="dashboard.html" >
-                    <img  class="go-back-button" src="../files/icons/backIcon.png" alt=""> 
-                </a>
-                <!--search bar--> 
-                <div class="search">
-                    <input type="text" placeholder="What are you looking for?">
-                    <button class="search-btn">Search</button>
+    while ($row = $products->fetch_assoc()) {
+        $id = $row['prodId'];
+        $image = $row['productImg'];
+        $name = $row['prodName'];
+        $price = $row['prodPrice'];
+        $description = $row['prodDescription'];
+        $category = $row['prodCategory'];
+        ?>
+        <div class="detail-card">
+            <img class="detail-img" src="<?php echo $extension, $image; ?>">
+            <div class="detail-desc">
+                <h4 class="d-name"><?php echo $name; ?> </h4>
+                <p class="d-desc"><?php echo $description; ?></p>
+                <div class="detail-price">
+                    <p class="price">Php <?php echo $price; ?></p>
                 </div>
-                <!-- icon on the upper right side of navbar-->
-                <div class="shopping">
-                    <a href="cart.php"><img  class="cart"  src="../files/icons/shopping-cart.png" alt=""> </a>
-                    <span id="quantity"><?php echo mysqli_num_rows($order_items);?></span>
-                </div>
-
+                <img class="addtoc" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>" data-name="<?php echo $row["prodName"]; ?>" data-price="<?php echo $row["prodPrice"]; ?>">
             </div>
-            <!-- menu recommendation-->
-            <div class="main-highlight">
-                <div class="main-header">
-                    <h2 class="main-title">Best Seller</h2>
-                    <div class="main-arrow">
-                    <img  class=" back"  src="../files/icons/previous.png" alt="">
-                    <img  class=" next"  src="../files/icons/next.png" alt="">
-                    </div>
-                </div>
-                <div class="highlight-wrapper">
-                    <div class="highlight-card">
-                        <!-- TO BE RECODE INTO PHP LANG.-->
-                        <img class="highlight-img" src="assets/images/menu-1.png" alt="">                     
-                        <div class="highlight-desc">
-                            <h4>MENU 1</h4>
-                            <p>1000.00</p>
-                        </div>  
-                    </div>
-                    <div class="highlight-card">
-                        <!-- TO BE RECODE INTO PHP LANG.-->
-                        <img class="highlight-img" src="assets/images/menu-2.png" alt="">                     
-                        <div class="highlight-desc">
-                            <h4>MENU 1</h4>
-                            <p>1000.00</p>
-                        </div>  
-                    </div>
-                    <div class="highlight-card">
-                        <!-- TO BE RECODE INTO PHP LANG.-->
-                        <img class="highlight-img" src="assets/images/menu-3.png" alt="">                     
-                        <div class="highlight-desc">
-                            <h4>MENU 1</h4>
-                            <p>1000.00</p>
-                        </div>  
-                    </div>
-                    <div class="highlight-card">
-                        <!-- TO BE RECODE INTO PHP LANG.-->
-                        <img class="highlight-img" src="assets/images/menu-4.png" alt="">                     
-                        <div class="highlight-desc">
-                            <h4>MENU 1</h4>
-                            <p>1000.00</p>
-                        </div>  
-                    </div>
-                    <div class="highlight-card">
+        </div>
+    <?php
+    }
+}
+?>
 
-                        <!-- TO BE RECODE INTO PHP LANG.-->
-                        <img class="highlight-img" src="assets/images/menu-3.png" alt="">                     
-                        <div class="highlight-desc">
-                            <h4>MENU 1</h4>
-                            <p>1000.00</p>
-                        </div>  
-                    </div>
-                    <div class="highlight-card">
-                        <!-- TO BE RECODE INTO PHP LANG.-->
-                        <img class="highlight-img" src="assets/images/menu-4.png" alt="">                     
-                        <div class="highlight-desc">
-                            <h4>MENU 1</h4>
-                            <p>1000.00</p>
-                        </div>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../files/assets/bootstrap/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="../files/assets/bootstrap/js/bootstrap/4.5.2.min.js"></script>
+    <script src="../files/assets/bootstrap/js/popper.min.js"></script>
+    <script src="app.js"></script>    
+    <link rel="stylesheet" href="OrderPage.css">
+    
+    <title>ORDERING PAGE</title>
+    <link rel="icon" type="image/x-icon" href="tdf.png">
+
+</head>
+<body>
+    <!-- Your HTML body content here -->
+    <!-- Main-->
+    <div class="main">
+        <!--Main navigation-->
+        <div class="main-navbar">
+            <a href="dashboard.html" >
+                <img  class="go-back-button" src="../files/icons/backIcon.png" alt=""> 
+            </a>
+            <!--search bar--> 
+            <div class="search">
+                <input type="text" placeholder="What are you looking for?">
+                <button class="search-btn">Search</button>
+            </div>
+            <!-- icon on the upper right side of navbar-->
+            <div class="shopping">
+                <img class="cart" src="../files/icons/shopping-cart.png" alt=""  data-toggle="modal" data-target="#cart" >
+                <span class="total-count show-cart" ></span>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
+                        </div>
+                        <div class="modal-body">
+                            <table class="show-cart table"></table>
+                            <div>Total price: ₱<span class="total-cart"></span></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Order now</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
+            </div>
             
-                <!--MAIN MENU/ORDER-->
-                <div class="main-menu">
-                    <div class="filter-header">
+    
+        </div>
+        <!-- menu recommendation-->
+        <div class="main-highlight">
+            <div class="main-header">
+                <h2 class="main-title">Best Seller</h2>
+                <div class="main-arrow">
+                <img  class=" back"  src="../files/icons/previous.png" alt="">
+                <img  class=" next"  src="../files/icons/next.png" alt="">
+                </div>
+            </div>
+            <div class="highlight-wrapper">
+                <div class="highlight-card">
+                    <!-- TO BE RECODE INTO PHP LANG.-->
+                    <img class="highlight-img" src="assets/images/menu-1.png" alt="">                     
+                    <div class="highlight-desc">
+                        <h4>MENU 1</h4>
+                        <p>1000.00</p>
+                    </div>  
+                </div>
+                <div class="highlight-card">
+                    <!-- TO BE RECODE INTO PHP LANG.-->
+                    <img class="highlight-img" src="assets/images/menu-2.png" alt="">                     
+                    <div class="highlight-desc">
+                        <h4>MENU 1</h4>
+                        <p>1000.00</p>
+                    </div>  
+                </div>
+                <div class="highlight-card">
+                    <!-- TO BE RECODE INTO PHP LANG.-->
+                    <img class="highlight-img" src="assets/images/menu-3.png" alt="">                     
+                    <div class="highlight-desc">
+                        <h4>MENU 1</h4>
+                        <p>1000.00</p>
+                    </div>  
+                </div>
+                <div class="highlight-card">
+                    <!-- TO BE RECODE INTO PHP LANG.-->
+                    <img class="highlight-img" src="assets/images/menu-4.png" alt="">                     
+                    <div class="highlight-desc">
+                        <h4>MENU 1</h4>
+                        <p>1000.00</p>
+                    </div>  
+                </div>
+                <div class="highlight-card">
+
+                    <!-- TO BE RECODE INTO PHP LANG.-->
+                    <img class="highlight-img" src="assets/images/menu-3.png" alt="">                     
+                    <div class="highlight-desc">
+                        <h4>MENU 1</h4>
+                        <p>1000.00</p>
+                    </div>  
+                </div>
+                <div class="highlight-card">
+                    <!-- TO BE RECODE INTO PHP LANG.-->
+                    <img class="highlight-img" src="assets/images/menu-4.png" alt="">                     
+                    <div class="highlight-desc">
+                        <h4>MENU 1</h4>
+                        <p>1000.00</p>
+                    </div>  
+                </div>
+            </div>
+            
+    <div class="main-menu">
+        <!-- Other HTML elements and structure -->
+        <div class="filter-header">
                         <h2 class="filter-title">Food category</h2>
                         <div class="filter-arrow"> 
                             <img  class="back-menu"  src="../files/icons/previous.png" alt="">
@@ -173,264 +222,243 @@
                         </div>
                     </div>
 
-                    <hr class="divider">
-                    <div class="list-header">
-                        <!--list of food section-->
-                        <div class="main-detail"> 
-                            <div> 
-                                <!--NEW ADDED CODE FOR DISPLAYING THE MENU ITEM-->
-                                <h2 id="TopSelling" class="main-title">Top- Selling Products</h2>
-                                <div class="detail-wrapper">
-                                <?php
-                                    while($row = $all_product->fetch_assoc()) {
-                                        $id = $row['prodId'];
-                                        $image = $row['productImg'];
-                                        $name = $row['prodName'];
-                                        $price = $row['prodPrice'];
-                                        $description = $row['prodDescription'];
-                                        $category = $row['prodCategory'];
-                                        $extension = "../admin/menu/";
-                                ?>
-                                <div class="detail-card">
-                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
-                                    <div class="detail-desc">
-                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
-                                        <p class="d-desc"><?php echo $description;?></p>
-                                        <div class="detail-price">
-                                            <p class="price">Php <?php echo $price;?></p>
-                                        </div>
-                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
-                                    </div>
-                                </div>
-                                <?php
-                                    }
-                                ?>
-                            </div> <br><br><hr><br>
-                            <div>                                 
-                                <h2 id="Heritage" class="main-title">Heritage</h2>
-                                <div class="detail-wrapper">
-                                <?php
-                                    while($row1 = $her->fetch_assoc()) {
-                                        $id = $row1['prodId'];
-                                        $image = $row1['productImg'];
-                                        $name = $row1['prodName'];
-                                        $price = $row1['prodPrice'];
-                                        $description = $row1['prodDescription'];
-                                        $category = $row1['prodCategory'];
-                                        $extension = "../admin/menu/";
-                                ?>
-                                <div class="detail-card">
-                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
-                                    <div class="detail-desc">
-                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
-                                        <p class="d-desc"><?php echo $description;?></p>
-                                        <div class="detail-price">
-                                            <p class="price">Php <?php echo $price;?></p>
-                                        </div>
-                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
-                                    </div>
-                                </div>
-                                <?php
-                                    }
-                                ?>
-                            </div> <br><br><hr><br>
-                            <div>                                 
-                                <h2 id="Specialties" class="main-title">Specialties</h2>
-                                <div class="detail-wrapper">
-                                <?php
-                                    while($row2 = $spe->fetch_assoc()) {
-                                        $id = $row2['prodId'];
-                                        $image = $row2['productImg'];
-                                        $name = $row2['prodName'];
-                                        $price = $row2['prodPrice'];
-                                        $description = $row2['prodDescription'];
-                                        $category = $row2['prodCategory'];
-                                        $extension = "../admin/menu/";
-                                ?>
-                                <div class="detail-card">
-                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
-                                    <div class="detail-desc">
-                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
-                                        <p class="d-desc"><?php echo $description;?></p>
-                                        <div class="detail-price">
-                                            <p class="price">Php <?php echo $price;?></p>
-                                        </div>
-                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
-                                    </div>
-                                </div>
-                                <?php
-                                    }
-                                ?>
-                            </div> <br><br><hr><br>
-                            <div>                                 
-                                <h2 id="Heritage" class="main-title">Pasta</h2>
-                                <div class="detail-wrapper">
-                                <?php
-                                    while($row3 = $pas->fetch_assoc()) {
-                                        $id = $row3['prodId'];
-                                        $image = $row3['productImg'];
-                                        $name = $row3['prodName'];
-                                        $price = $row3['prodPrice'];
-                                        $description = $row3['prodDescription'];
-                                        $category = $row3['prodCategory'];
-                                        $extension = "../admin/menu/";
-                                ?>
-                                <div class="detail-card">
-                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
-                                    <div class="detail-desc">
-                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
-                                        <p class="d-desc"><?php echo $description;?></p>
-                                        <div class="detail-price">
-                                            <p class="price">Php <?php echo $price;?></p>
-                                        </div>
-                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
-                                    </div>
-                                </div>
-                                <?php
-                                    }
-                                ?>
-                            </div> <br><br><hr><br>
-                            <div>                                 
-                                <h2 id="Sweets" class="main-title">Sweets</h2>
-                                <div class="detail-wrapper">
-                                <?php
-                                    while($row4 = $swe->fetch_assoc()) {
-                                        $id = $row4['prodId'];
-                                        $image = $row4['productImg'];
-                                        $name = $row4['prodName'];
-                                        $price = $row4['prodPrice'];
-                                        $description = $row4['prodDescription'];
-                                        $category = $row4['prodCategory'];
-                                        $extension = "../admin/menu/";
-                                ?>
-                                <div class="detail-card">
-                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
-                                    <div class="detail-desc">
-                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
-                                        <p class="d-desc"><?php echo $description;?></p>
-                                        <div class="detail-price">
-                                            <p class="price">Php <?php echo $price;?></p>
-                                        </div>
-                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
-                                    </div>
-                                </div>
-                                <?php
-                                    }
-                                ?>
-                            </div> <br><br><hr><br>
-                            <div>                                 
-                                <h2 id="Beverages" class="main-title">Beverages</h2>
-                                <div class="detail-wrapper">
-                                <?php
-                                    while($row5 = $her->fetch_assoc()) {
-                                        $id = $row5['prodId'];
-                                        $image = $row5['productImg'];
-                                        $name = $row5['prodName'];
-                                        $price = $row5['prodPrice'];
-                                        $description = $row5['prodDescription'];
-                                        $category = $row5['prodCategory'];
-                                        $extension = "../admin/menu/";
-                                ?>
-                                <div class="detail-card">
-                                    <img class="detail-img" src="<?php echo $extension, $image; ?>" >
-                                    <div class="detail-desc">
-                                        <h4 class="d-name"><?php echo $name; ?> </h4> 
-                                        <p class="d-desc"><?php echo $description;?></p>
-                                        <div class="detail-price">
-                                            <p class="price">Php <?php echo $price;?></p>
-                                        </div>
-                                        <img class="addtoc" title="Add to cart" src="../files/icons/add2.png" data-id="<?php echo $row["prodId"]; ?>"> <!--col. name from product TB-->
-                                    </div>
-                                </div>
-                                <?php
-                                    }
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>               
+        <hr class="divider">
+        <div class="list-header">
+
+        <!-- Top-Selling Products -->
+        <div class="main-detail">
+            <h2 id="TopSelling" class="main-title">Top-Selling Products</h2>
+            <div class="detail-wrapper">
+                <?php generateProductCards($all_product); ?>
             </div>
-            
-        </div>  <!--end of div main--> 
-        <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var prodId = document.getElementsByClassName("addtoc");
-        
-            for (var i = 0; i < prodId.length; i++) {
-                prodId[i].addEventListener("click", function(event) {
-                    var target = event.target;
-                    var id = target.getAttribute("data-id");
-                    var xml = new XMLHttpRequest();
-        
-                    xml.onreadystatechange = function() {
-                        if (xml.readyState == 4 && xml.status == 200) {
-                            var data = JSON.parse(xml.responseText);
-                            target.innerHTML = data.in_cart;
-                            document.getElementById("quantity").innerHTML = data.num_cart + 1;
-                        }
-                    };
-                    xml.open("GET", "server.php?id=" + id, true);
-                    xml.send();
-                });
-            }
-        });
-        <?php
-        if (isset($_GET["id"])) {
-            // Sanitize and validate the input
-            $prodId = filter_var($_GET["id"], FILTER_VALIDATE_INT);
-        
-            if ($prodId !== false) {
-                //Debug: Log the received "id" value
-                error_log("Received id: ", $prodId);
+        </div>
 
-                $in_cart = "added into cart"; // Initialize in_cart variable
-        
-                // Use a prepared statement to safely query the database
-                $sql_cart = "SELECT ProductID, orderID, OrderItemID, Quantity, subtotal FROM order_items WHERE ProductID = ?";
-                $stmt = $conn->prepare($sql_cart);
-                $stmt->bind_param("i", $prodId);
-                $stmt->execute();
-                $result = $stmt->get_result();
-        
-                $totalCart = "SELECT ProductID, orderID, OrderItemID, Quantity, subtotal FROM order_items";
-                $totalCart_Result = $conn->query($totalCart);
-                $cartNum = mysqli_num_rows($totalCart_Result);
-        
-                if ($result->num_rows > 0) {
-                    $in_cart = "already in cart";
-                } else {
-                    // Use a prepared statement to safely insert data
-                    $insert = "INSERT INTO order_items (ProductID) VALUES (?)";
-                    $stmt = $conn->prepare($insert);
-                    $stmt->bind_param("i", $prodId);
-                    
-                    if ($stmt->execute()) {
-                        $in_cart = "added into cart";
-                    } else {
-                        $in_cart = "not added";
-                    }
-                }
-        
-                // Close the prepared statements and the database connection
-                $stmt->close();
-                $conn->close();
+        <!-- Heritage -->
+        <div class="main-detail">
+            <h2 id="Heritage" class="main-title">Heritage</h2>
+            <div class="detail-wrapper">
+                <?php generateProductCards($her); ?>
+            </div>
+        </div>
 
-                // Debug: Log the response data
-                error_log("Response data: " . json_encode(["num_cart" => $cartNum, "in_cart" => $in_cart]));
-        
-                // Return the response as JSON
-                echo json_encode(["num_cart" => $cartNum, "in_cart" => $in_cart]);
-            } else {
-                // Invalid input, handle the error
-                echo json_encode(["error" => "Invalid input"]);
-            }
+        <!-- Specialties -->
+        <div class="main-detail">
+            <h2 id="Specialties" class="main-title">Specialties</h2>
+            <div class="detail-wrapper">
+                <?php generateProductCards($spe); ?>
+            </div>
+        </div>
+
+        <!-- Pasta -->
+        <div class="main-detail">
+            <h2 id="Pasta" class="main-title">Pasta</h2>
+            <div class="detail-wrapper">
+                <?php generateProductCards($pas); ?>
+            </div>
+        </div>
+
+        <!-- Sweets -->
+        <div class="main-detail">
+            <h2 id="Sweets" class="main-title">Sweets</h2>
+            <div class="detail-wrapper">
+                <?php generateProductCards($swe); ?>
+            </div>
+        </div>
+
+        <!-- Beverages -->
+        <div class="main-detail">
+            <h2 id="Beverages" class="main-title">Beverages</h2>
+            <div class="detail-wrapper">
+                <?php generateProductCards($bev); ?>
+            </div>
+        </div>
+    </div>
+
+<script>
+    //Shopping Cart JavaScript code
+    var shoppingCart = (function() {
+        // Private methods and properties
+        var cart = [];
+
+        function Item(name, price, count) {
+            this.name = name;
+            this.price = price;
+            this.count = count;
         }
-        ?>
-    </script>
-        
-    </body> 
-        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-        <script src="app.js"></script>
-        
-        
-    </html>
+        //save cart
+        function saveCart() {
+            sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
+        }
+        //load cart
+        function loadCart() {
+            cart = JSON.parse(sessionStorage.getItem('shoppingCart')) || [];
+        }
+
+        if (sessionStorage.getItem("shoppingCart") != null) {
+            loadCart();
+        }
+
+        // Public methods and properties
+        var obj = {};
+
+        //add to cart
+        obj.addItemToCart = function(name, price, count) {
+            for (var item in cart) {
+                if (cart[item].name === name) {
+                    cart[item].count++;
+                    saveCart();
+                    return;
+                }
+            }
+            var item = new Item(name, price, count);
+            cart.push(item);
+            saveCart();
+        };
+
+        obj.setCountForItem = function(name, count) {
+            for (var i in cart) {
+                if (cart[i].name === name) {
+                    cart[i].count = count;
+                    break;
+                }
+            }
+        };
+
+        //remove item from cart
+        obj.removeItemFromCart = function(name) {
+            for (var item in cart) {
+                if (cart[item].name === name) {
+                    cart[item].count--;
+                    if (cart[item].count === 0) {
+                        cart.splice(item, 1);
+                    }
+                    break;
+                }
+            }
+            saveCart();
+        };
+
+        obj.removeItemFromCartAll = function(name) {
+            for (var item in cart) {
+                if (cart[item].name === name) {
+                    cart.splice(item, 1);
+                    break;
+                }
+            }
+            saveCart();
+        };
+
+        obj.clearCart = function() {
+            cart = [];
+            saveCart();
+        };
+
+        obj.totalCount = function() {
+            var totalCount = 0;
+            for (var item in cart) {
+                totalCount += cart[item].count;
+            }
+            return totalCount;
+        };
+
+        obj.totalCart = function() {
+            var totalCart = 0;
+            for (var item in cart) {
+                totalCart += cart[item].price * cart[item].count;
+            }
+            return Number(totalCart.toFixed(2));
+        };
+
+        obj.listCart = function() {
+            var cartCopy = [];
+            for (var i in cart) {
+                var item = cart[i];
+                var itemCopy = {};
+                for (var p in item) {
+                    itemCopy[p] = item[p];
+                }
+                itemCopy.total = Number(item.price * item.count).toFixed(2);
+                cartCopy.push(itemCopy);
+            }
+            return cartCopy;
+        };
+
+        return obj;
+    })();
+
+    // Event handling
+    $('.addtoc').click(function(event) {
+        event.preventDefault();
+        var name = $(this).data('name');
+        var price = Number($(this).data('price'));
+        shoppingCart.addItemToCart(name, price, 1);
+        displayCart();
+    });
+
+    $('.clear-cart').click(function() {
+        shoppingCart.clearCart();
+        displayCart();
+    });
+
+    // Delete item button
+
+   
+
+
+    // -1
+    $('#cart').on("click", ".minus-item", function(event) {
+    var name = $(this).data('name')
+    shoppingCart.removeItemFromCart(name);
+    displayCart();
+    })
+    // +1
+    $('#cart').on("click", ".plus-item", function(event) {
+    var name = $(this).data('name')
+    shoppingCart.addItemToCart(name);
+    displayCart();
+    })
+
+    // Item count input
+    $('#cart').on("change", ".item-count", function(event) {
+    var name = $(this).data('name');
+    var count = Number($(this).val());
+    shoppingCart.setCountForItem(name, count);
+    displayCart();
+    });
+
+    function displayCart() {
+            var cartArray = shoppingCart.listCart();
+            var output = "";
+            for (var i in cartArray) {
+                output += "<tr>"
+                    + "<td>" + cartArray[i].name + "</td>"
+                    + "<td>(" + cartArray[i].price +")</td>"
+                    + "<td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-name='" + cartArray[i].name + "'>-</button>"
+                    + "<input type='number' class='item-count form-control' value='" + cartArray[i].count + "'>"
+                    + "<button class='plus-item btn btn-primary input-group-addon' data-name='" + cartArray[i].name + "'>+</button></div></td>"
+                    + "<td><button class='delete-item btn btn-danger' data-name='" + cartArray[i].name + "'>X</button></td>"
+                    + " = "
+                    + "<td>" + cartArray[i].total + "</td>"
+                    + "</tr>";
+            }
+            $('.show-cart').html(output);
+            $('.total-cart').html(shoppingCart.totalCart());
+            $('.total-count').html(shoppingCart.totalCount());
+        } 
+
+
+    // Rest of your JavaScript code
+    $('#cart').on('shown.bs.modal', function () {
+    displayCart();
+    });
+    $('#cart').on("click", ".delete-item", function(event) {
+    var name = $(this).data('name');
+    console.log("Delete item clicked for: " + name);
+    shoppingCart.removeItemFromCartAll(name);
+    displayCart();
+});
+</script>
+
+
+</body> 
+</html>
