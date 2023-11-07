@@ -450,6 +450,8 @@ table.show-cart td {
 
 .btn-primary:hover {
   background-color: #0056b3;
+  color:#fff;
+  font-weight:bold;
 }
 
 .cart-table {
