@@ -216,10 +216,10 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     }
 </script>
 
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="assets/js/Off-Canvas-Sidebar-Drawer-Navbar-swipe.js"></script>
-    <script src="assets/js/Off-Canvas-Sidebar-Drawer-Navbar-off-canvas-sidebar.js"></script>
+    <script src="../files/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../files/assets/js/bs-init.js"></script>
+    <script src="../files/assets/js/Off-Canvas-Sidebar-Drawer-Navbar-swipe.js"></script>
+    <script src="../files/assets/js/Off-Canvas-Sidebar-Drawer-Navbar-off-canvas-sidebar.js"></script>
 </body>
 
 </html>

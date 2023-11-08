@@ -95,7 +95,7 @@
                     $result2 = mysqli_query($conn, $query2);
                     $row2 = mysqli_num_rows($result2);
 
-                    $query1 = "SELECT DISTINCT(orderID) FROM orders WHERE orderStatus = 'Completed'";
+                    $query1 = "SELECT DISTINCT(orderID) FROM orders WHERE orderStatus = 'Serving'";
                     $result1 = mysqli_query($conn, $query1);
                     $row1 = mysqli_num_rows($result1);
                 ?>

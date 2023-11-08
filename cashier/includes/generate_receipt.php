@@ -44,6 +44,7 @@ foreach ($items as $item) {
             padding-bottom: 100px; /* Height of the footer */
             line-height: normal; 
         }
+        
         .footer {
             position: fixed;
             left: 0;
@@ -69,6 +70,7 @@ foreach ($items as $item) {
             flex-direction: column;
             align-items: center;
             text-align: center;
+            line-height: 80%; 
         }
 
         .header img {
@@ -115,14 +117,17 @@ foreach ($items as $item) {
         <p><?php echo date('F j, Y | g:i a'); ?></p>
     </div>
     <hr>
-    <h3>REFERENCE</h3>
-    <h4>Order Number: <?php echo $orderNum; ?></h4>
-    <h4>Queue Number: <?php echo $queueNum; ?></h4>
-    <p>Number of Items:  <?php echo $numItems ; ?></p>
-    <hr>
-    <p>Customer: <?php echo "******" . substr($customerID, -4); ?></p>
-    <p>Type: <?php echo $discType; ?></p>
-    <hr> 
+    <div class="sec1">
+        <h4>ON: <?php echo $orderNum; ?></h4>
+        <h4>QN: <?php echo $queueNum; ?></h4>
+        <p>Number of Items:  <?php echo $numItems ; ?></p>
+        <hr>
+    </div>
+    <div class="sec1">
+        <p>Customer: <?php echo "******" . substr($customerID, -4); ?></p>
+        <p>Type: <?php echo $discType; ?></p>
+        <hr> 
+    </div>
     <h3>ORDER DETAILS</h3>
     <table border='2'>
         <tr>
