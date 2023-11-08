@@ -11,6 +11,11 @@
         unset($_SESSION['acc_name']);
         header('location:../../login/log.php');
     }
+    if (isset($_GET['orderingPage'])) {
+        session_destroy();
+        unset($_SESSION['acc_name']);
+        header('location:../../customer/dashboard.html');
+    } 
     include('../users/server.php');
 ?> 
 <?php
@@ -51,7 +56,7 @@
                 <ul>
                     <br>
                     <li>
-                        <a href="../index.php" class="logo">
+                        <a href="index.php?orderingPage='1'" class="logo">
                             <img src="../../files/icons/tdf.png" alt=""> 
                             <span class="nav-title">To Die For<br>FOODS</span>
                         </a>
