@@ -6,7 +6,7 @@
         FROM product 
         LEFT JOIN prodimage ON product.prodId = prodimage.productId
         LEFT JOIN inventory ON inventory.prodCode = product.prodId
-        LEFT JOIN sales ON sales.code = product.prodId LIMIT 8';
+        LEFT JOIN sales ON sales.prodCode = product.prodId LIMIT 8';
         $all_product = $conn->query($sql);
 
     $heritage = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
