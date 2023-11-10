@@ -10,7 +10,7 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $cartData = json_decode($_POST['cart'], true);
+    $cartData = json_decode(file_get_contents("php://input"), true);
 
     // Start a transaction to ensure data consistency
     $conn->begin_transaction();
@@ -31,17 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Insert the order with the determined QueueNumber
-        $orderInsertSQL = "INSERT INTO orders (OrderDateTime, orderStatus, queueNumber) VALUES (NOW(), 'Queued', $newQueueNumber)";
+        $orderInsertSQL = "INSERT INTO orders (OrderDateTime, OrderStatus, QueueNumber) VALUES (NOW(), 'Queued', $newQueueNumber)";
         if ($conn->query($orderInsertSQL) === true) {
             $orderID = $conn->insert_id;
 
             foreach ($cartData as $item) {
-                $productID = $conn->real_escape_string($item['ProductID']);
-                $quantity = $item['Quantity'];
-                $price = $item['Price'];
-
+                $productID = $conn->real_escape_string($item['name']);
+                $quantity = $item['count'];  // Use 'count' instead of 'Quantity'
+                $price = $item['price'];
+            
                 $itemInsertSQL = "INSERT INTO order_items (OrderID, ProductID, Quantity, Subtotal) VALUES ($orderID, '$productID', $quantity, $price)";
-
+            
                 if ($conn->query($itemInsertSQL) !== true) {
                     die("Error inserting order item: " . $conn->error);
                 }

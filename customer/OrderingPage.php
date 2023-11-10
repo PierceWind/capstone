@@ -1,51 +1,35 @@
 <?php
-// Include server.php and establish the database connection
-    include ('server.php');
-    
-    $sql = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
-        FROM product 
-        LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        LEFT JOIN inventory ON inventory.prodCode = product.prodId
-        LEFT JOIN sales ON sales.prodCode = product.prodId LIMIT 8';
-        $all_product = $conn->query($sql);
+include('server.php');
 
-    $heritage = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
-        FROM product 
-        LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        WHERE product.prodCategory = "Heritage"' ;
-        $her = $conn->query($heritage);
+function executeQuery($query, $conn) {
+    $result = $conn->query($query);
 
+    if (!$result) {
+        die("Query execution error: " . $conn->error);
+    }
 
-    $specialties = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
-        FROM product 
-        LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        WHERE product.prodCategory = "Specialties"' ;
-        $spe = $conn->query($specialties);
+    return $result;
+}
 
-    $pasta = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
-        FROM product 
-        LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        WHERE product.prodCategory = "Pasta"' ;
-        $pas = $conn->query($pasta);
+// Fetch products by category
+function fetchProductsByCategory($category, $conn) {
+    $query = "SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+                FROM product 
+                LEFT JOIN prodimage ON product.prodId = prodimage.productId
+                WHERE product.prodCategory = '$category' LIMIT 8";
 
-    $sweets = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
-        FROM product 
-        LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        WHERE product.prodCategory = "Sweets"' ;
-        $swe = $conn->query($sweets);
+    return executeQuery($query, $conn);
+}
 
-    $beverages = 'SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
-        FROM product 
-        LEFT JOIN prodimage ON product.prodId = prodimage.productId
-        WHERE product.prodCategory = "Beverages"' ;
-        $bev = $conn->query($beverages);
+// Fetch cart items
+function fetchCartItems($conn) {
+    $query = "SELECT order_items.ProductID, order_items.orderID, order_items.OrderItemID, order_items.Quantity, order_items.subtotal, 
+                product.prodName, product.prodPrice, product.prodDescription, product.prodCategory
+                FROM order_items
+                LEFT JOIN product ON order_items.ProductID = product.prodId";
 
-    $sql_cart = 'SELECT order_items.ProductID, order_items.orderID, order_items.OrderItemID, order_items.Quantity, order_items.subtotal, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory
-        FROM order_items
-        LEFT JOIN product ON order_items.ProductID = product.prodId';
-        
-    $order_items = $conn->query($sql_cart);
-    
+    return executeQuery($query, $conn);
+}
 
 // Function to generate product cards
 function generateProductCards($products) {
@@ -74,7 +58,6 @@ function generateProductCards($products) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,13 +70,11 @@ function generateProductCards($products) {
     <script src="../files/assets/bootstrap/js/popper.min.js"></script>
     <script src="app.js"></script>    
     <link rel="stylesheet" href="OrderPage.css">
-    
     <title>ORDERING PAGE</title>
     <link rel="icon" type="image/x-icon" href="tdf.png">
-
 </head>
 <body>
-    <!-- Your HTML body content here -->
+<!-- Your HTML body content here -->
     <!-- Main-->
     <div class="main">
         <!--Main navigation-->
@@ -126,18 +107,17 @@ function generateProductCards($products) {
                             </div>
                             
                             <div class="modal-footer">
-                                <form action="process_order.php" method="POST">
-                                <button type="button" class="btn btn-primary" name="place_order" >Order now</button>
-                                </form>
+                            <form action="OrderingPage.php" method="POST">
+                                <input type="submit" class="btn btn-primary" name="place_order" value="Order now">
+                            </form>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         
                     </div>
                 </div>
             </div>
-            
-    
         </div>
+
         <!-- menu recommendation-->
         <div class="main-highlight">
             <div class="main-header">
@@ -198,106 +178,101 @@ function generateProductCards($products) {
                     </div>  
                 </div>
             </div>
-            
-    <div class="main-menu">
+
+        <!-- Main menu -->
+        <div class="main-menu">
         <!-- Other HTML elements and structure -->
-        <div class="filter-header">
-                        <h2 class="filter-title">Food category</h2>
-                        <div class="filter-arrow"> 
-                            <img  class="back-menu"  src="../files/icons/previous.png" alt="">
-                            <img  class="next-menu"  src="../files/icons/next.png" alt="">
-                        </div>
-                    </div>
-                    <div class="filter-wrapper">
-                        <div class="filter-card">
-                            <a button class="category" href="#TopSelling">Top-Selling</a>
-                        </div>
-                        <div class="filter-card">
-                            <a button class="category" href="#Heritage">Heritage</p>
-                        </div>
-                        <div class="filter-card">
-                            <a button class="category" href="#Specialties">Specialties</p>
-                        </div>
-                        <div class="filter-card">
-                            <a button class="category" href="#Pasta">Pasta</p>
-                        </div>
-                        <div class="filter-card">
-                            <a button class="category" href="#Sweets">Sweets</p>
-                        </div>
-                        <div class="filter-card">
-                            <a button class="category" href="#Beverages">Beverages</p>
-                        </div>
-                    </div>
-
-        <hr class="divider">
-        <div class="list-header">
-
-        <!-- Top-Selling Products -->
-        <div class="main-detail">
-            <h2 id="TopSelling" class="main-title">Top-Selling Products</h2>
-            <div class="detail-wrapper">
-                <?php generateProductCards($all_product); ?>
+            <div class="filter-header">
+                <h2 class="filter-title">Food category</h2>
+                <div class="filter-arrow"> 
+                    <img  class="back-menu"  src="../files/icons/previous.png" alt="">
+                    <img  class="next-menu"  src="../files/icons/next.png" alt="">
+                </div>
             </div>
-        </div>
-
-        <!-- Heritage -->
-        <div class="main-detail">
-            <h2 id="Heritage" class="main-title">Heritage</h2>
-            <div class="detail-wrapper">
-                <?php generateProductCards($her); ?>
+            <div class="filter-wrapper">
+                <div class="filter-card">
+                    <a button class="category" href="#TopSelling">Top-Selling</a>
+                </div>
+                <div class="filter-card">
+                    <a button class="category" href="#Heritage">Heritage</p>
+                </div>
+                <div class="filter-card">
+                    <a button class="category" href="#Specialties">Specialties</p>
+                </div>
+                <div class="filter-card">
+                    <a button class="category" href="#Pasta">Pasta</p>
+                </div>
+                <div class="filter-card">
+                    <a button class="category" href="#Sweets">Sweets</p>
+                </div>
+                <div class="filter-card">
+                    <a button class="category" href="#Beverages">Beverages</p>
+                </div>
             </div>
-        </div>
 
-        <!-- Specialties -->
-        <div class="main-detail">
-            <h2 id="Specialties" class="main-title">Specialties</h2>
-            <div class="detail-wrapper">
-                <?php generateProductCards($spe); ?>
+            <hr class="divider">
+            <div class="list-header">
+
+            <!-- Top-Selling Products -->
+            <div class="main-detail">
+                <h2 id="TopSelling" class="main-title">Top-Selling Products</h2>
+                
             </div>
-        </div>
-
-        <!-- Pasta -->
-        <div class="main-detail">
-            <h2 id="Pasta" class="main-title">Pasta</h2>
-            <div class="detail-wrapper">
-                <?php generateProductCards($pas); ?>
+            <!-- Heritage -->
+            <div class="main-detail">
+                <h2 id="Heritage" class="main-title">Heritage</h2>
+                <div class="detail-wrapper">
+                    <?php generateProductCards(fetchProductsByCategory('Heritage', $conn)); ?>
+                </div>
             </div>
-        </div>
 
-        <!-- Sweets -->
-        <div class="main-detail">
-            <h2 id="Sweets" class="main-title">Sweets</h2>
-            <div class="detail-wrapper">
-                <?php generateProductCards($swe); ?>
+            <!-- Specialties -->
+            <div class="main-detail">
+                <h2 id="Specialties" class="main-title">Specialties</h2>
+                <div class="detail-wrapper">
+                    <?php generateProductCards(fetchProductsByCategory('Specialties', $conn)); ?>
+                </div>
             </div>
-        </div>
 
-        <!-- Beverages -->
-        <div class="main-detail">
-            <h2 id="Beverages" class="main-title">Beverages</h2>
-            <div class="detail-wrapper">
-                <?php generateProductCards($bev); ?>
+            <!-- Pasta -->
+            <div class="main-detail">
+                <h2 id="Pasta" class="main-title">Pasta</h2>
+                <div class="detail-wrapper">
+                    <?php generateProductCards(fetchProductsByCategory('Pasta', $conn)); ?>
+                </div>
+            </div>
+
+            <!-- Sweets -->
+            <div class="main-detail">
+                <h2 id="Sweets" class="main-title">Sweets</h2>
+                <div class="detail-wrapper">
+                    <?php generateProductCards(fetchProductsByCategory('Sweets', $conn)); ?>
+                </div>
+            </div>
+
+            <!-- Beverages -->
+            <div class="main-detail">
+                <h2 id="Beverages" class="main-title">Beverages</h2>
+                <div class="detail-wrapper">
+                    <?php generateProductCards(fetchProductsByCategory('Beverages', $conn)); ?>
+                </div>
             </div>
         </div>
     </div>
-
-<script>
-    //Shopping Cart JavaScript code
-    var shoppingCart = (function() {
-        // Private methods and properties
+    <script>
+    var shoppingCart = (function () {
         var cart = [];
-        
 
         function Item(name, price, count) {
             this.name = name;
             this.price = price;
             this.count = count;
         }
-        //save cart
+
         function saveCart() {
             sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
         }
-        //load cart
+
         function loadCart() {
             cart = JSON.parse(sessionStorage.getItem('shoppingCart')) || [];
         }
@@ -306,14 +281,12 @@ function generateProductCards($products) {
             loadCart();
         }
 
-        // Public methods and properties
         var obj = {};
 
-        //add to cart
-        obj.addItemToCart = function(name, price, count) {
-            for (var item in cart) {
-                if (cart[item].name === name) {
-                    cart[item].count++;
+        obj.addItemToCart = function (name, price, count) {
+            for (var i in cart) {
+                if (cart[i].name === name) {
+                    cart[i].count += count;
                     saveCart();
                     return;
                 }
@@ -323,22 +296,22 @@ function generateProductCards($products) {
             saveCart();
         };
 
-        obj.setCountForItem = function(name, count) {
+        obj.setCountForItem = function (name, count) {
             for (var i in cart) {
                 if (cart[i].name === name) {
                     cart[i].count = count;
                     break;
                 }
             }
+            saveCart();
         };
 
-        //remove item from cart
-        obj.removeItemFromCart = function(name) {
-            for (var item in cart) {
-                if (cart[item].name === name) {
-                    cart[item].count--;
-                    if (cart[item].count === 0) {
-                        cart.splice(item, 1);
+        obj.removeItemFromCart = function (name) {
+            for (var i in cart) {
+                if (cart[i].name === name) {
+                    cart[i].count--;
+                    if (cart[i].count === 0) {
+                        cart.splice(i, 1);
                     }
                     break;
                 }
@@ -346,56 +319,68 @@ function generateProductCards($products) {
             saveCart();
         };
 
-        obj.removeItemFromCartAll = function(name) {
-            for (var item in cart) {
-                if (cart[item].name === name) {
-                    cart.splice(item, 1);
-                    break;
-                }
-            }
+        obj.removeItemFromCartAll = function (name) {
+            cart = cart.filter(function (item) {
+                return item.name !== name;
+            });
             saveCart();
         };
 
-        obj.clearCart = function() {
+        obj.clearCart = function () {
             cart = [];
             saveCart();
         };
 
-        obj.totalCount = function() {
-            var totalCount = 0;
-            for (var item in cart) {
-                totalCount += cart[item].count;
-            }
-            return totalCount;
+        obj.totalCount = function () {
+            return cart.reduce(function (total, item) {
+                return total + item.count;
+            }, 0);
         };
 
-        obj.totalCart = function() {
-            var totalCart = 0;
-            for (var item in cart) {
-                totalCart += cart[item].price * cart[item].count;
-            }
-            return Number(totalCart.toFixed(2));
+        obj.totalCart = function () {
+            return cart.reduce(function (total, item) {
+                return total + item.price * item.count;
+            }, 0);
         };
 
-        obj.listCart = function() {
-            var cartCopy = [];
-            for (var i in cart) {
-                var item = cart[i];
-                var itemCopy = {};
-                for (var p in item) {
-                    itemCopy[p] = item[p];
-                }
-                itemCopy.total = Number(item.price * item.count).toFixed(2);
-                cartCopy.push(itemCopy);
-            }
-            return cartCopy;
+        obj.listCart = function () {
+            return cart.map(function (item) {
+                return {
+                    name: item.name,
+                    price: item.price,
+                    count: item.count,
+                    total: (item.price * item.count).toFixed(2)
+                };
+            });
         };
 
         return obj;
     })();
 
-    // Event handling
-    $('.addtoc').click(function(event) {
+    function sendCartToServer() {
+        var cart = shoppingCart.listCart();
+
+        if (cart.length > 0) {
+            fetch('server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cartArray: cart }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            console.log("Cart is empty. Nothing to send.");
+        }
+    }
+
+    $('.addtoc').click(function (event) {
         event.preventDefault();
         var name = $(this).data('name');
         var price = Number($(this).data('price'));
@@ -403,113 +388,91 @@ function generateProductCards($products) {
         displayCart();
     });
 
-    $('.clear-cart').click(function() {
+    $('.clear-cart').click(function () {
         shoppingCart.clearCart();
         displayCart();
     });
 
-    // Delete item button
-    // -1
-    $('#cart').on("click", ".minus-item", function(event) {
-    var name = $(this).data('name')
-    shoppingCart.removeItemFromCart(name);
-    displayCart();
-    })
-    // +1
-    $('#cart').on("click", ".plus-item", function(event) {
-    var name = $(this).data('name')
-    shoppingCart.addItemToCart(name);
-    displayCart();
-    })
+    $('#cart').on("click", ".minus-item", function (event) {
+        var name = $(this).data('name');
+        shoppingCart.removeItemFromCart(name);
+        displayCart();
+    });
 
-    // Item count input
-    $('#cart').on("change", ".item-count", function(event) {
-    var name = $(this).data('name');
-    var count = Number($(this).val());
-    shoppingCart.setCountForItem(name, count);
-    displayCart();
-        });
+    $('#cart').on("click", ".plus-item", function (event) {
+        var name = $(this).data('name');
+        shoppingCart.addItemToCart(name, 1);
+        displayCart();
+    });
+
+    $('#cart').on("change", ".item-count", function (event) {
+        var name = $(this).data('name');
+        var count = Number($(this).val());
+        shoppingCart.setCountForItem(name, count);
+        displayCart();
+    });
 
     function displayCart() {
         var cartArray = shoppingCart.listCart();
-        var output = "";
-        for (var i in cartArray) {
-            output += "<tr>"
-                + "<td>" + cartArray[i].name + "</td>"
-                + "<td>(" + cartArray[i].price +")</td>"
-                + "<td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-name='" + cartArray[i].name + "'>-</button>"
-                + "<input type='number' class='item-count form-control' value='" + cartArray[i].count + "'>"
-                + "<button class='plus-item btn btn-primary input-group-addon' data-name='" + cartArray[i].name + "'>+</button></div></td>"
-                + "<td><button class='delete-item btn btn-danger' data-name='" + cartArray[i].name + "'>X</button></td>"
-                + " = "
-                + "<td>" + cartArray[i].total + "</td>"
-                + "</tr>";
-        }
-        $('.show-cart').html(output);
-        $('.total-cart').html(shoppingCart.totalCart());
-        $('.total-count').html(shoppingCart.totalCount());
-    } 
-    const cartArray = JSON.stringify(cart);
 
-    fetch('server.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cartArray: cartArray }),
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-    var xhr = new XMLHttpRequest();
-        var url = 'server.php'; // Replace with the URL to your PHP processing script
-        var data = {
-            // Add more data fields as needed
-            cart: JSON.stringify(cartArray) // Convert the cart array to JSON
-        };
-
-        xhr.open('POST', url, true);
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                // Successful response from the server
-                var response = xhr.responseText;
-                if (response === 'success') {
-                    // Handle successful order placement, e.g., show a success message
-                    alert('Order placed successfully!');
-                    $('#cart').modal('hide'); // Close the modal
-                } else {
-                    // Handle errors
-                    alert('Error placing the order: ' + response);
-                }
-            } else {
-                // Handle network errors
-                alert('Network error occurred');
+        if (cartArray && cartArray.length > 0) {
+            var output = "";
+            for (var i in cartArray) {
+                output += "<tr>"
+                    + "<td>" + cartArray[i].name + "</td>"
+                    + "<td>(" + cartArray[i].price + ")</td>"
+                    + "<td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-name='" + cartArray[i].name + "'>-</button>"
+                    + "<input type='number' class='item-count form-control' value='" + cartArray[i].count + "' data-name='" + cartArray[i].name + "'>"
+                    + "<button class='plus-item btn btn-primary input-group-addon' data-name='" + cartArray[i].name + "'>+</button></div></td>"
+                    + "<td><button class='delete-item btn btn-danger' data-name='" + cartArray[i].name + "'>X</button></td>"
+                    + " = "
+                    + "<td>" + cartArray[i].total + "</td>"
+                    + "</tr>";
             }
-        };
+            $('.show-cart').html(output);
+            $('.total-cart').html(shoppingCart.totalCart());
+            $('.total-count').html(shoppingCart.totalCount());
+        } else {
+            $('.show-cart').html('<tr><td colspan="5">Your cart is empty</td></tr>');
+            $('.total-cart').html('0.00');
+            $('.total-count').html('0');
+        }
+    }
 
-        // Send the data to the server
-        xhr.send(JSON.stringify(data));
-    
+    function sendCartToServer(cart) {
+        fetch('server.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cartArray: cart }),
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 
+    $('.btn-primary').click(function () {
+        var cart = shoppingCart.listCart();
+        sendCartToServer(cart);
+    });
 
-    // Rest of your JavaScript code
     $('#cart').on('shown.bs.modal', function () {
-    displayCart();
-    });
-    $('#cart').on("click", ".delete-item", function(event) {
-    var name = $(this).data('name');
-    console.log("Delete item clicked for: " + name);
-    shoppingCart.removeItemFromCartAll(name);
-    displayCart();
+        displayCart();
     });
 
+    $('#cart').on("click", ".delete-item", function (event) {
+        var name = $(this).data('name');
+        shoppingCart.removeItemFromCartAll(name);
+        displayCart();
+    });
 </script>
+
+
+
 </body> 
 </html>
