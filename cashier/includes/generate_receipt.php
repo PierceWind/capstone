@@ -42,7 +42,11 @@ foreach ($items as $item) {
             position: relative;
             margin: 5px;
             padding-bottom: 100px; /* Height of the footer */
-            line-height: normal; 
+            line-height: 0.2em; 
+        }
+        
+        p {
+            line-height: 0.2em;
         }
         
         .footer {
@@ -70,7 +74,7 @@ foreach ($items as $item) {
             flex-direction: column;
             align-items: center;
             text-align: center;
-            line-height: 80%; 
+            line-height: 0.2em; 
         }
 
         .header img {
@@ -80,26 +84,31 @@ foreach ($items as $item) {
         }
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 54mm; /* Set the width to 56mm */
         }
+
         th, td {
-            border: 1px solid black;
-            padding: 8px;
+            border: 0.5px solid black; /* Adjust the border as needed */
+            padding: 2mm;
             text-align: left;
+            white-space: normal; /* Allow text to wrap */
+            line-height: 1.2; 
         }
+
         th {
             text-align: center;
         }
+
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
         @media print {
             @page {
-                size: 80mm auto; 
+                size: 57mm auto; 
             }
             body {
                 width: 57mm;
-                margin: 10px;
+                margin: 0.3em;
             }
             .footer {
                 display: none; /* Hide the footer in print view */
@@ -110,31 +119,31 @@ foreach ($items as $item) {
 <body>
     <div class="header">
         <img src="../files/icons/tdfLogo.png" >
-        <h2>To Die for Foods - Manila</h2>
-        <p>1159 Zobel Roxas corner Espiritu St. Brgy. 757</p>
-        <p> Metro Manila, 1009, NCR, Philippines</p>
+        <h2>To Die for Foods</h2>
+        <p style="font-size: 11px;">1159 Zobel Roxas corner Espiritu St. </p>
+        <p style="font-size: 11px;">Brgy. 757 Metro Manila, 1009, NCR</p>
         <p>0920 230 9787 || @tdffoods</p>
         <p><?php echo date('F j, Y | g:i a'); ?></p>
     </div>
     <hr>
     <div class="sec1">
-        <h4>ON: <?php echo $orderNum; ?></h4>
-        <h4>QN: <?php echo $queueNum; ?></h4>
+        <h4>Order Number: <?php echo $orderNum; ?></h4>
+        <h4>Queue Number: <?php echo $queueNum; ?></h4>
         <p>Number of Items:  <?php echo $numItems ; ?></p>
         <hr>
     </div>
     <div class="sec1">
-        <p>Customer: <?php echo "******" . substr($customerID, -4); ?></p>
+        <p>Customer: <?php echo "******" . substr($customerID, -4); ?> </p>
         <p>Type: <?php echo $discType; ?></p>
         <hr> 
     </div>
     <h3>ORDER DETAILS</h3>
-    <table border='2'>
+    <table border='1'>
         <tr>
             <th>Item</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th>Subtotal</th>
+            <th>Qty</th>
+            <th>UP</th>
+            <th>ST</th>
         </tr>
         <?php
         foreach ($items as $item) {
@@ -162,17 +171,18 @@ foreach ($items as $item) {
     <p>Discount Amount: <?php echo number_format($discAmt, 2, '.', ','); ?></p>
     <p>VATabe Sales: <?php echo number_format($vatSales, 2, '.', ','); ?></p>
     <p>VAT 12% Amount: <?php echo number_format($vatAmt, 2, '.', ','); ?></p>
-    <p>TOTAL DISCOUNT AMOUNT: <?php echo number_format($totalDiscAmt, 2, '.', ',') ?>  
+    <p>TOTAL DIS AMT: <?php echo number_format($totalDiscAmt, 2, '.', ',') ?>  
     <hr>
     <p>Gross Amount: <?php echo number_format($totalSubtotal, 2, '.', ','); ?></p>
     <p><strong> NET AMOUNT: <?php echo  number_format($totalBill, 2, '.', ','); ?> </strong> </p>
-    <p>Amount Tendered (CASH): <?php echo number_format($cashInput, 2, '.', ','); ?></p>
+    <p>Cash Tendered: <?php echo number_format($cashInput, 2, '.', ','); ?></p>
     <p>Change: <?php echo number_format($change, 2, '.', ','); ?></p>
 
     <hr>
     <div class="end">
-        <h3>THANK YOU FOR YOUR ORDER</h3>
-        <strong> <h4>Your Cravings Satisfied Here at TDF Foods</h4>
+        <h3 style="font-size: 12px;">THANK YOU FOR YOUR ORDER</h3>
+        <strong> <h4 style="font-size: 12px;">Your Cravings Satisfied Here 
+    </h4> <h4> @ TDF Foods</h4>
         <h3>BON APPETITE</h3> </strong>
     </div>
     <br>
