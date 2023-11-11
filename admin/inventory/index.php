@@ -14,7 +14,7 @@
     if (isset($_GET['orderingPage'])) {
         session_destroy();
         unset($_SESSION['acc_name']);
-        header('location:../../customer/dashboard.html');
+        header('location:../../cust/index.php');
     } 
     include('../users/server.php');
 ?> 
