@@ -54,7 +54,7 @@ function template_footer() {
         </main>
         <footer>
             <div class="content-wrapper">
-                <p>&copy; $year, TDF Foods Digital  Menu</p>
+                <p style="font-size: 12px;">&copy; $year, TDF Foods Digital  Menu</p>
             </div>
         </footer>
     </body>

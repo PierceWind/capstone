@@ -68,9 +68,11 @@ if ($products_in_cart) {
     // There are products in the cart so we need to select those products from the database
     // Products in cart array to question mark string array, we need the SQL statement to include IN (?,?,?,...etc)
     $array_to_question_marks = implode(',', array_fill(0, count($products_in_cart), '?'));
-    $stmt = $pdo->prepare('SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+    $stmt = $pdo->prepare('SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg, inventory.stock
     FROM product 
-    LEFT JOIN prodimage ON product.prodId = prodimage.productId WHERE prodId IN (' . $array_to_question_marks . ')');
+    LEFT JOIN prodimage ON product.prodId = prodimage.productId
+    LEFT JOIN inventory ON product.prodId = inventory.prodCode
+    WHERE prodId IN (' . $array_to_question_marks . ')');
     // We only need the array keys, not the values, the keys are the id's of the products
     $stmt->execute(array_keys($products_in_cart));
     // Fetch the products from the database and return the result as an Array
@@ -205,7 +207,7 @@ $extension = "../admin/menu/";
                     </td>
                     <td class="price"> &#8369;<?=$product['prodPrice']?></td>
                     <td class="quantity">
-                        <input type="number" name="quantity-<?=$product['prodId']?>" value="<?=$products_in_cart[$product['prodId']]?>" min="1" max="<?=$product['quantity']?>" placeholder="Quantity" required>
+                        <input type="number" name="quantity-<?=$product['prodId']?>" value="<?=$products_in_cart[$product['prodId']]?>" min="1" max="<?=$product['stock']?>" placeholder="Quantity" required>
                     </td>
                     <td class="price"> &#8369;<?=$product['prodPrice'] * $products_in_cart[$product['prodId']]?></td>
                 </tr>

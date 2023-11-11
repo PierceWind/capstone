@@ -113,7 +113,7 @@ main .featured {
 	background-repeat: no-repeat;
 	object-fit: cover;
 	background-size: cover;
-	height: 600px;
+	height: 650px;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
@@ -366,4 +366,9 @@ footer {
 	border-top: 1px solid #EEEEEE;
 	padding: 20px 0;
 	width: 100%;
+	float: center; 
+}
+
+footer .content-wrapper {
+	font-size: 10px; 
 }
