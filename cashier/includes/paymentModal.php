@@ -96,6 +96,7 @@ if (isset($_POST['confirmPaymentBtn'])) {
                 receiptWindow.document.close();
                 receiptWindow.onbeforeunload = function() {
                     refreshPage();
+                    refreshIndex(); 
                 };
             } else {
                 alert("Failed to update order status");
@@ -130,6 +131,17 @@ if (isset($_POST['confirmPaymentBtn'])) {
 }
 </script>
 
+<script>
+    function refreshIndex() {
+        var urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.has('discType') || urlParams.has('discPercent') || urlParams.has('customerID')) {
+            // Remove URL parameters and update the browser's history
+            var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            history.replaceState({}, document.title, baseUrl);
+        } 
+    }
+</script>
 
 <script>
     function calculateChange() {

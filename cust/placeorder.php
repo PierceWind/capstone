@@ -97,7 +97,7 @@ if (isset($_POST['back_to_home'])) {
         margin: 0;
     }
 
-    h1, .back-to-home-button, hr {
+    h1, .back-to-home-button, hr, br {
         display: none;
     }
 
@@ -142,7 +142,7 @@ if (isset($_POST['back_to_home'])) {
             <strong>
                 <p>Queue Number: <?= isset($_SESSION['queueNumber']) ? $_SESSION['queueNumber'] : 'N/A' ?></p>
                 <p>Order Number: <?= isset($_SESSION['orderId']) ? $_SESSION['orderId'] : 'N/A' ?></p>
-            </strong>
+            </strong> <br>
             <table>
                 <thead>
                     <tr>
