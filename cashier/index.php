@@ -216,12 +216,12 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                             </thead>
                             <tbody>
                                 <?php 
-                                            $query ="SELECT DISTINCT product.*, order_items.* 
-                                            FROM product
-                                            INNER JOIN order_items ON product.prodId = order_items.ProductID
-                                            INNER JOIN orders ON order_items.OrderID = orders.orderID
-                                            WHERE orders.orderID = '$inProgressOrderId'";
-                                
+                                $query ="SELECT DISTINCT product.*, order_items.* 
+                                FROM product
+                                INNER JOIN order_items ON product.prodId = order_items.ProductID
+                                INNER JOIN orders ON order_items.OrderID = orders.orderID
+                                WHERE orders.orderID = '$inProgressOrderId' AND orders.queueNumber  = '$inProgressQueueNum' ";
+                    
                                 $query_run = mysqli_query($conn, $query);
 
                                 $totalSubtotal = 0;
