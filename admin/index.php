@@ -200,10 +200,10 @@
                     ?>
 
                     <?php 
-                        $query3 = "SELECT inventory.prodCode, product.prodName, product.minReq 
-                        FROM inventory 
-                        INNER JOIN product ON product.prodId = inventory.prodCode 
-                        WHERE inventory.stock <= product.minReq OR inventory.stock = 0
+                        $query3 = "SELECT product.prodId, product.prodName, product.minReq, COALESCE(inventory.stock, 0) AS stock
+                        FROM product
+                        LEFT JOIN inventory ON product.prodId = inventory.prodCode
+                        WHERE COALESCE(inventory.stock, 0) <= product.minReq
                         LIMIT 5;";
                         $result3 = mysqli_query($conn, $query3);
                         $row3 = mysqli_num_rows($result3); 
@@ -221,18 +221,11 @@
 
                         $query1 = "SELECT product.*, SUM(sales.sales) AS total_sales
                         FROM product
-                        LEFT JOIN sales 
-                        ON product.prodId = sales.prodCode
+                        LEFT JOIN sales ON product.prodId = sales.prodCode
+                        WHERE sales.prodCode = product.prodId
                         GROUP BY product.prodId
-                        HAVING total_sales < (
-                            SELECT MIN(sub.total_sales) 
-                            FROM (
-                                SELECT SUM(sales.sales) AS total_sales 
-                                FROM sales 
-                                GROUP BY prodCode
-                            ) AS sub
-                        )
-                        ORDER BY total_sales;";
+                        ORDER BY total_sales
+                        LIMIT 5;";
                         $result1 = mysqli_query($conn, $query1);
                         $row1 = mysqli_num_rows($result1);
                     ?>
@@ -260,7 +253,7 @@
                         <h3>Underperforming Products</h3> <br>
                             <?php if($row1 > 0) {
                                 while ($res = mysqli_fetch_array($result1)) {
-                                    echo "<li>".$res['prodName']."</li>";
+                                    echo $res['prodName'];
                                     echo "<br>";
                                 }
                             }

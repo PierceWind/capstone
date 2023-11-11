@@ -93,6 +93,7 @@ foreach ($items as $item) {
             text-align: left;
             white-space: normal; /* Allow text to wrap */
             line-height: 1.2; 
+            font-size: 11px; 
         }
 
         th {
