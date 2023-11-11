@@ -84,7 +84,7 @@ $extension = "../admin/menu/";
     <p>Your Cravings Satisfied Here at TDF Foods</p>
 </div>
 <div class="recentlyadded content-wrapper">
-    <h2 style="font-size: 30px;">To Die For Menu</h2>
+    <h2 style="font-size: 30px; color: #700202;">To Die For Menu</h2>
     <div class="products">
         <?php foreach ($products as $product): ?>
             <div class="product <?= ($product['stock'] == 0) ? 'unavailable' : '' ?>">

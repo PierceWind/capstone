@@ -137,18 +137,6 @@ if (isset($_POST['placeorder']) && isset($_SESSION['cart']) && !empty($_SESSION[
             die();
         }
     
-        // Update the product sales in the sales table
-        $stmt = $pdo->prepare('INSERT INTO sales (orderId, prodCode, sales, date) VALUES (?, ?, ?, NOW())');
-        $stmt->bindParam(1, $orderId);
-        $stmt->bindParam(2, $product['prodId']);
-        $stmt->bindParam(3, $products_in_cart[$product['prodId']]);
-    
-        if (!$stmt->execute()) {
-            // Check for errors in executing the statement
-            echo "\nPDO::errorInfo():\n";
-            print_r($stmt->errorInfo());
-            die();
-        }
     }
     header('Location: index.php?page=placeorder');
     exit;
@@ -162,69 +150,146 @@ $extension = "../admin/menu/";
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            .img img {
-                width: 50px; 
-                height: 50px; 
-                object-fit: cover; /* This will maintain the aspect ratio and cover the specified dimensions */
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .cart h1 {
+            font-size: 1.5em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .img img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .quantity input {
+            width: 60px;
+        }
+
+        .subtotal {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        @media screen and (max-width: 600px) {
+            th,
+            td {
+                font-size: 12px;
             }
-        </style>
+
+            .quantity input {
+                width: 40px;
+            }
+
+            .img img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .cart h1 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div class="cart content-wrapper">
-    <h1>Order Details</h1>
-    <form action="index.php?page=cart" method="post">
-        <table>
-            <thead>
-                <tr>
-                    <td colspan="2">Product</td>
-                    <td>Price</td>
-                    <td>Quantity</td>
-                    <td>Total</td>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($products)): ?>
-                <tr>
-                    <td colspan="5" style="text-align:center;">You have no products added in your Shopping Cart</td>
-                </tr>
-                <?php else: ?>
-                <?php foreach ($products as $product): ?>
-                <tr>
-                    <td class="img">
-                        <a href="index.php?page=product&id=<?=$product['prodId']?>">
-                            <img src="<?= $extension . $product['productImg'] ?>" alt="<?= $product['prodName'] ?>">
-                        </a>
-                    </td>
-                    <td>
-                        <a href="index.php?page=product&id=<?=$product['prodId']?>"><?=$product['prodName']?></a>
-                        <br>
-                        <a href="index.php?page=cart&remove=<?=$product['prodId']?>" class="remove">Remove</a>
-                    </td>
-                    <td class="price"> &#8369;<?=$product['prodPrice']?></td>
-                    <td class="quantity">
-                        <input type="number" name="quantity-<?=$product['prodId']?>" value="<?=$products_in_cart[$product['prodId']]?>" min="1" max="<?=$product['stock']?>" placeholder="Quantity" required>
-                    </td>
-                    <td class="price"> &#8369;<?=$product['prodPrice'] * $products_in_cart[$product['prodId']]?></td>
-                </tr>
-                <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
-        <div class="subtotal">
-            <span class="text">Subtotal</span>
-            <span class="price"> &#8369;<?=$subtotal?></span>
-        </div>
-        <div class="buttons">
-            <input type="submit" value="Update" name="update">
-            <input type="submit" value="Place Order" name="placeorder">
-        </div>
-    </form>
-</div>
-                </body>
+    <div class="cart content-wrapper">
+        <h1>Order Details</h1>
+        <form action="index.php?page=cart" method="post">
+            <table>
+                <thead>
+                    <tr>
+                        <td colspan="2">Product</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Total</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($products)): ?>
+                        <tr>
+                            <td colspan="5" style="text-align:center;">You have no products added in your Shopping Cart</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($products as $product): ?>
+                            <tr>
+                                <td class="img">
+                                    <a href="index.php?page=product&id=<?=$product['prodId']?>">
+                                        <img src="<?= $extension . $product['productImg'] ?>" alt="<?= $product['prodName'] ?>">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="index.php?page=product&id=<?=$product['prodId']?>"><?=$product['prodName']?></a>
+                                    <br>
+                                    <a href="index.php?page=cart&remove=<?=$product['prodId']?>" class="remove">Remove</a>
+                                </td>
+                                <td class="price"> &#8369;<?=$product['prodPrice']?></td>
+                                <td class="quantity">
+                                    <input type="number" name="quantity-<?=$product['prodId']?>" value="<?=$products_in_cart[$product['prodId']]?>" min="1" max="<?=$product['stock']?>" placeholder="Qty" required>
+                                </td>
+                                <td class="price"> &#8369;<?=$product['prodPrice'] * $products_in_cart[$product['prodId']]?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <div class="subtotal">
+                <span class="text">Subtotal</span>
+                <span class="price"> &#8369;<?=$subtotal?></span>
+            </div>
+            <div class="buttons">
+                <input type="submit" value="Update" name="update">
+                <input type="submit" value="Place Order" name="placeorder">
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
 
 <?=template_footer()?>
