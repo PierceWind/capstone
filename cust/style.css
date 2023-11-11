@@ -207,7 +207,8 @@ main > .product form input[type="number"] {
 	border-radius: 5px;
 }
 main > .product form input[type="submit"] {
-	background: #4e5c70;
+	background: #700202;
+	border-radius: 20px; 
 	border: 0;
 	color: #FFFFFF;
 	width: 400px;
@@ -219,7 +220,8 @@ main > .product form input[type="submit"] {
 	cursor: pointer;
 }
 main > .product form input[type="submit"]:hover {
-	background: #434f61;
+	background: yellow;
+	color: black;
 }
 main > .products h1 {
 	display: block;
@@ -240,14 +242,15 @@ main > .products .buttons a {
 	margin-left: 5px;
 	padding: 12px 20px;
 	border: 0;
-	background: #4e5c70;
+	background: #700202;
 	color: #FFFFFF;
 	font-size: 14px;
 	font-weight: bold;
 	border-radius: 5px;
 }
 main > .products .buttons a:hover {
-	background: #434f61;
+	background: yellow;
+	color: black; 
 }
 main .cart h1 {
 	display: block;
@@ -320,7 +323,7 @@ main .cart .buttons input[type="submit"] {
 	margin-left: 5px;
 	padding: 12px 20px;
 	border: 0;
-	background: #4e5c70;
+	background: #700202;
 	color: #FFFFFF;
 	font-size: 14px;
 	font-weight: bold;
@@ -328,7 +331,8 @@ main .cart .buttons input[type="submit"] {
 	border-radius: 5px;
 }
 main .cart .buttons input[type="submit"]:hover {
-	background: #434f61;
+	background: yellow;
+	color: black
 }
 main .placeorder h1 {
 	display: block;
