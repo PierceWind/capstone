@@ -25,6 +25,7 @@ echo <<<EOT
 		<title>$title</title>
 		<link href="style.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+        <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
 	</head>
 	<body>
         <header>

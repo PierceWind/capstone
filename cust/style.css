@@ -1,7 +1,7 @@
 * {
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
-	font-size: 16px;
+	font-size: 20px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -13,15 +13,28 @@ body {
 	min-height: 100%;
 	color: #555555;
 	background-color: #FFFFFF;
-	margin: 0;
+	margin: 20px;
 	padding-bottom: 100px; /* Same height as footer */
 }
 h1, h2, h3, h4, h5 {
 	color: #394352;
 }
+
+.product img,
+.unavailable img {
+    width: 100%; /* Adjust the width to your preference */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Use contain to fit the entire image within the container */
+    max-width: 100%; /* Ensure the image doesn't exceed its natural size */
+}
+
+.unavailable img {
+    filter: blur(5px);
+}
+
 .content-wrapper {
 	width: 1050px;
-	margin: 0 auto;
+	margin: 10px auto;
 }
 header {
 	border-bottom: 1px solid #EEEEEE;
@@ -98,8 +111,9 @@ main .featured {
 	flex-direction: column;
 	background-image: url(../files/bg/banner1.png);
 	background-repeat: no-repeat;
+	object-fit: cover;
 	background-size: cover;
-	height: 500px;
+	height: 600px;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
@@ -214,7 +228,7 @@ main > .product form input[type="submit"] {
 	width: 400px;
 	padding: 12px 0;
 	text-transform: uppercase;
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: bold;
 	border-radius: 5px;
 	cursor: pointer;
@@ -244,7 +258,7 @@ main > .products .buttons a {
 	border: 0;
 	background: #700202;
 	color: #FFFFFF;
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: bold;
 	border-radius: 5px;
 }
@@ -282,8 +296,8 @@ main .cart table .img {
 	width: 80px;
 }
 main .cart table .remove {
-	color: #777777;
-	font-size: 12px;
+	color: red;
+	font-size: 15px;
 	padding-top: 3px;
 }
 main .cart table .remove:hover {
@@ -309,10 +323,10 @@ main .cart .subtotal {
 }
 main .cart .subtotal .text {
 	padding-right: 40px;
-	font-size: 18px;
+	font-size: 20px;
 }
 main .cart .subtotal .price {
-	font-size: 18px;
+	font-size: 20px;
 	color: #999999;
 }
 main .cart .buttons {
@@ -325,7 +339,7 @@ main .cart .buttons input[type="submit"] {
 	border: 0;
 	background: #700202;
 	color: #FFFFFF;
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: bold;
 	cursor: pointer;
 	border-radius: 5px;

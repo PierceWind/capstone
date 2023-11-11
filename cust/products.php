@@ -13,16 +13,38 @@ $total_categories = count($categories);
 $start_category_index = ($current_category_page - 1) * $num_categories_on_each_page;
 // Slice the categories array to get the categories for the current page
 $display_categories = array_slice($categories, $start_category_index, $num_categories_on_each_page);
-
 ?>
 
-<?=template_header('Products')?>
+<?= template_header('Products') ?>
 
 <style>
-    .product img {
+    .product-image-container {
+        position: relative;
         width: 200px;
         height: 200px;
+        overflow: hidden; /* To ensure fixed dimensions */
+    }
+
+    .product-image-container img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
+    }
+
+    .unavailable-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 5px;
+        color: red;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .products-wrapper a {
+        text-decoration: none; /* Remove underlines from clickable links */
     }
 </style>
 
@@ -34,9 +56,10 @@ $display_categories = array_slice($categories, $start_category_index, $num_categ
         <div class="products-wrapper">
             <?php
             // Select products ordered by date added, with pagination and filtering by category
-            $stmt = $pdo->prepare('SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg 
+            $stmt = $pdo->prepare('SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg, inventory.stock 
             FROM product 
             LEFT JOIN prodimage ON product.prodId = prodimage.productId
+            LEFT JOIN inventory ON product.prodId = inventory.prodCode
             WHERE product.prodCategory = :category');
 
             // Execute the statement with named parameters
@@ -44,15 +67,25 @@ $display_categories = array_slice($categories, $start_category_index, $num_categ
             $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($products as $product):
+                $isAvailable = $product['stock'] > 0;
             ?>
-                <a href="index.php?page=product&id=<?= $product['prodId'] ?>" class="product">
-                    <img src="<?= $extension . $product['productImg'] ?>" alt="<?= $product['prodName'] ?>">
-                    <span class="name" style="color: #700202;"><strong><?= $product['prodName'] ?></strong></span>
-                    <span class="price">
-                        &#8369;<?= $product['prodPrice'] ?>
-                    </span>
-                    <span class="description" style="color: black;"> <?= $product['prodDescription'] ?> </span>
-                </a>
+                <div class="product<?= $isAvailable ? '' : ' unavailable' ?>">
+                    <?php if ($isAvailable): ?>
+                        <a href="index.php?page=product&id=<?= $product['prodId'] ?>">
+                    <?php endif; ?>
+                        <div class="product-image-container">
+                            <img src="<?= $extension . $product['productImg'] ?>" alt="<?= $product['prodName'] ?>">
+                            <?php if (!$isAvailable): ?>
+                                <span class="unavailable-message">UNAVAILABLE</span>
+                            <?php endif; ?>
+                        </div>
+                        <span class="name" style="color: #700202;"><strong><?= $product['prodName'] ?></strong></span>
+                        <span class="price">&#8369;<?= $product['prodPrice'] ?></span>
+                        <span class="description" style="color: black;"><?= $product['prodDescription'] ?></span>
+                    <?php if ($isAvailable): ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
             <?php endforeach; ?>
         </div>
     <?php endforeach; ?>
@@ -65,7 +98,6 @@ $display_categories = array_slice($categories, $start_category_index, $num_categ
             <a href="index.php?page=products&cp=<?= $current_category_page + 1 ?>">Next</a>
         <?php endif; ?>
     </div>
-
 </div>
 
-<?=template_footer()?>
+<?= template_footer() ?>
