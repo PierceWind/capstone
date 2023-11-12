@@ -24,17 +24,18 @@ $extension = "../admin/menu/";
     <style>         
         /* Your CSS Styles Go Here */
         .search {
-            width: 60%;
+            width: 100%;
             height: 40px;
             display: flex;
-            justify-content: flex-start; /* Align items to the left */
+            justify-content: space-between; /* Adjusted to space between items */
             background-color: var(--whiteColor);
             border-radius: 20px;
-            margin-left: 20px; /* Adjust the left margin as needed */
+            margin: 20px 20px; /* Adjusted the margin */
         }
 
         .searchInput {
-            background-color: #fff;
+            margin-left: 250px; 
+            width: 500px; 
             flex: 1; /* Take remaining space */
             height: 100%;
             padding: 10px;
@@ -45,7 +46,6 @@ $extension = "../admin/menu/";
 
             /* Add emphasis styles to the text inside the input */
             color: #700202; /* Change text color */
-            font-weight: bold; /* Make text bold */
         }
 
         .searchbtn {
@@ -57,6 +57,7 @@ $extension = "../admin/menu/";
             width: 100px;
             cursor: pointer;
             font-weight: bold;
+            margin-left: -100px; 
         }
 
         .searchbtn:hover {
@@ -68,7 +69,6 @@ $extension = "../admin/menu/";
             display: inline-block;
             width: 200px;
             margin: 28px;
-            text-align: center;
         }
         .products {
         display: grid;
