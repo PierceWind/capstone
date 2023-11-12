@@ -18,16 +18,57 @@ $extension = "../admin/menu/";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../files/assets/bootstrap/js/bootstrap/3.6.4.min.js"></script>
     <title>Your Page Title</title>
 
     <style>         
         /* Your CSS Styles Go Here */
+        .search {
+            width: 60%;
+            height: 40px;
+            display: flex;
+            justify-content: flex-start; /* Align items to the left */
+            background-color: var(--whiteColor);
+            border-radius: 20px;
+            margin-left: 20px; /* Adjust the left margin as needed */
+        }
+
+        .searchInput {
+            background-color: #fff;
+            flex: 1; /* Take remaining space */
+            height: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 15px;
+            outline: none;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+            /* Add emphasis styles to the text inside the input */
+            color: #700202; /* Change text color */
+            font-weight: bold; /* Make text bold */
+        }
+
+        .searchbtn {
+            background-color: #700202;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px;
+            width: 100px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .searchbtn:hover {
+            background-color: yellow;
+            color: black;
+        }
         .product {
             position: relative;
             display: inline-block;
-            width: 200px; 
+            width: 200px;
             margin: 28px;
-            float: center;  
+            text-align: center;
         }
         .products {
         display: grid;
@@ -122,7 +163,17 @@ $extension = "../admin/menu/";
 
     <div class="recentlyadded content-wrapper">
         <h2 style="font-size: 30px; color: #700202;">To Die For Menu</h2>
-
+        <!--search bar--> 
+        <div class="search">
+            <form id="searchForm">
+                <input type="text" class="searchInput" placeholder="Search Menu" name="query" id="query" required>
+                <input type="submit" class="searchbtn" value="Search">
+            </form>
+        </div>
+        <div id="searchResults" class="recentlyadded content-wrapper">
+        <!-- The search results will be dynamically inserted here -->
+        <br>
+        </div>
         <?php foreach ($products as $product): ?>
             <div class="product <?= ($product['stock'] == 0) ? 'unavailable' : '' ?>">
                 <?php if ($product['stock'] == 0): ?>
@@ -138,7 +189,33 @@ $extension = "../admin/menu/";
             </div>
         <?php endforeach; ?>
     </div>
+    
+    <!-- Your JavaScript for AJAX -->
+    <script>
+        $(document).ready(function () {
+            $('#searchForm').submit(function (e) {
+                e.preventDefault(); // Prevent the default form submission
 
+                // Get the search query
+                var query = $('#query').val();
+
+                // Perform AJAX request
+                $.ajax({
+                    type: 'GET',
+                    url: 'search.php', // Adjust the URL based on your file structure
+                    data: { query: query },
+                    success: function (data) {
+                        // Update the search results container with the received data
+                        $('#searchResults').html(data);
+                    },
+                    error: function () {
+                        console.log('Error occurred during AJAX request.');
+                    }
+                });
+            });
+        });
+    </script>
+     
     <!-- Your JavaScript for smooth scrolling goes here -->
 
 </body>
