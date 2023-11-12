@@ -150,16 +150,31 @@ $extension = "../admin/menu/";
     </div>
 
     <div class="submenu">
-        <ul>
-            <li><a href="#heritage">Heritage</a></li>
-            <li><a href="#specialties">Specialties</a></li>
-            <li><a href="#pasta">Pasta</a></li>
-            <li><a href="#salad">Salad</a></li>
-            <li><a href="#sweets">Sweets</a></li>
-            <li><a href="#drinks">Drinks</a></li>
-            <li><a href="#top-selling">Top Selling</a></li>
-        </ul>
-    </div>
+    <ul>
+        <li><a href="#" onclick="loadItems('heritage')">Heritage</a></li>
+        <li><a href="#" onclick="loadItems('specialties')">Specialties</a></li>
+        <li><a href="#" onclick="loadItems('pasta')">Pasta</a></li>
+        <li><a href="#" onclick="loadItems('salad')">Salad</a></li>
+        <li><a href="#" onclick="loadItems('sweets')">Sweets</a></li>
+        <li><a href="#" onclick="loadItems('drinks')">Drinks</a></li>
+        <li><a href="#" onclick="loadItems('top-selling')">Top Selling</a></li>
+    </ul>
+</div>
+
+<script>
+function loadItems(category) {
+    // Use AJAX to fetch items for the selected category
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Update the categoryItems div with the fetched items
+            document.getElementById('categoryItems').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.open('GET', 'filtercategories.php?category=' + category, true);
+    xhr.send();
+}
+</script>
 
     <div class="recentlyadded content-wrapper">
         <h2 style="font-size: 30px; color: #700202;">To Die For Menu</h2>
@@ -173,6 +188,11 @@ $extension = "../admin/menu/";
         <div id="searchResults" class="recentlyadded content-wrapper">
         <!-- The search results will be dynamically inserted here -->
         <br>
+
+        
+        <div id="categoryItems" class="category-items">
+            <!-- Display items for the selected category here -->
+        </div>
         </div>
         <?php foreach ($products as $product): ?>
             <div class="product <?= ($product['stock'] == 0) ? 'unavailable' : '' ?>">

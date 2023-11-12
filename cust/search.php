@@ -6,6 +6,7 @@ $dbname = "capstone";
 
 $extension = "../admin/menu/";
 
+
 try {
     // Create a PDO connection
     $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
