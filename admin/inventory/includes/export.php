@@ -10,7 +10,7 @@ if(isset($_POST["export"])) {
     COALESCE(inventory.stock, 0) AS stock, COALESCE(SUM(sales.sales), 0) AS totalSales
     FROM product
     LEFT JOIN inventory ON product.prodId = inventory.prodCode
-    LEFT JOIN sales ON product.prodId = sales.code
+    LEFT JOIN sales ON product.prodId = sales.prodCode
     GROUP BY product.prodId, product.minReq, product.prodName, product.prodPrice
     ORDER BY stock ASC;"; 
         
