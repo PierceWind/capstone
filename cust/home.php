@@ -1,105 +1,148 @@
+
+<?= template_header('Home') ?>
 <?php
+// Assuming you have a database connection in $pdo
+
 $stmt = $pdo->prepare('SELECT DISTINCT product.prodId, product.prodName, product.prodPrice, product.prodDescription, product.prodCategory, prodimage.productImg, inventory.stock 
 FROM product 
 LEFT JOIN prodimage ON product.prodId = prodimage.productId
 LEFT JOIN inventory ON product.prodId = inventory.prodCode');
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 $extension = "../admin/menu/";
 ?>
 
-<?= template_header('Home') ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
 
-<style>
-    .product {
-        position: relative;
-        display: inline-block;
-        width: 200px; /* Adjust as needed to fit four products in a row */
-        margin: 10px; /* Add margin for better spacing */
-        text-align: center; /* Center the content */
-    }
-
-    .product img {
-        width: 100%; /* Make the image fill the container */
-        height: 200px; /* Adjust as needed */
-        object-fit: cover;
-    }
-
-    .product-link {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .product.unavailable {
-        pointer-events: none;
-    }
-
-    .unavailable-message {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 18px;
-        font-weight: bold;
-        color: red;
-        text-align: center;
-    }
-     /* Responsive Styles */
-     @media only screen and (max-width: 600px) {
-        .featured h2 {
-            font-size: 24px; /* Adjust the font size for smaller screens */
-        }
-
-        .recentlyadded h2 {
-            font-size: 24px; /* Adjust the font size for smaller screens */
-        }
-
+    <style>         
+        /* Your CSS Styles Go Here */
         .product {
-            width: 100%; /* Make products full width on small screens */
-            margin: 10px 0; /* Adjust margin for better spacing */
+            position: relative;
+            display: inline-block;
+            width: 200px; 
+            margin: 28px;
+            float: center;  
+        }
+        .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr 1fr  1fr 1fr 1fr));
+        gap: 20px;
         }
 
         .product img {
-            height: auto; /* Allow the image to scale with its aspect ratio */
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover;
         }
 
-        .name {
-            font-size: 16px; /* Adjust font size for product names on smaller screens */
+        .product-link {
+            text-decoration: none;
+            color: inherit;
         }
 
-        .price {
-            font-size: 14px; /* Adjust font size for product prices on smaller screens */
+        .product.unavailable {
+            pointer-events: none;
         }
 
-        .description {
-            font-size: 12px; /* Adjust font size for product descriptions on smaller screens */
+        .unavailable-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 5px;
+            color: red;
+            font-weight: bold;
+            font-size: 16px;
         }
+        .submenu {
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 1000;
     }
-</style>
 
+    .submenu ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #f1f1f1; /* Background color for the submenu */
+        display: flex; /* Use flexbox to create a horizontal layout */
+        justify-content: space-evenly; /* Distribute items evenly */
+    }
 
+    .submenu li {
+        flex: 1; /* Distribute available space equally among items */
+        text-align: center;
+    }
 
-<div class="featured">
-    <h2>To Die For Foods</h2>
-    <p>Your Cravings Satisfied Here at TDF Foods</p>
-</div>
-<div class="recentlyadded content-wrapper">
-    <h2 style="font-size: 30px; color: #700202;">To Die For Menu</h2>
-    <div class="products">
+    .submenu a {
+        display: block;
+        color: #700202;
+        padding: 14px 0; /* Adjust vertical padding */
+        text-decoration: none;
+    }
+
+    .submenu a:hover {
+        background-color: #ddd;
+    }
+
+    .category-section {
+        margin-top: 20px;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="featured">
+        <br>
+        <h2>To Die For Foods</h2>
+        <p>Your Cravings Satisfied Here at TDF Foods</p>
+        <br>
+    </div>
+
+    <div class="submenu">
+        <ul>
+            <li><a href="#heritage">Heritage</a></li>
+            <li><a href="#specialties">Specialties</a></li>
+            <li><a href="#pasta">Pasta</a></li>
+            <li><a href="#salad">Salad</a></li>
+            <li><a href="#sweets">Sweets</a></li>
+            <li><a href="#drinks">Drinks</a></li>
+            <li><a href="#top-selling">Top Selling</a></li>
+        </ul>
+    </div>
+
+    <div class="recentlyadded content-wrapper">
+        <h2 style="font-size: 30px; color: #700202;">To Die For Menu</h2>
+
         <?php foreach ($products as $product): ?>
             <div class="product <?= ($product['stock'] == 0) ? 'unavailable' : '' ?>">
                 <?php if ($product['stock'] == 0): ?>
                     <div class="unavailable-message">UNAVAILABLE</div>
-                <?php endif; ?>
+                <?php endif; ?>  
                 <a href="<?= ($product['stock'] > 0) ? 'index.php?page=product&id=' . $product['prodId'] : '#' ?>" class="product-link">
-                    <img src="<?= $extension . $product['productImg'] ?>" alt="<?= $product['prodName'] ?>">
-                    <span class="name" style="color: #700202;"><strong><?= $product['prodName'] ?></strong></span>
-                    <span class="price">&#8369;<?= $product['prodPrice'] ?></span>
-                    <span class="description" style="color: black;"><?= $product['prodDescription'] ?></span>
+                    <div class="product-image-container">
+                        <img src="<?= $extension . $product['productImg'] ?>" alt="<?= $product['prodName'] ?>">
+                        <span class="name" style="color: #700202;"><strong><?= $product['prodName'] ?></strong></span><br>
+                        <span class="price">&#8369;<?= $product['prodPrice'] ?></span><br>
+                    </div>
                 </a>
             </div>
         <?php endforeach; ?>
     </div>
-</div>
+
+    <!-- Your JavaScript for smooth scrolling goes here -->
+
+</body>
+</html>
+
 
 <?= template_footer() ?>

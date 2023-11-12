@@ -4,16 +4,18 @@
 	font-size: 20px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
 }
 html {
 	height: 100%;
+	width: 100%;
 }
 body {
 	position: relative;
 	min-height: 100%;
 	color: #555555;
 	background-color: #FFFFFF;
-	margin: 20px;
+	margin: 2%;
 	padding-bottom: 100px; /* Same height as footer */
 }
 h1, h2, h3, h4, h5 {
@@ -26,11 +28,16 @@ h1, h2, h3, h4, h5 {
     height: auto; /* Maintain aspect ratio */
     object-fit: contain; /* Use contain to fit the entire image within the container */
     max-width: 100%; /* Ensure the image doesn't exceed its natural size */
+	border-radius: 20px;
 }
 
 .unavailable img {
-    filter: blur(5px);
+	border-radius: 20px;
+	border-color: red;
+	border: red;
+    /*filter: blur(5px);*/
 }
+
 
 .content-wrapper {
 	width: 1050px;
@@ -106,22 +113,29 @@ header .link-icons a span {
 	top: 22px;
 	right: 0;
 }
+main .featured img {
+	height: 100%;
+	width: 100%;
+}
 main .featured {
 	display: flex;
 	flex-direction: column;
 	background-image: url(../files/bg/banner1.png);
 	background-repeat: no-repeat;
-	object-fit: cover;
+	height: auto;
+	width: 100%;
 	background-size: cover;
-	height: 650px;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
+	padding-top: 240px;
+	padding-bottom: 240px;
 }
+
 main .featured h2 {
 	display: inline-block;
 	margin: 0;
-	width: 1050px;
+	width: 1200px;
 	font-family: Rockwell, Courier Bold, Courier, Georgia, Times, Times New Roman, serif;
 	font-size: 68px;
 	color: #FFFFFF;
