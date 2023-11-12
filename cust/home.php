@@ -69,6 +69,8 @@ $extension = "../admin/menu/";
             display: inline-block;
             width: 200px;
             margin: 28px;
+	        transition: transform 1s ease;
+            
         }
         .products {
         display: grid;
@@ -80,6 +82,11 @@ $extension = "../admin/menu/";
             width: 100%; 
             height: 200px; 
             object-fit: cover;
+            
+        }
+        .product img:hover, .product.unavailable img:hover {
+            transform: scale(1.05);
+	        transition: transform 1s;
         }
 
         .product-link {
