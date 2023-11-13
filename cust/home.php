@@ -164,7 +164,6 @@ $extension = "../admin/menu/";
         <li><a href="#" onclick="loadItems('salad')">Salad</a></li>
         <li><a href="#" onclick="loadItems('sweets')">Sweets</a></li>
         <li><a href="#" onclick="loadItems('drinks')">Drinks</a></li>
-        <li><a href="#" onclick="loadItems('top-selling')">Top Selling</a></li>
     </ul>
 </div>
 

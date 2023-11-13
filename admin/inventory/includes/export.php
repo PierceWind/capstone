@@ -6,13 +6,13 @@ include ('../../server.php');
 $output = "";
 
 if(isset($_POST["export"])) {
-    $query = "SELECT product.prodId, product.minReq, product.prodName, product.prodPrice,
+    $query = "SELECT product.prodId, product.minReq, product.prodName, product.prodPrice, 
     COALESCE(inventory.stock, 0) AS stock, COALESCE(SUM(sales.sales), 0) AS totalSales
     FROM product
     LEFT JOIN inventory ON product.prodId = inventory.prodCode
     LEFT JOIN sales ON product.prodId = sales.prodCode
     GROUP BY product.prodId, product.minReq, product.prodName, product.prodPrice
-    ORDER BY stock ASC;"; 
+    ORDER BY stock ASC;";
         
     $result = mysqli_query($conn, $query);
     if(mysqli_num_rows($result) > 0)
@@ -34,7 +34,7 @@ if(isset($_POST["export"])) {
             // Determine the status based on your conditions
             if ($row['stock'] <= $row['minReq']) {
                 $status = 'Needs Attention';
-            } elseif ($row['stock'] == 0) {
+            } else if ($row['stock'] == 0) {
                 $status = 'Out of Stock';
             } else {
                 $status = 'Available';
