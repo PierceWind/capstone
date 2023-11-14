@@ -113,23 +113,17 @@ header .link-icons a span {
 	top: 22px;
 	right: 0;
 }
-main .featured img {
-	height: 100%;
-	width: 100%;
-}
+
 main .featured {
 	display: flex;
 	flex-direction: column;
 	background-image: url(../files/bg/banner1.png);
 	background-repeat: no-repeat;
-	height: auto;
-	width: 100%;
 	background-size: cover;
+	height: 200px;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	padding-top: 240px;
-	padding-bottom: 240px;
 }
 
 main .featured h2 {

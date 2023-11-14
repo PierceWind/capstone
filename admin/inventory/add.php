@@ -193,7 +193,7 @@ if (isset($_POST['add_stock'])) {
                             <input type="date" id="drDate" name="dr_date" value="<?php echo $emp_DOB; ?>" required>
                         </div>
                         <div class="card"> 
-                            <label for="drRName">Delivered by: </label> <br>
+                            <label for="drRName">Received by: </label> <br>
                             <input type="text" id="drRName" name="dr_Rname" placeholder="e.g Maria Magdalena" value="" required><br>
                         </div>
                     </div>
