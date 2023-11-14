@@ -65,11 +65,11 @@ $extension = "../admin/menu/";
             color: black;
         }
         .product {
-            position: relative;
-            display: inline-block;
-            width: 200px;
-            margin: 28px;
-	        transition: transform 1s ease;
+        position: relative;
+        display: inline-block;
+        width: 200px;
+        margin: 28px;
+        transition: transform 1s ease;
             
         }
         .products {
@@ -79,35 +79,35 @@ $extension = "../admin/menu/";
         }
 
         .product img {
-            width: 100%; 
-            height: 200px; 
-            object-fit: cover;
+        width: 100%; 
+        height: 200px; 
+        object-fit: cover;
             
         }
         .product img:hover, .product.unavailable img:hover {
-            transform: scale(1.05);
-	        transition: transform 1s;
+        transform: scale(1.05);
+        transition: transform 1s;
         }
 
         .product-link {
-            text-decoration: none;
-            color: inherit;
+        text-decoration: none;
+        color: inherit;
         }
 
         .product.unavailable {
-            pointer-events: none;
+        pointer-events: none;
         }
 
         .unavailable-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 5px;
-            color: red;
-            font-weight: bold;
-            font-size: 16px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 5px;
+        color: red;
+        font-weight: bold;
+        font-size: 16px;
         }
         .submenu {
         position: sticky;
@@ -145,6 +145,40 @@ $extension = "../admin/menu/";
     .category-section {
         margin-top: 20px;
     }
+    .submenu {
+        position: relative;
+    }   
+    .submenu .unavailable img {
+        width: 100%; /* Adjust the width to your preference */
+        height: auto; /* Maintain aspect ratio */
+        object-fit: contain; /* Use contain to fit the entire image within the container */
+        max-width: 100%; /* Ensure the image doesn't exceed its natural size */
+        border-radius: 20px;
+    }
+
+    .submenu .unavailable img {
+        border-radius: 20px;
+        border-color: red;
+        border: red;
+        /*filter: blur(5px);*/
+    }
+
+    .unavailable-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: red; /* You can customize the background color */
+        color: white; /* You can customize the text color */
+        padding: 10px; /* You can customize the padding */
+        z-index: 2 ; /* Ensure the message is above the image */
+    }
+
+    .product-image-container {
+        position: relative;
+        z-index: 1; /* Ensure the image is below the message */
+    }
+
     </style>
 </head>
 <body>
@@ -194,12 +228,12 @@ function loadItems(category) {
         <div id="searchResults" class="recentlyadded content-wrapper">
         <!-- The search results will be dynamically inserted here -->
         <br>
-
+        </div>
         
         <div id="categoryItems" class="category-items">
             <!-- Display items for the selected category here -->
         </div>
-        </div>
+        
         <?php foreach ($products as $product): ?>
             <div class="product <?= ($product['stock'] == 0) ? 'unavailable' : '' ?>">
                 <?php if ($product['stock'] == 0): ?>
@@ -214,6 +248,7 @@ function loadItems(category) {
                 </a>
             </div>
         <?php endforeach; ?>
+        
     </div>
     
     <!-- Your JavaScript for AJAX -->
