@@ -209,7 +209,7 @@ $extension = "../admin/menu/";
                     <td class="quantity">
                         <input type="number" name="quantity-<?=$product['prodId']?>" value="<?=$products_in_cart[$product['prodId']]?>" min="1" max="<?=$product['stock']?>" placeholder="Quantity" required>
                     </td>
-                    <td class="price"> &#8369;<?=$product['prodPrice'] * $products_in_cart[$product['prodId']]?></td>
+                    <td style="font-weight: bold;s" class="price"> &#8369;<?=$product['prodPrice'] * $products_in_cart[$product['prodId']]?></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>

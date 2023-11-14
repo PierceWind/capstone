@@ -3,6 +3,7 @@ $servername = "localhost";
 $username = "root";
 $password = "xoxad";
 $dbname = "capstone";
+
 $extension = "../admin/menu/";
 
 try {
@@ -26,7 +27,6 @@ try {
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Generate HTML representation of the items
-    echo '<div class="products">';
     foreach ($items as $item) {
         // Check if the 'stock' key exists in the $item array
         $stock = isset($item['stock']) ? $item['stock'] : null;
@@ -34,23 +34,21 @@ try {
         $productImg = isset($item['productImg']) ? $item['productImg'] : null;
 
     
-        echo '<div class="product ' . (($stock == 0) ? 'unavailable' : '') . '">';
-        
-        if ($stock == 0) {
+        echo '<div class="product ' . (($item['stock'] == 0) ? 'unavailable' : '') . '">';
+        if ($item['stock'] == 0) {
             echo '<div class="unavailable-message">UNAVAILABLE</div>';
         }
-        
-
-        echo '<a href="index.php?page=product&id=' . $item['prodId'] . '" class="product-link">';
-        echo '<div class="product-image-container">';
-        echo '<img src="' . $extension . $productImg . '" alt="' . htmlspecialchars($item['prodName']) . '">';
+            echo '<a href="index.php?page=product&id=' . $item['prodId'] . '" class="product-link">';
+                echo '<div class="product-image-container">';
+                    echo '<img src="' . $extension . $productImg . '" alt="' . htmlspecialchars($item['prodName']) . '">';
+                    echo '<span class="name" style="color: #700202;"><strong>' . htmlspecialchars($item['prodName']) . '</strong></span><br>';
+                echo '</div>';
+                echo '<span class="price">&#8369;' . htmlspecialchars($item['prodPrice']) . '</span><br>';
+            
+            echo '</a>';
+            echo '</div>';
+        }
         echo '</div>';
-        echo '<span class="name" style="color: #700202;"><strong>' . htmlspecialchars($item['prodName']) . '</strong></span><br>';
-        echo '<span class="price">&#8369;' . htmlspecialchars($item['prodPrice']) . '</span><br>';
-        echo '</a>';
-        echo '</div>';
-    }
-    echo '</div>';
 } catch (PDOException $e) {
     // Handle database connection or query errors
     echo 'Error: ' . $e->getMessage();

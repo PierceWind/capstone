@@ -50,6 +50,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
     <link rel="stylesheet" href="../files/assets/css/Navbar-Centered-Links-icons.css">
     <link rel="stylesheet" href="../files/assets/css/Off-Canvas-Sidebar-Drawer-Navbar.css">
     <link rel="stylesheet" href="../files/assets/css/project-card.css">
+    <link rel="icon" type="image/x-icon" href="../files/icons/tdf.png">
 </head>
 
 <body>

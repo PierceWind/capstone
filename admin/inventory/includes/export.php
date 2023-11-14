@@ -32,13 +32,13 @@ if(isset($_POST["export"])) {
         while($row = mysqli_fetch_array($result))
         {
             // Determine the status based on your conditions
-            if ($row['stock'] <= $row['minReq']) {
-                $status = 'Needs Attention';
-            } else if ($row['stock'] == 0) {
-                $status = 'Out of Stock';
-            } else {
+            if ($row['stock'] <= $row['minReq'] && $row['stock'] != 0)  {
+                $status = '<span class="attention-status">Needs Attention</span>';
+                } else if ($row['stock'] == 0) {
+                $status = '<span class="attention-status">Out of Stock</span>';
+                } else {
                 $status = 'Available';
-            }
+                }
             $output .= '
             <tr>  
                 <td>'.$row["prodId"].'</td>  

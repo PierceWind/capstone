@@ -116,6 +116,7 @@ header .link-icons a span {
 
 main .featured {
 	display: flex;
+	width: 100%; 
 	flex-direction: column;
 	background-image: url(../files/bg/banner1.png);
 	background-repeat: no-repeat;
@@ -178,6 +179,7 @@ main .recentlyadded .products .product .name, main .products .products-wrapper .
 main .recentlyadded .products .product .price, main .products .products-wrapper .product .price {
 	display: block;
 	color: #999999;
+	font-weight: bold;
 }
 main .recentlyadded .products .product .rrp, main .products .products-wrapper .product .rrp {
 	color: #BBBBBB;
@@ -208,6 +210,7 @@ main > .product .price {
 	display: block;
 	font-size: 22px;
 	color: #999999;
+	font-weight: bold;
 }
 main > .product .rrp {
 	color: #BBBBBB;
@@ -313,6 +316,7 @@ main .cart table .remove:hover {
 }
 main .cart table .price {
 	color: #999999;
+	font-weight: bold;
 }
 main .cart table a {
 	text-decoration: none;
@@ -328,6 +332,7 @@ main .cart table input[type="number"] {
 main .cart .subtotal {
 	text-align: right;
 	padding: 40px 0;
+	font-weight: bold;
 }
 main .cart .subtotal .text {
 	padding-right: 40px;
@@ -335,7 +340,7 @@ main .cart .subtotal .text {
 }
 main .cart .subtotal .price {
 	font-size: 20px;
-	color: #999999;
+	color: black;
 }
 main .cart .buttons {
 	text-align: right;
