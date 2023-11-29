@@ -38,10 +38,11 @@ echo <<<EOT
                 </nav>
                 <div class="link-icons">
                     <a href="index.php?page=cart">
-						<i class="fas fa-shopping-cart"></i>
+                        <i ><img style="height:30px; width:auto;" src="../files/icons/shopping-cart.png"></i>
                         <span>$num_items_in_cart</span>
-					</a>
+                    </a>
                 </div>
+
             </div>
         </header>
         <main>
