@@ -1,6 +1,93 @@
-TDF Digital Menu: An Online Ordering System 
+GREETINGS! This program is for educational purposes only. 
+    This is a partial requirement of our course Capstone 1 and 2. 
+    This project was coded starting from June 21, 2023 until February 12, 2024. 
+    Through our rigor and determination, we made this system for a second time. 
+    The languages used are the following: pghp and js that includes html and css. 
+
+ALL ABOUT THE PROJECT 
+    The group aspire to design and deveop a ordering system that will streamline the business operations
+        of their beneficiary, the To Die For Foods. This system is has digital menu, kitchen display system,
+        simple point-of-sale system, and invetory system. This has been tested (alpha and beta testing) with 
+        their adviser, and TDF staff and customers. As for the software quality, survey has been conducted through 
+        measuring the FURP model (Functinality, Usability, Reliability, and Performance.  
+    The system allows to process order from a digital menu, modify all the content (menu and inventory), and outputs
+        simple report in admin and receipt in cashier side.
+    The programmers will be happy at your advices and suggestions regarding their system. 
+    They believed that no perfect system exist and doesn't mean it will be excluded from innovation 
+        and development. They hope that their system will be upgraded and debugged. 
     
-DEVELOPER: 
-* Abalos
-* Villarosa 
-* Bagobe 
+    SYSTEM FEATURES: 
+     - Login System 
+        > 3 attempts & countdown login process 
+     - Admin 
+        > oversee customer type, sales graph, products (critical, top-selling, underperforming)
+        > number of accounts, product, complete and cancelled orders
+        > manage user record        
+        > manage admin settings 
+        > manage menu record
+        > manage sales and inventory 
+        > generate sales and inventory report 
+    - Kitchen 
+        > received orders (paid and queued) 
+        > update order as prepared or served 
+        > void order (needs authorized pin)
+    - Cashier 
+        > received queued orders 
+        > calculate order with applied discount 
+        > process cash payment 
+        > generate order receipt 
+        > oversee transaction history 
+    - Digital Menu 
+        > display Menu 
+        > add to cart, manage and place order (CRUD) 
+        > search filter 
+        > category navigator 
+        > generate and print queueing number w/ summary of order
+    
+    NEEDS MODIFICATION (WEAKNESSES): 
+    - Security (md5 encryption)
+    - POS
+
+MAIN PROGRAMMER/DESIGNER 
+ - Abalos, Jerusa Mae P. 
+PROGRAMMER 
+- Villarosa, Jennylyn 
+GRAPHIC  
+ - Bagobe, Reyster G. 
+
+ 
+To be able to run our system, please download and install the following: 
+ - node at nodejs.org 
+ - xampp 
+    For xampp, in the phpmyadmin password, please set up the password as 'xoxad'
+    and import the sql query stored in files > database > capstone.sql 
+
+NOTE: 
+    You can use peer to peer network or even wireless network to access pages in different device. 
+    URL may varies depending on your ip address. to check you IP address, open your cmd, and run this 'ipconfig'
+    192.168.1.6 may vary 
+
+AFTER ALL: 
+    copy this URL to your browser:
+    Digital Menu - http://192.168.1.6:11420/cust/
+    Cashier - http://192.168.1.6:11420/cashier
+    Kitchen - http://192.168.1.6:11420/kitchen/
+    Admin - http://192.168.1.6:11420/admin/
+    Login - http://192.168.1.6:11420/login/log.php
+
+ADMIN ACCOUNT 
+    username: admin
+    password: admin
+
+CASHIER'S ACCOUNT 
+    username: cash 
+    password: 12345
+
+KITCHEN'S ACCOUNT
+    username: kitch
+    password: 12345
+
+    NOTE: You may register another account only in Admin.
+
+
+HOPE YOU'LL HAVE HAPPY BROWSE!
