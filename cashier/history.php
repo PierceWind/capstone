@@ -90,7 +90,7 @@ if (isset($_POST['applyDiscountBtn'])) {
             <tbody>
                 <?php
                 // Retrieve and display transaction data from your database
-                $query = "SELECT * FROM transac"; // Replace 'transactions' with your actual table name
+                $query = "SELECT * FROM transac ORDER BY date DESC"; // Replace 'transactions' with your actual table name
                 $result = mysqli_query($conn, $query);
 
                 if (mysqli_num_rows($result) > 0) {

@@ -13,7 +13,7 @@ function pdo_connect_mysql() {
     }
 }
 
-// Template header, feel free to customize this
+// Template header, feel free to customize thiss
 function template_header($title) {
 // Get the number of items in the shopping cart, which will be displayed in the header.
 $num_items_in_cart = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
