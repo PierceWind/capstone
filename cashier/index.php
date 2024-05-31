@@ -149,7 +149,7 @@ function getNextQueueNumber($conn, $currentQueueNumber) {
                         } else {
                             ?>
                             <button class="btn btn-primary queue-button" data-queue-number="<?php echo $queueNumber; ?>" data-order-id="<?php echo $orderID; ?>" style="padding-right: 20px; padding-left: 20px; border-color: var(--bs-black); background: var(--bs-white); color: var(--bs-black); margin-bottom: 15px;" onclick="loadOrderDetails('<?php echo $queueNumber; ?>')">
-                                <strong>#<?php echo $queueNumber; ?> - Queued</strong>
+                                <strong>#<?php echo $queueNumber; ?> - In Progress</strong>
                             </button>
                             <?php
                         }
