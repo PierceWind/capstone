@@ -16,7 +16,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 $salesLabels = array();
 $salesData = array();
 
-$query = "SELECT DATE_FORMAT(date, '%b') as month, SUM(cashPaid) as totalCashPaid FROM transac GROUP BY month(date)";
+$query = "SELECT DATE_FORMAT(date, '%b') as month, SUM(cashPaid) as totalCashPaid FROM transac GROUP BY year(date)";
 $result = mysqli_query($conn, $query);
 
 while ($row = mysqli_fetch_assoc($result)) {
